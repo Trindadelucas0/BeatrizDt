@@ -1,0 +1,38 @@
+<%
+  const fieldName = typeof statusFieldName !== 'undefined' ? statusFieldName : 'statusLeft';
+  const statusValue = helpers.normalizeGroupStatus(group[fieldName]);
+  const radioName = `${fieldName}-${groupIndex}`;
+%>
+<% if (!printMode && !isReadOnly) { %>
+  <div
+    class="status-checks js-status-checks"
+    data-group-index="<%= groupIndex %>"
+    data-field="<%= fieldName %>"
+    data-current-value="<%= statusValue %>"
+    role="radiogroup"
+    aria-label="Status do grupo"
+  >
+    <label class="status-check status-check--em_processo<%= statusValue === 'em_processo' ? ' status-check--checked' : '' %>">
+      <input
+        type="radio"
+        name="<%= radioName %>"
+        value="em_processo"
+        class="status-check__input"
+        <%= statusValue === 'em_processo' ? 'checked' : '' %>
+      />
+      <span class="status-check__label">EM PROCESSO</span>
+    </label>
+    <label class="status-check status-check--concluido<%= statusValue === 'concluido' ? ' status-check--checked' : '' %>">
+      <input
+        type="radio"
+        name="<%= radioName %>"
+        value="concluido"
+        class="status-check__input"
+        <%= statusValue === 'concluido' ? 'checked' : '' %>
+      />
+      <span class="status-check__label">CONCLUÍDO</span>
+    </label>
+  </div>
+<% } else { %>
+  <span class="status-badge status-badge--<%= statusValue %><%= printMode ? ' status-badge--pdf' : '' %>"><%= helpers.formatGroupStatus(statusValue) %></span>
+<% } %>

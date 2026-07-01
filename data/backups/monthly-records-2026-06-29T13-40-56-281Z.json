@@ -1,0 +1,2252 @@
+{
+  "records": [
+    {
+      "competencia": "12/2026",
+      "metadata": {
+        "titleLeft": "RESUMO IMPOSTOS DARF INSS/IRRF",
+        "titleRight": "RESUMO IMPOSTOS - FGTS MENSAL E DECIMO TERCEIRO",
+        "titleThird": "RESUMO IMPOSTOS - FGTS DECIMO TERCEIRO",
+        "sourceFile": "RESUMO IMPOSTOS FOLHA.xlsx"
+      },
+      "groups": [
+        {
+          "id": "etica",
+          "label": "ETICA",
+          "companies": [
+            {
+              "id": "etica-56",
+              "code": "56",
+              "name": "ETICA MATRIZ",
+              "cnpj": "4744446000181",
+              "inss": 0,
+              "irrf": 0,
+              "emprestimoConsignado": 30,
+              "fgtsMensal": 30,
+              "fgtsDecimoTerceiro": 0,
+              "totalLeft": 0,
+              "totalRight": 60,
+              "inssDecimoTerceiro": 0,
+              "irrfDecimoTerceiro": 0
+            },
+            {
+              "id": "etica-92",
+              "code": "92",
+              "name": "ETICA FILIAL",
+              "cnpj": "",
+              "inss": 0,
+              "irrf": 0,
+              "emprestimoConsignado": 0,
+              "fgtsMensal": 0,
+              "fgtsDecimoTerceiro": 0,
+              "totalLeft": 0,
+              "totalRight": 0,
+              "inssDecimoTerceiro": 0,
+              "irrfDecimoTerceiro": 0
+            }
+          ],
+          "summary": {
+            "inss": 0,
+            "irrf": 0,
+            "inssDecimoTerceiro": 0,
+            "irrfDecimoTerceiro": 0,
+            "totalLeft": 0,
+            "emprestimoConsignado": 30,
+            "fgtsMensal": 30,
+            "fgtsDecimoTerceiro": 0,
+            "totalRight": 60
+          },
+          "statusLeft": "OK",
+          "statusRight": "OK"
+        },
+        {
+          "id": "mercado",
+          "label": "MERCADO",
+          "companies": [
+            {
+              "id": "mercado-67",
+              "code": "67",
+              "name": "MERCADO MATRIZ",
+              "cnpj": "72628407000179",
+              "inss": 0,
+              "irrf": 0,
+              "emprestimoConsignado": 0,
+              "fgtsMensal": 0,
+              "fgtsDecimoTerceiro": 0,
+              "totalLeft": 0,
+              "totalRight": 0,
+              "inssDecimoTerceiro": 0,
+              "irrfDecimoTerceiro": 0
+            },
+            {
+              "id": "mercado-69",
+              "code": "69",
+              "name": "MERCADO FILIAL 03",
+              "cnpj": "",
+              "inss": 0,
+              "irrf": 0,
+              "emprestimoConsignado": 0,
+              "fgtsMensal": 0,
+              "fgtsDecimoTerceiro": 0,
+              "totalLeft": 0,
+              "totalRight": 0,
+              "inssDecimoTerceiro": 0,
+              "irrfDecimoTerceiro": 0
+            }
+          ],
+          "summary": {
+            "inss": 0,
+            "irrf": 0,
+            "inssDecimoTerceiro": 0,
+            "irrfDecimoTerceiro": 0,
+            "totalLeft": 0,
+            "emprestimoConsignado": 0,
+            "fgtsMensal": 0,
+            "fgtsDecimoTerceiro": 0,
+            "totalRight": 0
+          },
+          "statusLeft": "OK",
+          "statusRight": "OK"
+        },
+        {
+          "id": "vt",
+          "label": "V&T",
+          "companies": [
+            {
+              "id": "vt-45",
+              "code": "45",
+              "name": "V&T MATRIZ",
+              "cnpj": "36113768000119",
+              "inss": 0,
+              "irrf": 0,
+              "emprestimoConsignado": 0,
+              "fgtsMensal": 0,
+              "fgtsDecimoTerceiro": 0,
+              "totalLeft": 0,
+              "totalRight": 0,
+              "inssDecimoTerceiro": 0,
+              "irrfDecimoTerceiro": 0
+            },
+            {
+              "id": "vt-150",
+              "code": "150",
+              "name": "V&T FILIAL",
+              "cnpj": "",
+              "inss": 0,
+              "irrf": 0,
+              "emprestimoConsignado": 0,
+              "fgtsMensal": 0,
+              "fgtsDecimoTerceiro": 0,
+              "totalLeft": 0,
+              "totalRight": 0,
+              "inssDecimoTerceiro": 0,
+              "irrfDecimoTerceiro": 0
+            }
+          ],
+          "summary": {
+            "inss": 0,
+            "irrf": 0,
+            "inssDecimoTerceiro": 0,
+            "irrfDecimoTerceiro": 0,
+            "totalLeft": 0,
+            "emprestimoConsignado": 0,
+            "fgtsMensal": 0,
+            "fgtsDecimoTerceiro": 0,
+            "totalRight": 0
+          },
+          "statusLeft": "OK",
+          "statusRight": "OK"
+        },
+        {
+          "id": "unica",
+          "label": "UNICA",
+          "companies": [
+            {
+              "id": "unica-46",
+              "code": "46",
+              "name": "UNICA",
+              "cnpj": "36517206000130",
+              "inss": 0,
+              "irrf": 0,
+              "emprestimoConsignado": 0,
+              "fgtsMensal": 0,
+              "fgtsDecimoTerceiro": 0,
+              "totalLeft": 0,
+              "totalRight": 0,
+              "inssDecimoTerceiro": 0,
+              "irrfDecimoTerceiro": 0
+            }
+          ],
+          "summary": {
+            "inss": 0,
+            "irrf": 0,
+            "inssDecimoTerceiro": 0,
+            "irrfDecimoTerceiro": 0,
+            "totalLeft": 0,
+            "emprestimoConsignado": 0,
+            "fgtsMensal": 0,
+            "fgtsDecimoTerceiro": 0,
+            "totalRight": 0
+          },
+          "statusLeft": "OK",
+          "statusRight": "OK"
+        }
+      ],
+      "grandTotals": {
+        "inss": 0,
+        "irrf": 0,
+        "inssDecimoTerceiro": 0,
+        "irrfDecimoTerceiro": 0,
+        "totalLeft": 0,
+        "emprestimoConsignado": 30,
+        "fgtsMensal": 30,
+        "fgtsDecimoTerceiro": 0,
+        "totalRight": 60,
+        "fgts": 30
+      },
+      "updatedAt": "2026-06-29T13:26:59.862Z",
+      "updatedBy": "admin"
+    },
+    {
+      "competencia": "11/2026",
+      "metadata": {
+        "titleLeft": "RESUMO IMPOSTOS DARF INSS/IRRF",
+        "titleRight": "RESUMO IMPOSTOS - FGTS MENSAL E DECIMO TERCEIRO",
+        "titleThird": "RESUMO IMPOSTOS - FGTS DECIMO TERCEIRO",
+        "sourceFile": "RESUMO IMPOSTOS FOLHA.xlsx"
+      },
+      "groups": [
+        {
+          "id": "etica",
+          "label": "ETICA",
+          "companies": [
+            {
+              "id": "etica-56",
+              "code": "56",
+              "name": "ETICA MATRIZ",
+              "cnpj": "4744446000181",
+              "inss": 0,
+              "irrf": 0,
+              "emprestimoConsignado": 0,
+              "fgtsMensal": 0,
+              "fgtsDecimoTerceiro": 0,
+              "totalLeft": 0,
+              "totalRight": 0
+            },
+            {
+              "id": "etica-92",
+              "code": "92",
+              "name": "ETICA FILIAL",
+              "cnpj": "",
+              "inss": 0,
+              "irrf": 0,
+              "emprestimoConsignado": 0,
+              "fgtsMensal": 0,
+              "fgtsDecimoTerceiro": 0,
+              "totalLeft": 0,
+              "totalRight": 0
+            }
+          ],
+          "summary": {
+            "inss": 0,
+            "irrf": 0,
+            "totalLeft": 0,
+            "emprestimoConsignado": 0,
+            "fgtsMensal": 0,
+            "fgtsDecimoTerceiro": 0,
+            "totalRight": 0
+          },
+          "statusLeft": "OK",
+          "statusRight": "OK"
+        },
+        {
+          "id": "mercado",
+          "label": "MERCADO",
+          "companies": [
+            {
+              "id": "mercado-67",
+              "code": "67",
+              "name": "MERCADO MATRIZ",
+              "cnpj": "72628407000179",
+              "inss": 0,
+              "irrf": 0,
+              "emprestimoConsignado": 0,
+              "fgtsMensal": 0,
+              "fgtsDecimoTerceiro": 0,
+              "totalLeft": 0,
+              "totalRight": 0
+            },
+            {
+              "id": "mercado-69",
+              "code": "69",
+              "name": "MERCADO FILIAL 03",
+              "cnpj": "",
+              "inss": 0,
+              "irrf": 0,
+              "emprestimoConsignado": 0,
+              "fgtsMensal": 0,
+              "fgtsDecimoTerceiro": 0,
+              "totalLeft": 0,
+              "totalRight": 0
+            }
+          ],
+          "summary": {
+            "inss": 0,
+            "irrf": 0,
+            "totalLeft": 0,
+            "emprestimoConsignado": 0,
+            "fgtsMensal": 0,
+            "fgtsDecimoTerceiro": 0,
+            "totalRight": 0
+          },
+          "statusLeft": "OK",
+          "statusRight": "OK"
+        },
+        {
+          "id": "vt",
+          "label": "V&T",
+          "companies": [
+            {
+              "id": "vt-45",
+              "code": "45",
+              "name": "V&T MATRIZ",
+              "cnpj": "36113768000119",
+              "inss": 0,
+              "irrf": 0,
+              "emprestimoConsignado": 0,
+              "fgtsMensal": 0,
+              "fgtsDecimoTerceiro": 0,
+              "totalLeft": 0,
+              "totalRight": 0
+            },
+            {
+              "id": "vt-150",
+              "code": "150",
+              "name": "V&T FILIAL",
+              "cnpj": "",
+              "inss": 0,
+              "irrf": 0,
+              "emprestimoConsignado": 0,
+              "fgtsMensal": 0,
+              "fgtsDecimoTerceiro": 0,
+              "totalLeft": 0,
+              "totalRight": 0
+            }
+          ],
+          "summary": {
+            "inss": 0,
+            "irrf": 0,
+            "totalLeft": 0,
+            "emprestimoConsignado": 0,
+            "fgtsMensal": 0,
+            "fgtsDecimoTerceiro": 0,
+            "totalRight": 0
+          },
+          "statusLeft": "OK",
+          "statusRight": "OK"
+        },
+        {
+          "id": "unica",
+          "label": "UNICA",
+          "companies": [
+            {
+              "id": "unica-46",
+              "code": "46",
+              "name": "UNICA",
+              "cnpj": "36517206000130",
+              "inss": 0,
+              "irrf": 0,
+              "emprestimoConsignado": 0,
+              "fgtsMensal": 0,
+              "fgtsDecimoTerceiro": 0,
+              "totalLeft": 0,
+              "totalRight": 0
+            }
+          ],
+          "summary": {
+            "inss": 0,
+            "irrf": 0,
+            "totalLeft": 0,
+            "emprestimoConsignado": 0,
+            "fgtsMensal": 0,
+            "fgtsDecimoTerceiro": 0,
+            "totalRight": 0
+          },
+          "statusLeft": "OK",
+          "statusRight": "OK"
+        }
+      ],
+      "grandTotals": {
+        "inss": 0,
+        "irrf": 0,
+        "totalLeft": 0,
+        "emprestimoConsignado": 0,
+        "fgtsMensal": 0,
+        "fgtsDecimoTerceiro": 0,
+        "totalRight": 0,
+        "fgts": 0
+      },
+      "updatedAt": "2026-06-26T18:11:43.492Z",
+      "updatedBy": "sistema"
+    },
+    {
+      "competencia": "10/2026",
+      "metadata": {
+        "titleLeft": "RESUMO IMPOSTOS DARF INSS/IRRF",
+        "titleRight": "RESUMO IMPOSTOS - FGTS MENSAL E DECIMO TERCEIRO",
+        "titleThird": "RESUMO IMPOSTOS - FGTS DECIMO TERCEIRO",
+        "sourceFile": "RESUMO IMPOSTOS FOLHA.xlsx"
+      },
+      "groups": [
+        {
+          "id": "etica",
+          "label": "ETICA",
+          "companies": [
+            {
+              "id": "etica-56",
+              "code": "56",
+              "name": "ETICA MATRIZ",
+              "cnpj": "4744446000181",
+              "inss": 0,
+              "irrf": 0,
+              "emprestimoConsignado": 0,
+              "fgtsMensal": 0,
+              "fgtsDecimoTerceiro": 0,
+              "totalLeft": 0,
+              "totalRight": 0
+            },
+            {
+              "id": "etica-92",
+              "code": "92",
+              "name": "ETICA FILIAL",
+              "cnpj": "",
+              "inss": 0,
+              "irrf": 0,
+              "emprestimoConsignado": 0,
+              "fgtsMensal": 0,
+              "fgtsDecimoTerceiro": 0,
+              "totalLeft": 0,
+              "totalRight": 0
+            }
+          ],
+          "summary": {
+            "inss": 0,
+            "irrf": 0,
+            "totalLeft": 0,
+            "emprestimoConsignado": 0,
+            "fgtsMensal": 0,
+            "fgtsDecimoTerceiro": 0,
+            "totalRight": 0
+          },
+          "statusLeft": "OK",
+          "statusRight": "OK"
+        },
+        {
+          "id": "mercado",
+          "label": "MERCADO",
+          "companies": [
+            {
+              "id": "mercado-67",
+              "code": "67",
+              "name": "MERCADO MATRIZ",
+              "cnpj": "72628407000179",
+              "inss": 0,
+              "irrf": 0,
+              "emprestimoConsignado": 0,
+              "fgtsMensal": 0,
+              "fgtsDecimoTerceiro": 0,
+              "totalLeft": 0,
+              "totalRight": 0
+            },
+            {
+              "id": "mercado-69",
+              "code": "69",
+              "name": "MERCADO FILIAL 03",
+              "cnpj": "",
+              "inss": 0,
+              "irrf": 0,
+              "emprestimoConsignado": 0,
+              "fgtsMensal": 0,
+              "fgtsDecimoTerceiro": 0,
+              "totalLeft": 0,
+              "totalRight": 0
+            }
+          ],
+          "summary": {
+            "inss": 0,
+            "irrf": 0,
+            "totalLeft": 0,
+            "emprestimoConsignado": 0,
+            "fgtsMensal": 0,
+            "fgtsDecimoTerceiro": 0,
+            "totalRight": 0
+          },
+          "statusLeft": "OK",
+          "statusRight": "OK"
+        },
+        {
+          "id": "vt",
+          "label": "V&T",
+          "companies": [
+            {
+              "id": "vt-45",
+              "code": "45",
+              "name": "V&T MATRIZ",
+              "cnpj": "36113768000119",
+              "inss": 0,
+              "irrf": 0,
+              "emprestimoConsignado": 0,
+              "fgtsMensal": 0,
+              "fgtsDecimoTerceiro": 0,
+              "totalLeft": 0,
+              "totalRight": 0
+            },
+            {
+              "id": "vt-150",
+              "code": "150",
+              "name": "V&T FILIAL",
+              "cnpj": "",
+              "inss": 0,
+              "irrf": 0,
+              "emprestimoConsignado": 0,
+              "fgtsMensal": 0,
+              "fgtsDecimoTerceiro": 0,
+              "totalLeft": 0,
+              "totalRight": 0
+            }
+          ],
+          "summary": {
+            "inss": 0,
+            "irrf": 0,
+            "totalLeft": 0,
+            "emprestimoConsignado": 0,
+            "fgtsMensal": 0,
+            "fgtsDecimoTerceiro": 0,
+            "totalRight": 0
+          },
+          "statusLeft": "OK",
+          "statusRight": "OK"
+        },
+        {
+          "id": "unica",
+          "label": "UNICA",
+          "companies": [
+            {
+              "id": "unica-46",
+              "code": "46",
+              "name": "UNICA",
+              "cnpj": "36517206000130",
+              "inss": 0,
+              "irrf": 0,
+              "emprestimoConsignado": 0,
+              "fgtsMensal": 0,
+              "fgtsDecimoTerceiro": 0,
+              "totalLeft": 0,
+              "totalRight": 0
+            }
+          ],
+          "summary": {
+            "inss": 0,
+            "irrf": 0,
+            "totalLeft": 0,
+            "emprestimoConsignado": 0,
+            "fgtsMensal": 0,
+            "fgtsDecimoTerceiro": 0,
+            "totalRight": 0
+          },
+          "statusLeft": "OK",
+          "statusRight": "OK"
+        }
+      ],
+      "grandTotals": {
+        "inss": 0,
+        "irrf": 0,
+        "totalLeft": 0,
+        "emprestimoConsignado": 0,
+        "fgtsMensal": 0,
+        "fgtsDecimoTerceiro": 0,
+        "totalRight": 0,
+        "fgts": 0
+      },
+      "updatedAt": "2026-06-26T18:11:43.492Z",
+      "updatedBy": "sistema"
+    },
+    {
+      "competencia": "09/2026",
+      "metadata": {
+        "titleLeft": "RESUMO IMPOSTOS DARF INSS/IRRF",
+        "titleRight": "RESUMO IMPOSTOS - FGTS MENSAL E DECIMO TERCEIRO",
+        "titleThird": "RESUMO IMPOSTOS - FGTS DECIMO TERCEIRO",
+        "sourceFile": "RESUMO IMPOSTOS FOLHA.xlsx"
+      },
+      "groups": [
+        {
+          "id": "etica",
+          "label": "ETICA",
+          "companies": [
+            {
+              "id": "etica-56",
+              "code": "56",
+              "name": "ETICA MATRIZ",
+              "cnpj": "4744446000181",
+              "inss": 0,
+              "irrf": 0,
+              "emprestimoConsignado": 0,
+              "fgtsMensal": 0,
+              "fgtsDecimoTerceiro": 0,
+              "totalLeft": 0,
+              "totalRight": 0
+            },
+            {
+              "id": "etica-92",
+              "code": "92",
+              "name": "ETICA FILIAL",
+              "cnpj": "",
+              "inss": 0,
+              "irrf": 0,
+              "emprestimoConsignado": 0,
+              "fgtsMensal": 0,
+              "fgtsDecimoTerceiro": 0,
+              "totalLeft": 0,
+              "totalRight": 0
+            }
+          ],
+          "summary": {
+            "inss": 0,
+            "irrf": 0,
+            "totalLeft": 0,
+            "emprestimoConsignado": 0,
+            "fgtsMensal": 0,
+            "fgtsDecimoTerceiro": 0,
+            "totalRight": 0
+          },
+          "statusLeft": "OK",
+          "statusRight": "OK"
+        },
+        {
+          "id": "mercado",
+          "label": "MERCADO",
+          "companies": [
+            {
+              "id": "mercado-67",
+              "code": "67",
+              "name": "MERCADO MATRIZ",
+              "cnpj": "72628407000179",
+              "inss": 0,
+              "irrf": 0,
+              "emprestimoConsignado": 0,
+              "fgtsMensal": 0,
+              "fgtsDecimoTerceiro": 0,
+              "totalLeft": 0,
+              "totalRight": 0
+            },
+            {
+              "id": "mercado-69",
+              "code": "69",
+              "name": "MERCADO FILIAL 03",
+              "cnpj": "",
+              "inss": 0,
+              "irrf": 0,
+              "emprestimoConsignado": 0,
+              "fgtsMensal": 0,
+              "fgtsDecimoTerceiro": 0,
+              "totalLeft": 0,
+              "totalRight": 0
+            }
+          ],
+          "summary": {
+            "inss": 0,
+            "irrf": 0,
+            "totalLeft": 0,
+            "emprestimoConsignado": 0,
+            "fgtsMensal": 0,
+            "fgtsDecimoTerceiro": 0,
+            "totalRight": 0
+          },
+          "statusLeft": "OK",
+          "statusRight": "OK"
+        },
+        {
+          "id": "vt",
+          "label": "V&T",
+          "companies": [
+            {
+              "id": "vt-45",
+              "code": "45",
+              "name": "V&T MATRIZ",
+              "cnpj": "36113768000119",
+              "inss": 0,
+              "irrf": 0,
+              "emprestimoConsignado": 0,
+              "fgtsMensal": 0,
+              "fgtsDecimoTerceiro": 0,
+              "totalLeft": 0,
+              "totalRight": 0
+            },
+            {
+              "id": "vt-150",
+              "code": "150",
+              "name": "V&T FILIAL",
+              "cnpj": "",
+              "inss": 0,
+              "irrf": 0,
+              "emprestimoConsignado": 0,
+              "fgtsMensal": 0,
+              "fgtsDecimoTerceiro": 0,
+              "totalLeft": 0,
+              "totalRight": 0
+            }
+          ],
+          "summary": {
+            "inss": 0,
+            "irrf": 0,
+            "totalLeft": 0,
+            "emprestimoConsignado": 0,
+            "fgtsMensal": 0,
+            "fgtsDecimoTerceiro": 0,
+            "totalRight": 0
+          },
+          "statusLeft": "OK",
+          "statusRight": "OK"
+        },
+        {
+          "id": "unica",
+          "label": "UNICA",
+          "companies": [
+            {
+              "id": "unica-46",
+              "code": "46",
+              "name": "UNICA",
+              "cnpj": "36517206000130",
+              "inss": 0,
+              "irrf": 0,
+              "emprestimoConsignado": 0,
+              "fgtsMensal": 0,
+              "fgtsDecimoTerceiro": 0,
+              "totalLeft": 0,
+              "totalRight": 0
+            }
+          ],
+          "summary": {
+            "inss": 0,
+            "irrf": 0,
+            "totalLeft": 0,
+            "emprestimoConsignado": 0,
+            "fgtsMensal": 0,
+            "fgtsDecimoTerceiro": 0,
+            "totalRight": 0
+          },
+          "statusLeft": "OK",
+          "statusRight": "OK"
+        }
+      ],
+      "grandTotals": {
+        "inss": 0,
+        "irrf": 0,
+        "totalLeft": 0,
+        "emprestimoConsignado": 0,
+        "fgtsMensal": 0,
+        "fgtsDecimoTerceiro": 0,
+        "totalRight": 0,
+        "fgts": 0
+      },
+      "updatedAt": "2026-06-26T18:11:43.491Z",
+      "updatedBy": "sistema"
+    },
+    {
+      "competencia": "08/2026",
+      "metadata": {
+        "titleLeft": "RESUMO IMPOSTOS DARF INSS/IRRF",
+        "titleRight": "RESUMO IMPOSTOS - FGTS MENSAL E DECIMO TERCEIRO",
+        "titleThird": "RESUMO IMPOSTOS - FGTS DECIMO TERCEIRO",
+        "sourceFile": "RESUMO IMPOSTOS FOLHA.xlsx"
+      },
+      "groups": [
+        {
+          "id": "etica",
+          "label": "ETICA",
+          "companies": [
+            {
+              "id": "etica-56",
+              "code": "56",
+              "name": "ETICA MATRIZ",
+              "cnpj": "4744446000181",
+              "inss": 0,
+              "irrf": 0,
+              "emprestimoConsignado": 0,
+              "fgtsMensal": 0,
+              "fgtsDecimoTerceiro": 0,
+              "totalLeft": 0,
+              "totalRight": 0
+            },
+            {
+              "id": "etica-92",
+              "code": "92",
+              "name": "ETICA FILIAL",
+              "cnpj": "",
+              "inss": 0,
+              "irrf": 0,
+              "emprestimoConsignado": 0,
+              "fgtsMensal": 0,
+              "fgtsDecimoTerceiro": 0,
+              "totalLeft": 0,
+              "totalRight": 0
+            }
+          ],
+          "summary": {
+            "inss": 0,
+            "irrf": 0,
+            "totalLeft": 0,
+            "emprestimoConsignado": 0,
+            "fgtsMensal": 0,
+            "fgtsDecimoTerceiro": 0,
+            "totalRight": 0
+          },
+          "statusLeft": "OK",
+          "statusRight": "OK"
+        },
+        {
+          "id": "mercado",
+          "label": "MERCADO",
+          "companies": [
+            {
+              "id": "mercado-67",
+              "code": "67",
+              "name": "MERCADO MATRIZ",
+              "cnpj": "72628407000179",
+              "inss": 0,
+              "irrf": 0,
+              "emprestimoConsignado": 0,
+              "fgtsMensal": 0,
+              "fgtsDecimoTerceiro": 0,
+              "totalLeft": 0,
+              "totalRight": 0
+            },
+            {
+              "id": "mercado-69",
+              "code": "69",
+              "name": "MERCADO FILIAL 03",
+              "cnpj": "",
+              "inss": 0,
+              "irrf": 0,
+              "emprestimoConsignado": 0,
+              "fgtsMensal": 0,
+              "fgtsDecimoTerceiro": 0,
+              "totalLeft": 0,
+              "totalRight": 0
+            }
+          ],
+          "summary": {
+            "inss": 0,
+            "irrf": 0,
+            "totalLeft": 0,
+            "emprestimoConsignado": 0,
+            "fgtsMensal": 0,
+            "fgtsDecimoTerceiro": 0,
+            "totalRight": 0
+          },
+          "statusLeft": "OK",
+          "statusRight": "OK"
+        },
+        {
+          "id": "vt",
+          "label": "V&T",
+          "companies": [
+            {
+              "id": "vt-45",
+              "code": "45",
+              "name": "V&T MATRIZ",
+              "cnpj": "36113768000119",
+              "inss": 0,
+              "irrf": 0,
+              "emprestimoConsignado": 0,
+              "fgtsMensal": 0,
+              "fgtsDecimoTerceiro": 0,
+              "totalLeft": 0,
+              "totalRight": 0
+            },
+            {
+              "id": "vt-150",
+              "code": "150",
+              "name": "V&T FILIAL",
+              "cnpj": "",
+              "inss": 0,
+              "irrf": 0,
+              "emprestimoConsignado": 0,
+              "fgtsMensal": 0,
+              "fgtsDecimoTerceiro": 0,
+              "totalLeft": 0,
+              "totalRight": 0
+            }
+          ],
+          "summary": {
+            "inss": 0,
+            "irrf": 0,
+            "totalLeft": 0,
+            "emprestimoConsignado": 0,
+            "fgtsMensal": 0,
+            "fgtsDecimoTerceiro": 0,
+            "totalRight": 0
+          },
+          "statusLeft": "OK",
+          "statusRight": "OK"
+        },
+        {
+          "id": "unica",
+          "label": "UNICA",
+          "companies": [
+            {
+              "id": "unica-46",
+              "code": "46",
+              "name": "UNICA",
+              "cnpj": "36517206000130",
+              "inss": 0,
+              "irrf": 0,
+              "emprestimoConsignado": 0,
+              "fgtsMensal": 0,
+              "fgtsDecimoTerceiro": 0,
+              "totalLeft": 0,
+              "totalRight": 0
+            }
+          ],
+          "summary": {
+            "inss": 0,
+            "irrf": 0,
+            "totalLeft": 0,
+            "emprestimoConsignado": 0,
+            "fgtsMensal": 0,
+            "fgtsDecimoTerceiro": 0,
+            "totalRight": 0
+          },
+          "statusLeft": "OK",
+          "statusRight": "OK"
+        }
+      ],
+      "grandTotals": {
+        "inss": 0,
+        "irrf": 0,
+        "totalLeft": 0,
+        "emprestimoConsignado": 0,
+        "fgtsMensal": 0,
+        "fgtsDecimoTerceiro": 0,
+        "totalRight": 0,
+        "fgts": 0
+      },
+      "updatedAt": "2026-06-26T18:11:43.491Z",
+      "updatedBy": "sistema"
+    },
+    {
+      "competencia": "07/2026",
+      "metadata": {
+        "titleLeft": "RESUMO IMPOSTOS DARF INSS/IRRF",
+        "titleRight": "RESUMO IMPOSTOS - FGTS MENSAL E DECIMO TERCEIRO",
+        "titleThird": "RESUMO IMPOSTOS - FGTS DECIMO TERCEIRO",
+        "sourceFile": "RESUMO IMPOSTOS FOLHA.xlsx"
+      },
+      "groups": [
+        {
+          "id": "etica",
+          "label": "ETICA",
+          "companies": [
+            {
+              "id": "etica-56",
+              "code": "56",
+              "name": "ETICA MATRIZ",
+              "cnpj": "4744446000181",
+              "inss": 0,
+              "irrf": 0,
+              "emprestimoConsignado": 0,
+              "fgtsMensal": 0,
+              "fgtsDecimoTerceiro": 0,
+              "totalLeft": 0,
+              "totalRight": 0
+            },
+            {
+              "id": "etica-92",
+              "code": "92",
+              "name": "ETICA FILIAL",
+              "cnpj": "",
+              "inss": 0,
+              "irrf": 0,
+              "emprestimoConsignado": 0,
+              "fgtsMensal": 0,
+              "fgtsDecimoTerceiro": 0,
+              "totalLeft": 0,
+              "totalRight": 0
+            }
+          ],
+          "summary": {
+            "inss": 0,
+            "irrf": 0,
+            "totalLeft": 0,
+            "emprestimoConsignado": 0,
+            "fgtsMensal": 0,
+            "fgtsDecimoTerceiro": 0,
+            "totalRight": 0
+          },
+          "statusLeft": "OK",
+          "statusRight": "OK"
+        },
+        {
+          "id": "mercado",
+          "label": "MERCADO",
+          "companies": [
+            {
+              "id": "mercado-67",
+              "code": "67",
+              "name": "MERCADO MATRIZ",
+              "cnpj": "72628407000179",
+              "inss": 0,
+              "irrf": 0,
+              "emprestimoConsignado": 0,
+              "fgtsMensal": 0,
+              "fgtsDecimoTerceiro": 0,
+              "totalLeft": 0,
+              "totalRight": 0
+            },
+            {
+              "id": "mercado-69",
+              "code": "69",
+              "name": "MERCADO FILIAL 03",
+              "cnpj": "",
+              "inss": 0,
+              "irrf": 0,
+              "emprestimoConsignado": 0,
+              "fgtsMensal": 0,
+              "fgtsDecimoTerceiro": 0,
+              "totalLeft": 0,
+              "totalRight": 0
+            }
+          ],
+          "summary": {
+            "inss": 0,
+            "irrf": 0,
+            "totalLeft": 0,
+            "emprestimoConsignado": 0,
+            "fgtsMensal": 0,
+            "fgtsDecimoTerceiro": 0,
+            "totalRight": 0
+          },
+          "statusLeft": "OK",
+          "statusRight": "OK"
+        },
+        {
+          "id": "vt",
+          "label": "V&T",
+          "companies": [
+            {
+              "id": "vt-45",
+              "code": "45",
+              "name": "V&T MATRIZ",
+              "cnpj": "36113768000119",
+              "inss": 0,
+              "irrf": 0,
+              "emprestimoConsignado": 0,
+              "fgtsMensal": 0,
+              "fgtsDecimoTerceiro": 0,
+              "totalLeft": 0,
+              "totalRight": 0
+            },
+            {
+              "id": "vt-150",
+              "code": "150",
+              "name": "V&T FILIAL",
+              "cnpj": "",
+              "inss": 0,
+              "irrf": 0,
+              "emprestimoConsignado": 0,
+              "fgtsMensal": 0,
+              "fgtsDecimoTerceiro": 0,
+              "totalLeft": 0,
+              "totalRight": 0
+            }
+          ],
+          "summary": {
+            "inss": 0,
+            "irrf": 0,
+            "totalLeft": 0,
+            "emprestimoConsignado": 0,
+            "fgtsMensal": 0,
+            "fgtsDecimoTerceiro": 0,
+            "totalRight": 0
+          },
+          "statusLeft": "OK",
+          "statusRight": "OK"
+        },
+        {
+          "id": "unica",
+          "label": "UNICA",
+          "companies": [
+            {
+              "id": "unica-46",
+              "code": "46",
+              "name": "UNICA",
+              "cnpj": "36517206000130",
+              "inss": 0,
+              "irrf": 0,
+              "emprestimoConsignado": 0,
+              "fgtsMensal": 0,
+              "fgtsDecimoTerceiro": 0,
+              "totalLeft": 0,
+              "totalRight": 0
+            }
+          ],
+          "summary": {
+            "inss": 0,
+            "irrf": 0,
+            "totalLeft": 0,
+            "emprestimoConsignado": 0,
+            "fgtsMensal": 0,
+            "fgtsDecimoTerceiro": 0,
+            "totalRight": 0
+          },
+          "statusLeft": "OK",
+          "statusRight": "OK"
+        }
+      ],
+      "grandTotals": {
+        "inss": 0,
+        "irrf": 0,
+        "totalLeft": 0,
+        "emprestimoConsignado": 0,
+        "fgtsMensal": 0,
+        "fgtsDecimoTerceiro": 0,
+        "totalRight": 0,
+        "fgts": 0
+      },
+      "updatedAt": "2026-06-26T18:11:43.491Z",
+      "updatedBy": "sistema"
+    },
+    {
+      "competencia": "06/2026",
+      "metadata": {
+        "titleLeft": "RESUMO IMPOSTOS DARF INSS/IRRF",
+        "titleRight": "RESUMO IMPOSTOS - FGTS MENSAL E DECIMO TERCEIRO",
+        "titleThird": "RESUMO IMPOSTOS - FGTS DECIMO TERCEIRO",
+        "sourceFile": "RESUMO IMPOSTOS FOLHA.xlsx"
+      },
+      "groups": [
+        {
+          "id": "etica",
+          "label": "ETICA",
+          "companies": [
+            {
+              "id": "etica-56",
+              "code": "56",
+              "name": "ETICA MATRIZ",
+              "cnpj": "4744446000181",
+              "inss": 0,
+              "irrf": 0,
+              "emprestimoConsignado": 0,
+              "fgtsMensal": 0,
+              "fgtsDecimoTerceiro": 0,
+              "totalLeft": 0,
+              "totalRight": 0
+            },
+            {
+              "id": "etica-92",
+              "code": "92",
+              "name": "ETICA FILIAL",
+              "cnpj": "",
+              "inss": 0,
+              "irrf": 0,
+              "emprestimoConsignado": 0,
+              "fgtsMensal": 0,
+              "fgtsDecimoTerceiro": 0,
+              "totalLeft": 0,
+              "totalRight": 0
+            }
+          ],
+          "summary": {
+            "inss": 0,
+            "irrf": 0,
+            "totalLeft": 0,
+            "emprestimoConsignado": 0,
+            "fgtsMensal": 0,
+            "fgtsDecimoTerceiro": 0,
+            "totalRight": 0
+          },
+          "statusLeft": "OK",
+          "statusRight": "OK"
+        },
+        {
+          "id": "mercado",
+          "label": "MERCADO",
+          "companies": [
+            {
+              "id": "mercado-67",
+              "code": "67",
+              "name": "MERCADO MATRIZ",
+              "cnpj": "72628407000179",
+              "inss": 0,
+              "irrf": 0,
+              "emprestimoConsignado": 0,
+              "fgtsMensal": 0,
+              "fgtsDecimoTerceiro": 0,
+              "totalLeft": 0,
+              "totalRight": 0
+            },
+            {
+              "id": "mercado-69",
+              "code": "69",
+              "name": "MERCADO FILIAL 03",
+              "cnpj": "",
+              "inss": 0,
+              "irrf": 0,
+              "emprestimoConsignado": 0,
+              "fgtsMensal": 0,
+              "fgtsDecimoTerceiro": 0,
+              "totalLeft": 0,
+              "totalRight": 0
+            }
+          ],
+          "summary": {
+            "inss": 0,
+            "irrf": 0,
+            "totalLeft": 0,
+            "emprestimoConsignado": 0,
+            "fgtsMensal": 0,
+            "fgtsDecimoTerceiro": 0,
+            "totalRight": 0
+          },
+          "statusLeft": "OK",
+          "statusRight": "OK"
+        },
+        {
+          "id": "vt",
+          "label": "V&T",
+          "companies": [
+            {
+              "id": "vt-45",
+              "code": "45",
+              "name": "V&T MATRIZ",
+              "cnpj": "36113768000119",
+              "inss": 0,
+              "irrf": 0,
+              "emprestimoConsignado": 0,
+              "fgtsMensal": 0,
+              "fgtsDecimoTerceiro": 0,
+              "totalLeft": 0,
+              "totalRight": 0
+            },
+            {
+              "id": "vt-150",
+              "code": "150",
+              "name": "V&T FILIAL",
+              "cnpj": "",
+              "inss": 0,
+              "irrf": 0,
+              "emprestimoConsignado": 0,
+              "fgtsMensal": 0,
+              "fgtsDecimoTerceiro": 0,
+              "totalLeft": 0,
+              "totalRight": 0
+            }
+          ],
+          "summary": {
+            "inss": 0,
+            "irrf": 0,
+            "totalLeft": 0,
+            "emprestimoConsignado": 0,
+            "fgtsMensal": 0,
+            "fgtsDecimoTerceiro": 0,
+            "totalRight": 0
+          },
+          "statusLeft": "OK",
+          "statusRight": "OK"
+        },
+        {
+          "id": "unica",
+          "label": "UNICA",
+          "companies": [
+            {
+              "id": "unica-46",
+              "code": "46",
+              "name": "UNICA",
+              "cnpj": "36517206000130",
+              "inss": 0,
+              "irrf": 0,
+              "emprestimoConsignado": 0,
+              "fgtsMensal": 0,
+              "fgtsDecimoTerceiro": 0,
+              "totalLeft": 0,
+              "totalRight": 0
+            }
+          ],
+          "summary": {
+            "inss": 0,
+            "irrf": 0,
+            "totalLeft": 0,
+            "emprestimoConsignado": 0,
+            "fgtsMensal": 0,
+            "fgtsDecimoTerceiro": 0,
+            "totalRight": 0
+          },
+          "statusLeft": "OK",
+          "statusRight": "OK"
+        }
+      ],
+      "grandTotals": {
+        "inss": 0,
+        "irrf": 0,
+        "totalLeft": 0,
+        "emprestimoConsignado": 0,
+        "fgtsMensal": 0,
+        "fgtsDecimoTerceiro": 0,
+        "totalRight": 0,
+        "fgts": 0
+      },
+      "updatedAt": "2026-06-26T18:11:43.491Z",
+      "updatedBy": "sistema"
+    },
+    {
+      "competencia": "05/2026",
+      "metadata": {
+        "titleLeft": "RESUMO IMPOSTOS DARF INSS/IRRF",
+        "titleRight": "RESUMO IMPOSTOS - FGTS MENSAL E DECIMO TERCEIRO",
+        "titleThird": "RESUMO IMPOSTOS - FGTS DECIMO TERCEIRO",
+        "sourceFile": "RESUMO IMPOSTOS FOLHA.xlsx"
+      },
+      "groups": [
+        {
+          "id": "etica",
+          "label": "ETICA",
+          "companies": [
+            {
+              "id": "etica-56",
+              "code": "56",
+              "name": "ETICA MATRIZ",
+              "cnpj": "4744446000181",
+              "inss": 9607.99,
+              "irrf": 174440.23,
+              "emprestimoConsignado": 6452.3,
+              "fgtsMensal": 9015.07,
+              "fgtsDecimoTerceiro": 0,
+              "totalLeft": 184048.22,
+              "totalRight": 15467.37
+            },
+            {
+              "id": "etica-92",
+              "code": "92",
+              "name": "EddhgbfgdsfgTICA FILIAL",
+              "cnpj": "",
+              "inss": 4634.02,
+              "irrf": 0,
+              "emprestimoConsignado": 1095.04,
+              "fgtsMensal": 4244.66,
+              "fgtsDecimoTerceiro": 0,
+              "totalLeft": 4634.02,
+              "totalRight": 5339.7
+            }
+          ],
+          "summary": {
+            "inss": 14242.01,
+            "irrf": 174440.23,
+            "totalLeft": 188682.24,
+            "emprestimoConsignado": 7547.34,
+            "fgtsMensal": 13259.73,
+            "fgtsDecimoTerceiro": 0,
+            "totalRight": 20807.07
+          },
+          "statusLeft": "OK",
+          "statusRight": "OK"
+        },
+        {
+          "id": "mercado",
+          "label": "MERCADO",
+          "companies": [
+            {
+              "id": "mercado-67",
+              "code": "67",
+              "name": "MERCADO MATRIZ",
+              "cnpj": "72628407000179",
+              "inss": 3040.65,
+              "irrf": 418.19,
+              "emprestimoConsignado": 1489.14,
+              "fgtsMensal": 2302.71,
+              "fgtsDecimoTerceiro": 0,
+              "totalLeft": 3458.84,
+              "totalRight": 3791.85
+            },
+            {
+              "id": "mercado-69",
+              "code": "69",
+              "name": "MERCADO FILIAL 03",
+              "cnpj": "",
+              "inss": 1101.83,
+              "irrf": 0,
+              "emprestimoConsignado": 702.72,
+              "fgtsMensal": 1066.23,
+              "fgtsDecimoTerceiro": 0,
+              "totalLeft": 1101.83,
+              "totalRight": 1768.95
+            }
+          ],
+          "summary": {
+            "inss": 4142.48,
+            "irrf": 418.19,
+            "totalLeft": 4560.67,
+            "emprestimoConsignado": 2191.86,
+            "fgtsMensal": 3368.94,
+            "fgtsDecimoTerceiro": 0,
+            "totalRight": 5560.8
+          },
+          "statusLeft": "OK",
+          "statusRight": "OK"
+        },
+        {
+          "id": "vt",
+          "label": "V&T",
+          "companies": [
+            {
+              "id": "vt-45",
+              "code": "45",
+              "name": "V&T MATRIZ",
+              "cnpj": "36113768000119",
+              "inss": 1545.17,
+              "irrf": 209.13,
+              "emprestimoConsignado": 2240.15,
+              "fgtsMensal": 1446.6,
+              "fgtsDecimoTerceiro": 0,
+              "totalLeft": 1754.3,
+              "totalRight": 3686.75
+            },
+            {
+              "id": "vt-150",
+              "code": "150",
+              "name": "V&T FILIAL",
+              "cnpj": "",
+              "inss": 766.58,
+              "irrf": 0,
+              "emprestimoConsignado": 853.14,
+              "fgtsMensal": 728.17,
+              "fgtsDecimoTerceiro": 0,
+              "totalLeft": 766.58,
+              "totalRight": 1581.31
+            }
+          ],
+          "summary": {
+            "inss": 2311.75,
+            "irrf": 209.13,
+            "totalLeft": 2520.88,
+            "emprestimoConsignado": 3093.29,
+            "fgtsMensal": 2174.77,
+            "fgtsDecimoTerceiro": 0,
+            "totalRight": 5268.06
+          },
+          "statusLeft": "OK",
+          "statusRight": "OK"
+        },
+        {
+          "id": "unica",
+          "label": "UNICA",
+          "companies": [
+            {
+              "id": "unica-46",
+              "code": "46",
+              "name": "UNICA",
+              "cnpj": "36517206000130",
+              "inss": 4787.14,
+              "irrf": 0,
+              "emprestimoConsignado": 1673.46,
+              "fgtsMensal": 661.52,
+              "fgtsDecimoTerceiro": 0,
+              "totalLeft": 4787.14,
+              "totalRight": 2334.98
+            }
+          ],
+          "summary": {
+            "inss": 4787.14,
+            "irrf": 0,
+            "totalLeft": 4787.14,
+            "emprestimoConsignado": 1673.46,
+            "fgtsMensal": 661.52,
+            "fgtsDecimoTerceiro": 0,
+            "totalRight": 2334.98
+          },
+          "statusLeft": "OK",
+          "statusRight": "OK"
+        }
+      ],
+      "grandTotals": {
+        "inss": 25483.38,
+        "irrf": 175067.55,
+        "totalLeft": 200550.93,
+        "emprestimoConsignado": 14505.95,
+        "fgtsMensal": 19464.96,
+        "fgtsDecimoTerceiro": 0,
+        "totalRight": 33970.91,
+        "fgts": 19464.96
+      },
+      "updatedAt": "2026-06-26T18:12:21.353Z",
+      "updatedBy": "admin"
+    },
+    {
+      "competencia": "04/2026",
+      "metadata": {
+        "titleLeft": "RESUMO IMPOSTOS DARF INSS/IRRF",
+        "titleRight": "RESUMO IMPOSTOS - FGTS MENSAL E DECIMO TERCEIRO",
+        "titleThird": "RESUMO IMPOSTOS - FGTS DECIMO TERCEIRO",
+        "sourceFile": "RESUMO IMPOSTOS FOLHA.xlsx"
+      },
+      "groups": [
+        {
+          "id": "etica",
+          "label": "ETICA",
+          "companies": [
+            {
+              "id": "etica-56",
+              "code": "56",
+              "name": "ETICA MATRIZ",
+              "cnpj": "4744446000181",
+              "inss": 0,
+              "irrf": 0,
+              "emprestimoConsignado": 0,
+              "fgtsMensal": 0,
+              "fgtsDecimoTerceiro": 0,
+              "totalLeft": 0,
+              "totalRight": 0
+            },
+            {
+              "id": "etica-92",
+              "code": "92",
+              "name": "ETICA FILIAL",
+              "cnpj": "",
+              "inss": 0,
+              "irrf": 0,
+              "emprestimoConsignado": 0,
+              "fgtsMensal": 0,
+              "fgtsDecimoTerceiro": 0,
+              "totalLeft": 0,
+              "totalRight": 0
+            }
+          ],
+          "summary": {
+            "inss": 0,
+            "irrf": 0,
+            "totalLeft": 0,
+            "emprestimoConsignado": 0,
+            "fgtsMensal": 0,
+            "fgtsDecimoTerceiro": 0,
+            "totalRight": 0
+          },
+          "statusLeft": "OK",
+          "statusRight": "OK"
+        },
+        {
+          "id": "mercado",
+          "label": "MERCADO",
+          "companies": [
+            {
+              "id": "mercado-67",
+              "code": "67",
+              "name": "MERCADO MATRIZ",
+              "cnpj": "72628407000179",
+              "inss": 0,
+              "irrf": 0,
+              "emprestimoConsignado": 0,
+              "fgtsMensal": 0,
+              "fgtsDecimoTerceiro": 0,
+              "totalLeft": 0,
+              "totalRight": 0
+            },
+            {
+              "id": "mercado-69",
+              "code": "69",
+              "name": "MERCADO FILIAL 03",
+              "cnpj": "",
+              "inss": 0,
+              "irrf": 0,
+              "emprestimoConsignado": 0,
+              "fgtsMensal": 0,
+              "fgtsDecimoTerceiro": 0,
+              "totalLeft": 0,
+              "totalRight": 0
+            }
+          ],
+          "summary": {
+            "inss": 0,
+            "irrf": 0,
+            "totalLeft": 0,
+            "emprestimoConsignado": 0,
+            "fgtsMensal": 0,
+            "fgtsDecimoTerceiro": 0,
+            "totalRight": 0
+          },
+          "statusLeft": "OK",
+          "statusRight": "OK"
+        },
+        {
+          "id": "vt",
+          "label": "V&T",
+          "companies": [
+            {
+              "id": "vt-45",
+              "code": "45",
+              "name": "V&T MATRIZ",
+              "cnpj": "36113768000119",
+              "inss": 0,
+              "irrf": 0,
+              "emprestimoConsignado": 0,
+              "fgtsMensal": 0,
+              "fgtsDecimoTerceiro": 0,
+              "totalLeft": 0,
+              "totalRight": 0
+            },
+            {
+              "id": "vt-150",
+              "code": "150",
+              "name": "V&T FILIAL",
+              "cnpj": "",
+              "inss": 0,
+              "irrf": 0,
+              "emprestimoConsignado": 0,
+              "fgtsMensal": 0,
+              "fgtsDecimoTerceiro": 0,
+              "totalLeft": 0,
+              "totalRight": 0
+            }
+          ],
+          "summary": {
+            "inss": 0,
+            "irrf": 0,
+            "totalLeft": 0,
+            "emprestimoConsignado": 0,
+            "fgtsMensal": 0,
+            "fgtsDecimoTerceiro": 0,
+            "totalRight": 0
+          },
+          "statusLeft": "OK",
+          "statusRight": "OK"
+        },
+        {
+          "id": "unica",
+          "label": "UNICA",
+          "companies": [
+            {
+              "id": "unica-46",
+              "code": "46",
+              "name": "UNICA",
+              "cnpj": "36517206000130",
+              "inss": 0,
+              "irrf": 0,
+              "emprestimoConsignado": 0,
+              "fgtsMensal": 0,
+              "fgtsDecimoTerceiro": 0,
+              "totalLeft": 0,
+              "totalRight": 0
+            }
+          ],
+          "summary": {
+            "inss": 0,
+            "irrf": 0,
+            "totalLeft": 0,
+            "emprestimoConsignado": 0,
+            "fgtsMensal": 0,
+            "fgtsDecimoTerceiro": 0,
+            "totalRight": 0
+          },
+          "statusLeft": "OK",
+          "statusRight": "OK"
+        }
+      ],
+      "grandTotals": {
+        "inss": 0,
+        "irrf": 0,
+        "totalLeft": 0,
+        "emprestimoConsignado": 0,
+        "fgtsMensal": 0,
+        "fgtsDecimoTerceiro": 0,
+        "totalRight": 0,
+        "fgts": 0
+      },
+      "updatedAt": "2026-06-26T18:11:43.491Z",
+      "updatedBy": "sistema"
+    },
+    {
+      "competencia": "03/2026",
+      "metadata": {
+        "titleLeft": "RESUMO IMPOSTOS DARF INSS/IRRF",
+        "titleRight": "RESUMO IMPOSTOS - FGTS MENSAL",
+        "titleThird": "RESUMO IMPOSTOS - FGTS DECIMO TERCEIRO",
+        "sourceFile": "RESUMO IMPOSTOS FOLHA.xlsx"
+      },
+      "groups": [
+        {
+          "id": "etica",
+          "label": "ETICA",
+          "companies": [
+            {
+              "id": "etica-56",
+              "code": "56",
+              "name": "ETICA MATRIZ",
+              "cnpj": "4744446000181",
+              "inss": 9607.99,
+              "irrf": 174445550.23,
+              "emprestimoConsignado": 645255.3,
+              "fgtsMensal": 955015.07,
+              "fgtsDecimoTerceiro": 0,
+              "totalLeft": 174455158.22,
+              "totalRight": 1600270.37,
+              "totalThird": 0
+            },
+            {
+              "id": "etica-92",
+              "code": "92",
+              "name": "ETICA FILIAL",
+              "cnpj": "",
+              "inss": 4634.02,
+              "irrf": 0,
+              "emprestimoConsignado": 1095.04,
+              "fgtsMensal": 4244.66,
+              "fgtsDecimoTerceiro": 0,
+              "totalLeft": 4634.02,
+              "totalRight": 5339.7,
+              "totalThird": 0
+            }
+          ],
+          "summary": {
+            "inss": 14242.01,
+            "irrf": 174445550.23,
+            "totalLeft": 174459792.24,
+            "emprestimoConsignado": 646350.34,
+            "fgtsMensal": 959259.73,
+            "totalRight": 1605610.07,
+            "fgtsDecimoTerceiro": 0,
+            "totalThird": 0
+          },
+          "statusLeft": "OK",
+          "statusRight": "OK",
+          "statusThird": "OK"
+        },
+        {
+          "id": "mercado",
+          "label": "MERCADO",
+          "companies": [
+            {
+              "id": "mercado-67",
+              "code": "67",
+              "name": "MERCADO MATRIZ",
+              "cnpj": "72628407000179",
+              "inss": 3040.65,
+              "irrf": 418.19,
+              "emprestimoConsignado": 1489.14,
+              "fgtsMensal": 2302.71,
+              "fgtsDecimoTerceiro": 0,
+              "totalLeft": 3458.84,
+              "totalRight": 3791.85,
+              "totalThird": 0
+            },
+            {
+              "id": "mercado-69",
+              "code": "69",
+              "name": "MERCADO FILIAL 03",
+              "cnpj": "",
+              "inss": 1101.83,
+              "irrf": 0,
+              "emprestimoConsignado": 702.72,
+              "fgtsMensal": 1066.23,
+              "fgtsDecimoTerceiro": 0,
+              "totalLeft": 1101.83,
+              "totalRight": 1768.95,
+              "totalThird": 0
+            }
+          ],
+          "summary": {
+            "inss": 4142.48,
+            "irrf": 418.19,
+            "totalLeft": 4560.67,
+            "emprestimoConsignado": 2191.86,
+            "fgtsMensal": 3368.94,
+            "totalRight": 5560.8,
+            "fgtsDecimoTerceiro": 0,
+            "totalThird": 0
+          },
+          "statusLeft": "OK",
+          "statusRight": "OK",
+          "statusThird": "OK"
+        },
+        {
+          "id": "vt",
+          "label": "V&T",
+          "companies": [
+            {
+              "id": "vt-45",
+              "code": "45",
+              "name": "V&T MATRIZ",
+              "cnpj": "36113768000119",
+              "inss": 1545.17,
+              "irrf": 209.13,
+              "emprestimoConsignado": 2240.15,
+              "fgtsMensal": 1446.6,
+              "fgtsDecimoTerceiro": 0,
+              "totalLeft": 1754.3,
+              "totalRight": 3686.75,
+              "totalThird": 0
+            },
+            {
+              "id": "vt-150",
+              "code": "150",
+              "name": "V&T FILIAL",
+              "cnpj": "",
+              "inss": 766.58,
+              "irrf": 0,
+              "emprestimoConsignado": 853.14,
+              "fgtsMensal": 728.17,
+              "fgtsDecimoTerceiro": 0,
+              "totalLeft": 766.58,
+              "totalRight": 1581.31,
+              "totalThird": 0
+            }
+          ],
+          "summary": {
+            "inss": 2311.75,
+            "irrf": 209.13,
+            "totalLeft": 2520.88,
+            "emprestimoConsignado": 3093.29,
+            "fgtsMensal": 2174.77,
+            "totalRight": 5268.06,
+            "fgtsDecimoTerceiro": 0,
+            "totalThird": 0
+          },
+          "statusLeft": "OK",
+          "statusRight": "OK",
+          "statusThird": "OK"
+        },
+        {
+          "id": "unica",
+          "label": "UNICA",
+          "companies": [
+            {
+              "id": "unica-46",
+              "code": "46",
+              "name": "UNICA",
+              "cnpj": "36517206000130",
+              "inss": 4787.14,
+              "irrf": 0,
+              "emprestimoConsignado": 1673.46,
+              "fgtsMensal": 661.52,
+              "fgtsDecimoTerceiro": 0,
+              "totalLeft": 4787.14,
+              "totalRight": 2334.98,
+              "totalThird": 0
+            }
+          ],
+          "summary": {
+            "inss": 4787.14,
+            "irrf": 0,
+            "totalLeft": 4787.14,
+            "emprestimoConsignado": 1673.46,
+            "fgtsMensal": 661.52,
+            "totalRight": 2334.98,
+            "fgtsDecimoTerceiro": 0,
+            "totalThird": 0
+          },
+          "statusLeft": "OK",
+          "statusRight": "OK",
+          "statusThird": "OK"
+        }
+      ],
+      "grandTotals": {
+        "inss": 25483.38,
+        "irrf": 174446177.55,
+        "totalLeft": 174471660.93,
+        "emprestimoConsignado": 653308.95,
+        "fgtsMensal": 965464.96,
+        "totalRight": 1618773.91,
+        "fgtsDecimoTerceiro": 0,
+        "totalThird": 0,
+        "fgts": 965464.96
+      },
+      "updatedAt": "2026-06-26T17:43:34.116Z",
+      "updatedBy": "admin"
+    },
+    {
+      "competencia": "02/2026",
+      "metadata": {
+        "titleLeft": "RESUMO IMPOSTOS DARF INSS/IRRF",
+        "titleRight": "RESUMO IMPOSTOS - FGTS MENSAL E DECIMO TERCEIRO",
+        "titleThird": "RESUMO IMPOSTOS - FGTS DECIMO TERCEIRO",
+        "sourceFile": "RESUMO IMPOSTOS FOLHA.xlsx"
+      },
+      "groups": [
+        {
+          "id": "etica",
+          "label": "ETICA",
+          "companies": [
+            {
+              "id": "etica-56",
+              "code": "56",
+              "name": "ETICA MATRIZ",
+              "cnpj": "4744446000181",
+              "inss": 0,
+              "irrf": 0,
+              "emprestimoConsignado": 0,
+              "fgtsMensal": 0,
+              "fgtsDecimoTerceiro": 0,
+              "totalLeft": 0,
+              "totalRight": 0
+            },
+            {
+              "id": "etica-92",
+              "code": "92",
+              "name": "ETICA FILIAL",
+              "cnpj": "",
+              "inss": 0,
+              "irrf": 0,
+              "emprestimoConsignado": 0,
+              "fgtsMensal": 0,
+              "fgtsDecimoTerceiro": 0,
+              "totalLeft": 0,
+              "totalRight": 0
+            }
+          ],
+          "summary": {
+            "inss": 0,
+            "irrf": 0,
+            "totalLeft": 0,
+            "emprestimoConsignado": 0,
+            "fgtsMensal": 0,
+            "fgtsDecimoTerceiro": 0,
+            "totalRight": 0
+          },
+          "statusLeft": "OK",
+          "statusRight": "OK"
+        },
+        {
+          "id": "mercado",
+          "label": "MERCADO",
+          "companies": [
+            {
+              "id": "mercado-67",
+              "code": "67",
+              "name": "MERCADO MATRIZ",
+              "cnpj": "72628407000179",
+              "inss": 0,
+              "irrf": 0,
+              "emprestimoConsignado": 0,
+              "fgtsMensal": 0,
+              "fgtsDecimoTerceiro": 0,
+              "totalLeft": 0,
+              "totalRight": 0
+            },
+            {
+              "id": "mercado-69",
+              "code": "69",
+              "name": "MERCADO FILIAL 03",
+              "cnpj": "",
+              "inss": 0,
+              "irrf": 0,
+              "emprestimoConsignado": 0,
+              "fgtsMensal": 0,
+              "fgtsDecimoTerceiro": 0,
+              "totalLeft": 0,
+              "totalRight": 0
+            }
+          ],
+          "summary": {
+            "inss": 0,
+            "irrf": 0,
+            "totalLeft": 0,
+            "emprestimoConsignado": 0,
+            "fgtsMensal": 0,
+            "fgtsDecimoTerceiro": 0,
+            "totalRight": 0
+          },
+          "statusLeft": "OK",
+          "statusRight": "OK"
+        },
+        {
+          "id": "vt",
+          "label": "V&T",
+          "companies": [
+            {
+              "id": "vt-45",
+              "code": "45",
+              "name": "V&T MATRIZ",
+              "cnpj": "36113768000119",
+              "inss": 0,
+              "irrf": 0,
+              "emprestimoConsignado": 0,
+              "fgtsMensal": 0,
+              "fgtsDecimoTerceiro": 0,
+              "totalLeft": 0,
+              "totalRight": 0
+            },
+            {
+              "id": "vt-150",
+              "code": "150",
+              "name": "V&T FILIAL",
+              "cnpj": "",
+              "inss": 0,
+              "irrf": 0,
+              "emprestimoConsignado": 0,
+              "fgtsMensal": 0,
+              "fgtsDecimoTerceiro": 0,
+              "totalLeft": 0,
+              "totalRight": 0
+            }
+          ],
+          "summary": {
+            "inss": 0,
+            "irrf": 0,
+            "totalLeft": 0,
+            "emprestimoConsignado": 0,
+            "fgtsMensal": 0,
+            "fgtsDecimoTerceiro": 0,
+            "totalRight": 0
+          },
+          "statusLeft": "OK",
+          "statusRight": "OK"
+        },
+        {
+          "id": "unica",
+          "label": "UNICA",
+          "companies": [
+            {
+              "id": "unica-46",
+              "code": "46",
+              "name": "UNICA",
+              "cnpj": "36517206000130",
+              "inss": 0,
+              "irrf": 0,
+              "emprestimoConsignado": 0,
+              "fgtsMensal": 0,
+              "fgtsDecimoTerceiro": 0,
+              "totalLeft": 0,
+              "totalRight": 0
+            }
+          ],
+          "summary": {
+            "inss": 0,
+            "irrf": 0,
+            "totalLeft": 0,
+            "emprestimoConsignado": 0,
+            "fgtsMensal": 0,
+            "fgtsDecimoTerceiro": 0,
+            "totalRight": 0
+          },
+          "statusLeft": "OK",
+          "statusRight": "OK"
+        }
+      ],
+      "grandTotals": {
+        "inss": 0,
+        "irrf": 0,
+        "totalLeft": 0,
+        "emprestimoConsignado": 0,
+        "fgtsMensal": 0,
+        "fgtsDecimoTerceiro": 0,
+        "totalRight": 0,
+        "fgts": 0
+      },
+      "updatedAt": "2026-06-26T18:11:43.491Z",
+      "updatedBy": "sistema"
+    },
+    {
+      "competencia": "01/2026",
+      "metadata": {
+        "titleLeft": "RESUMO IMPOSTOS DARF INSS/IRRF",
+        "titleRight": "RESUMO IMPOSTOS - FGTS MENSAL E DECIMO TERCEIRO",
+        "titleThird": "RESUMO IMPOSTOS - FGTS DECIMO TERCEIRO",
+        "sourceFile": "RESUMO IMPOSTOS FOLHA.xlsx"
+      },
+      "groups": [
+        {
+          "id": "etica",
+          "label": "ETICA",
+          "companies": [
+            {
+              "id": "etica-56",
+              "code": "56",
+              "name": "ETICA MATRIZ",
+              "cnpj": "4744446000181",
+              "inss": 20,
+              "irrf": 20,
+              "emprestimoConsignado": 0,
+              "fgtsMensal": 0,
+              "fgtsDecimoTerceiro": 0,
+              "totalLeft": 40,
+              "totalRight": 0,
+              "inssDecimoTerceiro": 0,
+              "irrfDecimoTerceiro": 0
+            },
+            {
+              "id": "etica-92",
+              "code": "92",
+              "name": "ETICA FILIAL",
+              "cnpj": "",
+              "inss": 0,
+              "irrf": 0,
+              "emprestimoConsignado": 0,
+              "fgtsMensal": 0,
+              "fgtsDecimoTerceiro": 0,
+              "totalLeft": 0,
+              "totalRight": 0,
+              "inssDecimoTerceiro": 0,
+              "irrfDecimoTerceiro": 0
+            }
+          ],
+          "summary": {
+            "inss": 20,
+            "irrf": 20,
+            "inssDecimoTerceiro": 0,
+            "irrfDecimoTerceiro": 0,
+            "totalLeft": 40,
+            "emprestimoConsignado": 0,
+            "fgtsMensal": 0,
+            "fgtsDecimoTerceiro": 0,
+            "totalRight": 0
+          },
+          "statusLeft": "OK",
+          "statusRight": "OK"
+        },
+        {
+          "id": "mercado",
+          "label": "MERCADO",
+          "companies": [
+            {
+              "id": "mercado-67",
+              "code": "67",
+              "name": "MERCADO MATRIZ",
+              "cnpj": "72628407000179",
+              "inss": 0,
+              "irrf": 0,
+              "emprestimoConsignado": 0,
+              "fgtsMensal": 0,
+              "fgtsDecimoTerceiro": 0,
+              "totalLeft": 0,
+              "totalRight": 0,
+              "inssDecimoTerceiro": 0,
+              "irrfDecimoTerceiro": 0
+            },
+            {
+              "id": "mercado-69",
+              "code": "69",
+              "name": "MERCADO FILIAL 03",
+              "cnpj": "",
+              "inss": 0,
+              "irrf": 0,
+              "emprestimoConsignado": 0,
+              "fgtsMensal": 0,
+              "fgtsDecimoTerceiro": 0,
+              "totalLeft": 0,
+              "totalRight": 0,
+              "inssDecimoTerceiro": 0,
+              "irrfDecimoTerceiro": 0
+            }
+          ],
+          "summary": {
+            "inss": 0,
+            "irrf": 0,
+            "inssDecimoTerceiro": 0,
+            "irrfDecimoTerceiro": 0,
+            "totalLeft": 0,
+            "emprestimoConsignado": 0,
+            "fgtsMensal": 0,
+            "fgtsDecimoTerceiro": 0,
+            "totalRight": 0
+          },
+          "statusLeft": "OK",
+          "statusRight": "OK"
+        },
+        {
+          "id": "vt",
+          "label": "V&T",
+          "companies": [
+            {
+              "id": "vt-45",
+              "code": "45",
+              "name": "V&T MATRIZ",
+              "cnpj": "36113768000119",
+              "inss": 0,
+              "irrf": 0,
+              "emprestimoConsignado": 0,
+              "fgtsMensal": 0,
+              "fgtsDecimoTerceiro": 0,
+              "totalLeft": 0,
+              "totalRight": 0,
+              "inssDecimoTerceiro": 0,
+              "irrfDecimoTerceiro": 0
+            },
+            {
+              "id": "vt-150",
+              "code": "150",
+              "name": "V&T FILIAL",
+              "cnpj": "",
+              "inss": 0,
+              "irrf": 0,
+              "emprestimoConsignado": 0,
+              "fgtsMensal": 0,
+              "fgtsDecimoTerceiro": 0,
+              "totalLeft": 0,
+              "totalRight": 0,
+              "inssDecimoTerceiro": 0,
+              "irrfDecimoTerceiro": 0
+            }
+          ],
+          "summary": {
+            "inss": 0,
+            "irrf": 0,
+            "inssDecimoTerceiro": 0,
+            "irrfDecimoTerceiro": 0,
+            "totalLeft": 0,
+            "emprestimoConsignado": 0,
+            "fgtsMensal": 0,
+            "fgtsDecimoTerceiro": 0,
+            "totalRight": 0
+          },
+          "statusLeft": "OK",
+          "statusRight": "OK"
+        },
+        {
+          "id": "unica",
+          "label": "UNICA",
+          "companies": [
+            {
+              "id": "unica-46",
+              "code": "46",
+              "name": "UNICA",
+              "cnpj": "36517206000130",
+              "inss": 0,
+              "irrf": 0,
+              "emprestimoConsignado": 0,
+              "fgtsMensal": 0,
+              "fgtsDecimoTerceiro": 0,
+              "totalLeft": 0,
+              "totalRight": 0,
+              "inssDecimoTerceiro": 0,
+              "irrfDecimoTerceiro": 0
+            }
+          ],
+          "summary": {
+            "inss": 0,
+            "irrf": 0,
+            "inssDecimoTerceiro": 0,
+            "irrfDecimoTerceiro": 0,
+            "totalLeft": 0,
+            "emprestimoConsignado": 0,
+            "fgtsMensal": 0,
+            "fgtsDecimoTerceiro": 0,
+            "totalRight": 0
+          },
+          "statusLeft": "OK",
+          "statusRight": "OK"
+        }
+      ],
+      "grandTotals": {
+        "inss": 20,
+        "irrf": 20,
+        "inssDecimoTerceiro": 0,
+        "irrfDecimoTerceiro": 0,
+        "totalLeft": 40,
+        "emprestimoConsignado": 0,
+        "fgtsMensal": 0,
+        "fgtsDecimoTerceiro": 0,
+        "totalRight": 0,
+        "fgts": 0
+      },
+      "updatedAt": "2026-06-29T13:15:01.843Z",
+      "updatedBy": "admin"
+    }
+  ]
+}

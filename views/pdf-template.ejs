@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="<%= theme %>">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Demonstrativo <%= record.competencia %></title>
+  <style><%= embeddedStyles %></style>
+</head>
+<body class="pdf-body">
+  <% const showDecimoLeft = /^12\/\d{4}$/.test(record.competencia); %>
+
+  <header class="pdf-header pdf-header--dauto">
+    <div class="pdf-header__left">
+      <div class="brand-logo-wrap brand-logo-wrap--pdf">
+        <img src="<%= logoPath %>" alt="Grupo Dauto" class="brand-logo brand-logo--pdf" width="120" height="40" />
+      </div>
+      <h1 class="pdf-header__title">DEMONSTRATIVO IMPOSTOS FOLHA MENSAL - GRUPO DAUTO</h1>
+    </div>
+    <div class="pdf-header__right">
+      <p><strong>Competência:</strong> <%= record.competencia %></p>
+      <p><strong>Status:</strong> <%= layout.fillStatusLabel %> (<%= layout.fillPercent %>%)</p>
+      <p><strong>Atualizado por:</strong> <%= record.updatedBy || '--' %></p>
+      <p><strong>Data:</strong> <%= helpers.formatDateTime(record.updatedAt) %></p>
+    </div>
+  </header>
+
+  <main class="pdf-container">
+    <div class="sheet-grid sheet-grid--pdf">
+      <%- include('partials/tax-table-left', { record, isReadOnly: true, helpers, printMode: true }) %>
+      <%- include('partials/tax-table-right', { record, isReadOnly: true, helpers, printMode: true, titleOverride: 'RESUMO IMPOSTOS - FGTS' }) %>
+    </div>
+
+    <%- include('partials/group-summary-pdf', { record, helpers, showDecimoLeft }) %>
+
+    <footer class="pdf-footer pdf-footer--dauto">
+      <p>GRUPO DAUTO — <%= record.competencia %></p>
+      <p>Emitido em: <%= helpers.formatDateTime(new Date().toISOString()) %></p>
+    </footer>
+  </main>
+</body>
+</html>

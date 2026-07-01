@@ -1,0 +1,33 @@
+{
+  "competencia": "01/2026",
+  "revisions": [
+    {
+      "revision": 1,
+      "updatedAt": "2026-06-26T18:12:32.311Z",
+      "updatedBy": "admin",
+      "competencia": "01/2026",
+      "summary": "Sem alteracoes de valores"
+    },
+    {
+      "revision": 2,
+      "updatedAt": "2026-06-26T19:02:49.947Z",
+      "updatedBy": "admin",
+      "competencia": "01/2026",
+      "summary": "ETICA MATRIZ.inss, ETICA MATRIZ.irrf"
+    },
+    {
+      "revision": 3,
+      "updatedAt": "2026-06-29T13:15:01.845Z",
+      "updatedBy": "admin",
+      "competencia": "01/2026",
+      "summary": "Sem alteracoes de valores"
+    },
+    {
+      "revision": 4,
+      "updatedAt": "2026-06-29T13:41:47.952Z",
+      "updatedBy": "admin",
+      "competencia": "01/2026",
+      "summary": "Sem alteracoes de valores"
+    }
+  ]
+}

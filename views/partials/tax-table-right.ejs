@@ -1,0 +1,91 @@
+<section class="excel-card excel-card--fgts">
+  <table class="excel-table excel-table--fgts">
+    <caption class="sr-only"><%= record.metadata.titleRight %></caption>
+    <colgroup>
+      <col class="excel-table__col-company" />
+      <col class="excel-table__col-cnpj" />
+      <col class="excel-table__col-money" />
+      <col class="excel-table__col-money" />
+      <col class="excel-table__col-money" />
+      <col class="excel-table__col-money" />
+      <col class="excel-table__col-status" />
+    </colgroup>
+    <thead>
+      <tr class="excel-table__title">
+        <th colspan="7" scope="colgroup"><%= typeof titleOverride !== 'undefined' && titleOverride ? titleOverride : record.metadata.titleRight %></th>
+      </tr>
+      <tr class="excel-table__head">
+        <th scope="col">EMPRESA</th>
+        <th scope="col">CNPJ</th>
+        <th scope="col">EMPRESTIMO CONSIGNADO</th>
+        <th scope="col">FGTS MENSAL</th>
+        <th scope="col">FGTS DECIMO TERCEIRO</th>
+        <th scope="col">TOTAL</th>
+        <th scope="col">STATUS</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% record.groups.forEach((group, groupIndex) => { %>
+        <tr class="excel-table__group-label">
+          <td colspan="7"><span class="group-label"><%= group.label %></span></td>
+        </tr>
+        <% group.companies.forEach((company, companyIndex) => { %>
+          <tr class="excel-table__row">
+            <td class="excel-table__company">
+              <% if (printMode) { %>
+                <div class="company-stack">
+                  <span class="company-code"><%= company.code %></span>
+                  <span class="company-name"><%= company.name %></span>
+                </div>
+              <% } else { %>
+                <div class="company-stack">
+                  <input type="text" class="sheet-input sheet-input--code js-text-source" data-group-index="<%= groupIndex %>" data-company-index="<%= companyIndex %>" data-field="code" value="<%= company.code %>" aria-label="Codigo da empresa <%= company.name %>" <%= isReadOnly ? 'readonly' : '' %> />
+                  <input type="text" class="sheet-input js-text-source" data-group-index="<%= groupIndex %>" data-company-index="<%= companyIndex %>" data-field="name" value="<%= company.name %>" aria-label="Nome da empresa" <%= isReadOnly ? 'readonly' : '' %> />
+                </div>
+              <% } %>
+            </td>
+            <td class="excel-table__cnpj">
+              <% if (printMode) { %>
+                <span class="print-value print-value--cnpj"><%= helpers.formatCnpj(company.cnpj) %></span>
+              <% } else { %>
+                <input type="text" class="sheet-input sheet-input--cnpj js-text-source js-cnpj-source" data-group-index="<%= groupIndex %>" data-company-index="<%= companyIndex %>" data-field="cnpj" value="<%= helpers.formatCnpj(company.cnpj) %>" aria-label="CNPJ de <%= company.name %>" <%= isReadOnly ? 'readonly' : '' %> />
+              <% } %>
+            </td>
+            <td class="excel-table__money">
+              <% if (printMode) { %>
+                <span class="print-value"><%= helpers.formatCurrency(company.emprestimoConsignado) %></span>
+              <% } else { %>
+                <input type="text" class="sheet-input sheet-input--money js-currency-source" data-group-index="<%= groupIndex %>" data-company-index="<%= companyIndex %>" data-field="emprestimoConsignado" value="<%= helpers.formatCurrency(company.emprestimoConsignado) %>" aria-label="Emprestimo consignado de <%= company.name %>" <%= isReadOnly ? 'readonly' : '' %> />
+              <% } %>
+            </td>
+            <td class="excel-table__money">
+              <% if (printMode) { %>
+                <span class="print-value"><%= helpers.formatCurrency(company.fgtsMensal) %></span>
+              <% } else { %>
+                <input type="text" class="sheet-input sheet-input--money js-currency-source" data-group-index="<%= groupIndex %>" data-company-index="<%= companyIndex %>" data-field="fgtsMensal" value="<%= helpers.formatCurrency(company.fgtsMensal) %>" aria-label="FGTS mensal de <%= company.name %>" <%= isReadOnly ? 'readonly' : '' %> />
+              <% } %>
+            </td>
+            <td class="excel-table__money">
+              <% if (printMode) { %>
+                <span class="print-value"><%= helpers.formatCurrency(company.fgtsDecimoTerceiro) %></span>
+              <% } else { %>
+                <input type="text" class="sheet-input sheet-input--money js-currency-source" data-group-index="<%= groupIndex %>" data-company-index="<%= companyIndex %>" data-field="fgtsDecimoTerceiro" value="<%= helpers.formatCurrency(company.fgtsDecimoTerceiro) %>" aria-label="FGTS decimo terceiro de <%= company.name %>" <%= isReadOnly ? 'readonly' : '' %> />
+              <% } %>
+            </td>
+            <td class="excel-table__total excel-table__money js-right-line-total" data-group-index="<%= groupIndex %>" data-company-index="<%= companyIndex %>">
+              <%= helpers.formatCurrency(company.totalRight) %>
+            </td>
+            <td class="excel-table__status"></td>
+          </tr>
+        <% }) %>
+        <tr class="excel-table__summary">
+          <td colspan="5">TOTAL <%= group.label %></td>
+          <td class="excel-table__total excel-table__money js-right-group-total" data-group-index="<%= groupIndex %>"><%= helpers.formatCurrency(group.summary.totalRight) %></td>
+          <td class="excel-table__status js-right-group-status" data-group-index="<%= groupIndex %>">
+            <%- include('group-status-cell', { group, groupIndex, helpers, isReadOnly, printMode, statusFieldName: 'statusRight' }) %>
+          </td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</section>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= title %></title>
+  <%- include('partials/theme-head') %>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/app.css" />
+</head>
+<body class="dashboard-page">
+  <%
+    const layoutView = (typeof layout !== 'undefined' && layout)
+      ? layout
+      : buildLayoutViewModel(record);
+    const statusMap = (typeof competenciaStatusMap !== 'undefined' && competenciaStatusMap)
+      ? competenciaStatusMap
+      : buildCompetenciaStatusMap([record]);
+    const showDecimoLeft = /^12\/\d{4}$/.test(record.competencia);
+  %>
+  <a href="#dashboard-content" class="skip-link">Ir para o conteúdo principal</a>
+  <div id="app-toast" class="app-toast" role="status" aria-live="polite" hidden></div>
+
+  <div id="sidebar-overlay" class="sidebar-overlay"></div>
+  <aside id="sidebar-drawer" class="sidebar-drawer" aria-hidden="true">
+    <div class="sidebar-header">
+      <div class="sidebar-header__title">
+        <span class="sidebar-header__eyebrow">GRUPO DAUTO</span>
+        <h2 class="sidebar-header__main">Impostos da Folha</h2>
+      </div>
+      <button id="sidebar-close-btn" class="sidebar-close-btn" aria-label="Fechar menu">
+        ✕
+      </button>
+    </div>
+    <nav class="sidebar-nav" aria-label="Navegação por competências">
+      <% sidebarYears.forEach(year => { %>
+        <% const meses = buildCompetenciaList(year); %>
+        <details class="sidebar-nav-year" <%= year === currentYear ? 'open' : '' %>>
+          <summary><%= year %></summary>
+          <div class="sidebar-nav-months">
+            <% meses.forEach(mes => { %>
+              <% const st = competenciaStatusMap[mes] || { status: 'rascunho', statusLabel: 'Rascunho' }; %>
+              <a href="/dashboard/<%= helpers.toCompetenciaSlug(mes) %>"
+                 class="sidebar-nav-month <%= mes === record.competencia ? 'sidebar-nav-month--active' : '' %>">
+                <span><%= mes %></span>
+                <span class="status-badge status-badge--<%= st.status %>"><%= st.statusLabel %></span>
+              </a>
+            <% }) %>
+          </div>
+        </details>
+      <% }) %>
+    </nav>
+  </aside>
+
+  <main class="dashboard-wrap">
+    <%- include('partials/header', { record, user, isReadOnly, helpers, layout: layoutView }) %>
+
+    <% if (flash) { %>
+      <div class="alert-success" role="status" aria-live="polite"><%= flash %></div>
+    <% } %>
+
+    <% if (error) { %>
+      <div class="alert-error" role="alert"><%= error %></div>
+    <% } %>
+
+    <section id="dashboard-content" style="margin-top: 14px;">
+      <form id="sheet-form" action="/dashboard/save" method="post">
+        <input type="hidden" id="payload-input" name="payload" />
+
+        <div class="sheet-grid">
+          <%- include('partials/tax-table-left', { record, isReadOnly, helpers, printMode: false }) %>
+          <%- include('partials/tax-table-right', { record, isReadOnly, helpers, printMode: false }) %>
+        </div>
+      </form>
+
+      <%- include('partials/group-summary-cards', { record, helpers, showDecimoLeft }) %>
+    </section>
+  </main>
+
+  <script>
+    window.__DASHBOARD_STATE__ = <%- JSON.stringify({ record, isReadOnly }) %>;
+  </script>
+  <script src="/js/theme.js"></script>
+  <script src="/js/sidebar.js"></script>
+  <script src="/js/dashboard.js"></script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<section class="group-summaries" aria-label="Resumo por grupo">
+  <% record.groups.forEach((group, groupIndex) => { %>
+    <% const fgtsGeral = (group.summary.fgtsMensal || 0) + (group.summary.fgtsDecimoTerceiro || 0); %>
+    <section class="group-summary" data-group-index="<%= groupIndex %>">
+      <h2 class="group-summary__title"><%= group.label %></h2>
+      <div class="group-summary__grid">
+        <article class="summary-card">
+          <span class="summary-card__label">Total INSS + IRRF</span>
+          <strong data-group-index="<%= groupIndex %>" data-summary-field="totalLeft"><%= helpers.formatCurrency(group.summary.totalLeft) %></strong>
+        </article>
+        <article class="summary-card">
+          <span class="summary-card__label">Total quadro FGTS</span>
+          <strong data-group-index="<%= groupIndex %>" data-summary-field="totalRight"><%= helpers.formatCurrency(group.summary.totalRight) %></strong>
+        </article>
+        <article class="summary-card">
+          <span class="summary-card__label">Total FGTS Décimo Terceiro</span>
+          <strong data-group-index="<%= groupIndex %>" data-summary-field="fgtsDecimoTerceiro"><%= helpers.formatCurrency(group.summary.fgtsDecimoTerceiro) %></strong>
+        </article>
+        <article class="summary-card">
+          <span class="summary-card__label">Total INSS</span>
+          <strong data-group-index="<%= groupIndex %>" data-summary-field="inss"><%= helpers.formatCurrency(group.summary.inss) %></strong>
+        </article>
+        <% if (showDecimoLeft) { %>
+          <article class="summary-card">
+            <span class="summary-card__label">Total INSS Décimo Terceiro</span>
+            <strong data-group-index="<%= groupIndex %>" data-summary-field="inssDecimoTerceiro"><%= helpers.formatCurrency(group.summary.inssDecimoTerceiro) %></strong>
+          </article>
+          <article class="summary-card">
+            <span class="summary-card__label">Total IRRF Décimo Terceiro</span>
+            <strong data-group-index="<%= groupIndex %>" data-summary-field="irrfDecimoTerceiro"><%= helpers.formatCurrency(group.summary.irrfDecimoTerceiro) %></strong>
+          </article>
+        <% } %>
+        <article class="summary-card">
+          <span class="summary-card__label">Total FGTS Mensal</span>
+          <strong data-group-index="<%= groupIndex %>" data-summary-field="fgtsMensal"><%= helpers.formatCurrency(group.summary.fgtsMensal) %></strong>
+        </article>
+        <article class="summary-card">
+          <span class="summary-card__label">Total FGTS Geral</span>
+          <strong data-group-index="<%= groupIndex %>" data-summary-field="fgtsGeral"><%= helpers.formatCurrency(fgtsGeral) %></strong>
+        </article>
+      </div>
+    </section>
+  <% }) %>
+</section>

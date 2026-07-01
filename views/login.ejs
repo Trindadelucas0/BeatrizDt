@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= title %></title>
+  <%- include('partials/theme-head') %>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/app.css" />
+</head>
+<body class="login-page login-page--dauto">
+  <a href="#login-form" class="skip-link">Ir para o formulário de login</a>
+
+  <main class="login-page__main">
+    <div class="login-card">
+      <div class="brand-logo-wrap brand-logo-wrap--login">
+        <img src="<%= logoPath %>" alt="Grupo Dauto" class="login-card__logo" width="240" height="79" />
+      </div>
+
+      <% if (error) { %>
+        <div class="login-alert" role="alert"><%= error %></div>
+      <% } %>
+
+      <form id="login-form" class="login-card__form" action="/login" method="post">
+        <div class="login-field">
+          <label class="login-field__label" for="input-username">Nome</label>
+          <input
+            id="input-username"
+            type="text"
+            name="username"
+            value="<%= lastUsername %>"
+            class="login-field__input"
+            placeholder="Digite seu nome de acesso"
+            autocomplete="username"
+            required
+          />
+        </div>
+
+        <div class="login-field">
+          <label class="login-field__label" for="input-password">Senha</label>
+          <input
+            id="input-password"
+            type="password"
+            name="password"
+            class="login-field__input"
+            placeholder="••••••••"
+            autocomplete="current-password"
+            required
+          />
+        </div>
+
+        <button type="submit" class="login-submit login-submit--dauto">
+          Entrar
+        </button>
+      </form>
+
+      <%- include('partials/theme-switcher') %>
+    </div>
+  </main>
+
+  <script src="/js/theme.js"></script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+{
+  "competencia": "03/2026",
+  "revisions": [
+    {
+      "revision": 1,
+      "updatedAt": "2026-06-26T17:42:26.820Z",
+      "updatedBy": "admin",
+      "competencia": "03/2026",
+      "summary": "ETICA MATRIZ.fgtsMensal, ETICA FILIAL.fgtsMensal, MERCADO MATRIZ.fgtsMensal, MERCADO FILIAL 03.fgtsMensal, V&T MATRIZ.fgtsMensal, V&T FILIAL.fgtsMensal, UNICA.fgtsMensal"
+    },
+    {
+      "revision": 2,
+      "updatedAt": "2026-06-26T17:42:44.470Z",
+      "updatedBy": "admin",
+      "competencia": "03/2026",
+      "summary": "ETICA MATRIZ.irrf, ETICA MATRIZ.emprestimoConsignado, ETICA MATRIZ.fgtsMensal"
+    },
+    {
+      "revision": 3,
+      "updatedAt": "2026-06-26T17:43:34.117Z",
+      "updatedBy": "admin",
+      "competencia": "03/2026",
+      "summary": "Sem alteracoes de valores"
+    }
+  ]
+}

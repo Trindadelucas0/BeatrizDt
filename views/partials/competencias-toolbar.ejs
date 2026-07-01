@@ -1,0 +1,49 @@
+<section class="competencias-toolbar" aria-label="Competências salvas">
+  <div class="competencias-toolbar__header">
+    <h2 class="competencias-toolbar__title">Competências 2026</h2>
+    <p class="competencias-toolbar__hint">Selecione o mês para preencher</p>
+  </div>
+
+  <div class="competencias-toolbar__pills" role="list">
+    <% competencias.forEach((competenciaItem) => { %>
+      <% const status = statusMap[competenciaItem] || { percent: 0, statusLabel: 'Rascunho', status: 'rascunho' }; %>
+      <a
+        href="/dashboard/<%= helpers.toCompetenciaSlug(competenciaItem) %>"
+        class="competencia-pill <%= competenciaItem === record.competencia ? 'competencia-pill--active' : '' %> status-badge--<%= status.status %>"
+        role="listitem"
+      >
+        <span class="competencia-pill__month"><%= competenciaItem %></span>
+        <span class="competencia-pill__badge status-badge status-badge--<%= status.status %>"><%= status.statusLabel %></span>
+        <span class="progress-bar progress-bar--compact" aria-hidden="true">
+          <span class="progress-bar__fill" style="width: <%= status.percent %>%"></span>
+        </span>
+        <span class="sr-only"><%= status.percent %>% preenchido</span>
+      </a>
+    <% }) %>
+  </div>
+
+  <div class="meta-strip" aria-label="Informações da competência">
+    <div class="meta-strip__item">
+      <span class="meta-strip__label">Status atual</span>
+      <strong><%= layout.fillStatusLabel %> (<%= layout.fillPercent %>%)</strong>
+    </div>
+    <div class="meta-strip__item">
+      <span class="meta-strip__label">Arquivo base</span>
+      <strong><%= record.metadata.sourceFile %></strong>
+    </div>
+    <div class="meta-strip__item">
+      <span class="meta-strip__label">Última atualização</span>
+      <strong><%= helpers.formatDateTime(record.updatedAt) %></strong>
+    </div>
+    <div class="meta-strip__item">
+      <span class="meta-strip__label">Responsável</span>
+      <strong><%= record.updatedBy || '--' %></strong>
+    </div>
+    <div class="meta-strip__item meta-strip__item--wide">
+      <span class="meta-strip__label">Permissão atual</span>
+      <strong>
+        <%= isReadOnly ? 'Somente leitura — consulte e baixe o PDF.' : 'Administrador — edição completa e salvamento.' %>
+      </strong>
+    </div>
+  </div>
+</section>

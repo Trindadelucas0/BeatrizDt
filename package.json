@@ -1,0 +1,26 @@
+{
+  "name": "sistema---trae",
+  "version": "1.0.0",
+  "description": "Aplicacao web para resumo mensal de impostos da folha com Express e EJS.",
+  "main": "server.js",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js",
+    "test": "vitest run --globals",
+    "check": "vitest run --globals"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "ejs": "^6.0.1",
+    "express": "^5.2.1",
+    "express-session": "^1.19.0",
+    "puppeteer": "^25.2.1"
+  },
+  "devDependencies": {
+    "supertest": "^7.2.2",
+    "vitest": "^4.1.9"
+  }
+}

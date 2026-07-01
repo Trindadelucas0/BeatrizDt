@@ -1,0 +1,43 @@
+<section class="pdf-group-summaries" aria-label="Totais por grupo">
+  <% record.groups.forEach((group) => { %>
+    <% const statusLeft = helpers.normalizeGroupStatus(group.statusLeft); %>
+    <% const statusRight = helpers.normalizeGroupStatus(group.statusRight); %>
+    <section class="pdf-group-totals">
+      <div class="pdf-group-totals__header">
+        <h2 class="pdf-group-totals__title"><%= group.label %></h2>
+        <div class="pdf-group-totals__statuses">
+          <span class="status-badge status-badge--<%= statusLeft %> status-badge--pdf">INSS/IRRF: <%= helpers.formatGroupStatus(statusLeft) %></span>
+          <span class="status-badge status-badge--<%= statusRight %> status-badge--pdf">FGTS: <%= helpers.formatGroupStatus(statusRight) %></span>
+        </div>
+      </div>
+      <div class="pdf-group-totals__grid">
+        <div class="pdf-group-totals__card">
+          <span class="pdf-group-totals__label">Total INSS + IRRF</span>
+          <strong class="pdf-group-totals__value"><%= helpers.formatCurrency(group.summary.totalLeft) %></strong>
+        </div>
+        <div class="pdf-group-totals__card">
+          <span class="pdf-group-totals__label">Total quadro FGTS</span>
+          <strong class="pdf-group-totals__value"><%= helpers.formatCurrency(group.summary.totalRight) %></strong>
+        </div>
+        <div class="pdf-group-totals__card">
+          <span class="pdf-group-totals__label">Total FGTS Mensal</span>
+          <strong class="pdf-group-totals__value"><%= helpers.formatCurrency(group.summary.fgtsMensal) %></strong>
+        </div>
+        <div class="pdf-group-totals__card">
+          <span class="pdf-group-totals__label">Total FGTS Décimo Terceiro</span>
+          <strong class="pdf-group-totals__value"><%= helpers.formatCurrency(group.summary.fgtsDecimoTerceiro) %></strong>
+        </div>
+        <% if (showDecimoLeft) { %>
+          <div class="pdf-group-totals__card">
+            <span class="pdf-group-totals__label">Total INSS Décimo Terceiro</span>
+            <strong class="pdf-group-totals__value"><%= helpers.formatCurrency(group.summary.inssDecimoTerceiro) %></strong>
+          </div>
+          <div class="pdf-group-totals__card">
+            <span class="pdf-group-totals__label">Total IRRF Décimo Terceiro</span>
+            <strong class="pdf-group-totals__value"><%= helpers.formatCurrency(group.summary.irrfDecimoTerceiro) %></strong>
+          </div>
+        <% } %>
+      </div>
+    </section>
+  <% }) %>
+</section>

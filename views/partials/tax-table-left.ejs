@@ -1,0 +1,111 @@
+<%
+  const showDecimoLeft = /^12\/\d{4}$/.test(record.competencia);
+  const columnCount = showDecimoLeft ? 8 : 6;
+  const summaryLabelColspan = showDecimoLeft ? 6 : 4;
+%>
+<section class="excel-card excel-card--left">
+  <table class="excel-table excel-table--left<%= showDecimoLeft ? ' excel-table--left-december' : '' %>">
+    <caption class="sr-only"><%= record.metadata.titleLeft %></caption>
+    <colgroup>
+      <col class="excel-table__col-company" />
+      <col class="excel-table__col-cnpj" />
+      <col class="excel-table__col-money" />
+      <col class="excel-table__col-money" />
+      <% if (showDecimoLeft) { %>
+        <col class="excel-table__col-money" />
+        <col class="excel-table__col-money" />
+      <% } %>
+      <col class="excel-table__col-money" />
+      <col class="excel-table__col-status" />
+    </colgroup>
+    <thead>
+      <tr class="excel-table__title">
+        <th colspan="<%= columnCount %>" scope="colgroup"><%= typeof titleOverride !== 'undefined' && titleOverride ? titleOverride : record.metadata.titleLeft %></th>
+      </tr>
+      <tr class="excel-table__head">
+        <th scope="col">EMPRESA</th>
+        <th scope="col">CNPJ</th>
+        <th scope="col">INSS</th>
+        <th scope="col">IRRF</th>
+        <% if (showDecimoLeft) { %>
+          <th scope="col">INSS DECIMO TERCEIRO</th>
+          <th scope="col">IRRF DECIMO TERCEIRO</th>
+        <% } %>
+        <th scope="col">TOTAL</th>
+        <th scope="col">STATUS</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% record.groups.forEach((group, groupIndex) => { %>
+        <tr class="excel-table__group-label">
+          <td colspan="<%= columnCount %>"><span class="group-label"><%= group.label %></span></td>
+        </tr>
+        <% group.companies.forEach((company, companyIndex) => { %>
+          <tr class="excel-table__row">
+            <td class="excel-table__company">
+              <% if (printMode) { %>
+                <div class="company-stack">
+                  <span class="company-code"><%= company.code %></span>
+                  <span class="company-name"><%= company.name %></span>
+                </div>
+              <% } else { %>
+                <div class="company-stack">
+                  <input type="text" class="sheet-input sheet-input--code js-text-source" data-group-index="<%= groupIndex %>" data-company-index="<%= companyIndex %>" data-field="code" value="<%= company.code %>" aria-label="Codigo da empresa <%= company.name %>" <%= isReadOnly ? 'readonly' : '' %> />
+                  <input type="text" class="sheet-input js-text-source" data-group-index="<%= groupIndex %>" data-company-index="<%= companyIndex %>" data-field="name" value="<%= company.name %>" aria-label="Nome da empresa" <%= isReadOnly ? 'readonly' : '' %> />
+                </div>
+              <% } %>
+            </td>
+            <td class="excel-table__cnpj">
+              <% if (printMode) { %>
+                <span class="print-value print-value--cnpj"><%= helpers.formatCnpj(company.cnpj) %></span>
+              <% } else { %>
+                <input type="text" class="sheet-input sheet-input--cnpj js-text-source js-cnpj-source" data-group-index="<%= groupIndex %>" data-company-index="<%= companyIndex %>" data-field="cnpj" value="<%= helpers.formatCnpj(company.cnpj) %>" aria-label="CNPJ de <%= company.name %>" <%= isReadOnly ? 'readonly' : '' %> />
+              <% } %>
+            </td>
+            <td class="excel-table__money">
+              <% if (printMode) { %>
+                <span class="print-value"><%= helpers.formatCurrency(company.inss) %></span>
+              <% } else { %>
+                <input type="text" class="sheet-input sheet-input--money js-currency-source" data-group-index="<%= groupIndex %>" data-company-index="<%= companyIndex %>" data-field="inss" value="<%= helpers.formatCurrency(company.inss) %>" aria-label="INSS de <%= company.name %>" <%= isReadOnly ? 'readonly' : '' %> />
+              <% } %>
+            </td>
+            <td class="excel-table__money">
+              <% if (printMode) { %>
+                <span class="print-value"><%= helpers.formatCurrency(company.irrf) %></span>
+              <% } else { %>
+                <input type="text" class="sheet-input sheet-input--money js-currency-source" data-group-index="<%= groupIndex %>" data-company-index="<%= companyIndex %>" data-field="irrf" value="<%= helpers.formatCurrency(company.irrf) %>" aria-label="IRRF de <%= company.name %>" <%= isReadOnly ? 'readonly' : '' %> />
+              <% } %>
+            </td>
+            <% if (showDecimoLeft) { %>
+              <td class="excel-table__money">
+                <% if (printMode) { %>
+                  <span class="print-value"><%= helpers.formatCurrency(company.inssDecimoTerceiro) %></span>
+                <% } else { %>
+                  <input type="text" class="sheet-input sheet-input--money js-currency-source" data-group-index="<%= groupIndex %>" data-company-index="<%= companyIndex %>" data-field="inssDecimoTerceiro" value="<%= helpers.formatCurrency(company.inssDecimoTerceiro) %>" aria-label="INSS decimo terceiro de <%= company.name %>" <%= isReadOnly ? 'readonly' : '' %> />
+                <% } %>
+              </td>
+              <td class="excel-table__money">
+                <% if (printMode) { %>
+                  <span class="print-value"><%= helpers.formatCurrency(company.irrfDecimoTerceiro) %></span>
+                <% } else { %>
+                  <input type="text" class="sheet-input sheet-input--money js-currency-source" data-group-index="<%= groupIndex %>" data-company-index="<%= companyIndex %>" data-field="irrfDecimoTerceiro" value="<%= helpers.formatCurrency(company.irrfDecimoTerceiro) %>" aria-label="IRRF decimo terceiro de <%= company.name %>" <%= isReadOnly ? 'readonly' : '' %> />
+                <% } %>
+              </td>
+            <% } %>
+            <td class="excel-table__total excel-table__money js-left-line-total" data-group-index="<%= groupIndex %>" data-company-index="<%= companyIndex %>">
+              <%= helpers.formatCurrency(company.totalLeft) %>
+            </td>
+            <td class="excel-table__status"></td>
+          </tr>
+        <% }) %>
+        <tr class="excel-table__summary">
+          <td colspan="<%= summaryLabelColspan %>">TOTAL <%= group.label %></td>
+          <td class="excel-table__total excel-table__money js-left-group-total" data-group-index="<%= groupIndex %>"><%= helpers.formatCurrency(group.summary.totalLeft) %></td>
+          <td class="excel-table__status js-left-group-status" data-group-index="<%= groupIndex %>">
+            <%- include('group-status-cell', { group, groupIndex, helpers, isReadOnly, printMode, statusFieldName: 'statusLeft' }) %>
+          </td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</section>
