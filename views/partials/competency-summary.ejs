@@ -1,0 +1,41 @@
+<%
+  const totals = record.grandTotals || {
+    totalLeft: record.groups.reduce((acc, g) => acc + (g.summary?.totalLeft || 0), 0),
+    totalRight: record.groups.reduce((acc, g) => acc + (g.summary?.totalRight || 0), 0),
+  };
+  const sumDarf = totals.totalLeft || 0;
+  const sumFgts = totals.totalRight || 0;
+  const sumGeral = sumDarf + sumFgts;
+  const isPrint = typeof printMode !== 'undefined' && printMode;
+%>
+<% if (isPrint) { %>
+<div class="pdf-summary">
+  <div>
+    <small>Total DARF INSS/IRRF</small>
+    <%= helpers.formatCurrency(sumDarf) %>
+  </div>
+  <div>
+    <small>Total FGTS</small>
+    <%= helpers.formatCurrency(sumFgts) %>
+  </div>
+  <div>
+    <small>Total Geral da Competência</small>
+    <%= helpers.formatCurrency(sumGeral) %>
+  </div>
+</div>
+<% } else { %>
+<div class="summary">
+  <div class="summary-card">
+    <strong>Total DARF INSS/IRRF</strong>
+    <span id="sumDarf"><%= helpers.formatCurrency(sumDarf) %></span>
+  </div>
+  <div class="summary-card">
+    <strong>Total FGTS</strong>
+    <span id="sumFgts"><%= helpers.formatCurrency(sumFgts) %></span>
+  </div>
+  <div class="summary-card main">
+    <strong>Total Geral da Competência</strong>
+    <span id="sumGeral"><%= helpers.formatCurrency(sumGeral) %></span>
+  </div>
+</div>
+<% } %>

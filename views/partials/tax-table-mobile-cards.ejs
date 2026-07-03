@@ -1,0 +1,88 @@
+<%
+  const showDecimoLeft = /^12\/\d{4}$/.test(record.competencia);
+%>
+<div class="sheet-table-mobile" aria-label="Lançamento mensal por empresa">
+  <div class="mobile-company-list">
+    <% record.groups.forEach((group, groupIndex) => { %>
+      <% group.companies.forEach((company, companyIndex) => { %>
+        <% const totalGeral = (company.totalLeft || 0) + (company.totalRight || 0); %>
+        <article class="mobile-company-card" data-group-index="<%= groupIndex %>" data-company-index="<%= companyIndex %>">
+          <div class="mobile-company-card__header">
+            <strong><%= company.name %></strong>
+            <span><%= group.label %> · <%= company.code %></span>
+          </div>
+          <div class="mobile-company-card__body">
+            <div class="mobile-company-card__row mobile-company-card__row--full">
+              <div>
+                <label>Empresa</label>
+                <input type="text" class="text js-text-source" data-group-index="<%= groupIndex %>" data-company-index="<%= companyIndex %>" data-field="name" value="<%= company.name %>" aria-label="Nome da empresa" <%= isReadOnly ? 'readonly' : '' %> />
+              </div>
+            </div>
+            <div class="mobile-company-card__row">
+              <div>
+                <label>Código</label>
+                <input type="text" class="text js-text-source" data-group-index="<%= groupIndex %>" data-company-index="<%= companyIndex %>" data-field="code" value="<%= company.code %>" aria-label="Código" <%= isReadOnly ? 'readonly' : '' %> />
+              </div>
+              <div>
+                <label>CNPJ</label>
+                <input type="text" class="text js-text-source js-cnpj-source" data-group-index="<%= groupIndex %>" data-company-index="<%= companyIndex %>" data-field="cnpj" value="<%= helpers.formatCnpj(company.cnpj) %>" aria-label="CNPJ" <%= isReadOnly ? 'readonly' : '' %> />
+              </div>
+            </div>
+            <div class="mobile-company-card__row">
+              <div>
+                <label>INSS</label>
+                <input type="text" class="js-currency-source" data-group-index="<%= groupIndex %>" data-company-index="<%= companyIndex %>" data-field="inss" value="<%= helpers.formatCurrency(company.inss) %>" aria-label="INSS" <%= isReadOnly ? 'readonly' : '' %> />
+              </div>
+              <div>
+                <label>IRRF</label>
+                <input type="text" class="js-currency-source" data-group-index="<%= groupIndex %>" data-company-index="<%= companyIndex %>" data-field="irrf" value="<%= helpers.formatCurrency(company.irrf) %>" aria-label="IRRF" <%= isReadOnly ? 'readonly' : '' %> />
+              </div>
+            </div>
+            <% if (showDecimoLeft) { %>
+              <div class="mobile-company-card__row">
+                <div>
+                  <label>INSS Décimo</label>
+                  <input type="text" class="js-currency-source" data-group-index="<%= groupIndex %>" data-company-index="<%= companyIndex %>" data-field="inssDecimoTerceiro" value="<%= helpers.formatCurrency(company.inssDecimoTerceiro) %>" aria-label="INSS décimo" <%= isReadOnly ? 'readonly' : '' %> />
+                </div>
+                <div>
+                  <label>IRRF Décimo</label>
+                  <input type="text" class="js-currency-source" data-group-index="<%= groupIndex %>" data-company-index="<%= companyIndex %>" data-field="irrfDecimoTerceiro" value="<%= helpers.formatCurrency(company.irrfDecimoTerceiro) %>" aria-label="IRRF décimo" <%= isReadOnly ? 'readonly' : '' %> />
+                </div>
+              </div>
+            <% } %>
+            <div class="mobile-company-card__row">
+              <div>
+                <label>Empréstimo</label>
+                <input type="text" class="js-currency-source" data-group-index="<%= groupIndex %>" data-company-index="<%= companyIndex %>" data-field="emprestimoConsignado" value="<%= helpers.formatCurrency(company.emprestimoConsignado) %>" aria-label="Empréstimo" <%= isReadOnly ? 'readonly' : '' %> />
+              </div>
+              <div>
+                <label>FGTS</label>
+                <input type="text" class="js-currency-source" data-group-index="<%= groupIndex %>" data-company-index="<%= companyIndex %>" data-field="fgtsMensal" value="<%= helpers.formatCurrency(company.fgtsMensal) %>" aria-label="FGTS" <%= isReadOnly ? 'readonly' : '' %> />
+              </div>
+            </div>
+            <div class="mobile-company-card__row mobile-company-card__row--full">
+              <div>
+                <label>13º FGTS</label>
+                <input type="text" class="js-currency-source" data-group-index="<%= groupIndex %>" data-company-index="<%= companyIndex %>" data-field="fgtsDecimoTerceiro" value="<%= helpers.formatCurrency(company.fgtsDecimoTerceiro) %>" aria-label="13º FGTS" <%= isReadOnly ? 'readonly' : '' %> />
+              </div>
+            </div>
+            <div class="mobile-company-card__totals">
+              <div class="mobile-company-card__total">
+                <span>Total DARF</span>
+                <strong class="js-line-darf" data-group-index="<%= groupIndex %>" data-company-index="<%= companyIndex %>"><%= helpers.formatCurrency(company.totalLeft) %></strong>
+              </div>
+              <div class="mobile-company-card__total">
+                <span>Total FGTS</span>
+                <strong class="js-line-fgts" data-group-index="<%= groupIndex %>" data-company-index="<%= companyIndex %>"><%= helpers.formatCurrency(company.totalRight) %></strong>
+              </div>
+              <div class="mobile-company-card__total mobile-company-card__total--geral">
+                <span>Total Geral</span>
+                <strong class="js-line-geral" data-group-index="<%= groupIndex %>" data-company-index="<%= companyIndex %>"><%= helpers.formatCurrency(totalGeral) %></strong>
+              </div>
+            </div>
+          </div>
+        </article>
+      <% }) %>
+    <% }) %>
+  </div>
+</div>

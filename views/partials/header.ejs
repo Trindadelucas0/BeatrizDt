@@ -1,52 +1,12 @@
-<header class="dashboard-header brand-header--dauto">
-  <div class="header-inner">
-    <div class="header-leading">
-      <button id="hamburger-btn" class="hamburger-btn hamburger-btn--light" aria-label="Abrir menu de navegação" aria-expanded="false" aria-controls="sidebar-drawer">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
-      <div class="brand-logo-wrap">
-        <img src="<%= logoPath %>" alt="Grupo Dauto" class="brand-logo" width="120" height="40" />
-      </div>
-    </div>
-
-    <div class="header-brand">
-      <h1 class="header-brand__title brand-header__title">DEMONSTRATIVO IMPOSTOS FOLHA MENSAL - GRUPO DAUTO</h1>
-
-      <div class="header-meta">
-        <span class="header-badge header-badge--light"><%= user.displayName %></span>
-        <span class="header-badge header-badge--ghost header-badge--light"><%= user.role === 'admin' ? 'Administrador' : 'Leitura' %></span>
-        <% if (!isReadOnly) { %>
-          <p id="save-status" class="save-status save-status--light" data-status="info" aria-live="polite"></p>
-        <% } %>
-      </div>
-    </div>
-
-    <div class="header-actions">
-      <%- include('theme-switcher') %>
-
-      <label class="competencia-box competencia-box--light">
-        <span class="competencia-label">Competência</span>
-        <% if (isReadOnly) { %>
-          <input id="competencia-input" type="text" value="<%= record.competencia %>" readonly class="competencia-input competencia-input--readonly competencia-input--light" aria-label="Competência atual" />
-        <% } else { %>
-          <input id="competencia-input" type="text" value="<%= record.competencia %>" class="competencia-input competencia-input--light" placeholder="MM/AAAA" aria-label="Competência" />
-        <% } %>
-      </label>
-
-      <a href="/dashboard/pdf/<%= helpers.toCompetenciaSlug(record.competencia) %>" class="action-button action-button--secondary action-button--light">
-        Baixar PDF
-      </a>
-
-      <% if (!isReadOnly) { %>
-        <button type="submit" form="sheet-form" class="action-button action-button--primary action-button--light-solid">
-          Salvar dados
-        </button>
-      <% } %>
-
-      <a href="/logout" class="action-button action-button--ghost action-button--light">Sair</a>
-    </div>
-
+<div class="header">
+  <div class="logo-card exito">
+    <img src="<%= exitoLogoPath %>" alt="Êxito Contabilidade" />
   </div>
-</header>
+  <div class="header-title">
+    <h1>Resumo de Impostos – Folha de Pagamento</h1>
+    <p>Controle mensal por empresa · Dauto Tintas</p>
+  </div>
+  <div class="logo-card dauto">
+    <img src="<%= logoPath %>" alt="Dauto Tintas" />
+  </div>
+</div>

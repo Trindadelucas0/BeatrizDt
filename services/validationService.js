@@ -11,6 +11,10 @@ function normalizeRecordInput(payload) {
   const merged = migrateRecord(mergePayloadIntoSchema(payload));
 
   merged.competencia = String(merged.competencia || '').trim();
+  merged.dataPreenchimento = String(merged.dataPreenchimento || '').trim();
+  merged.responsavel = String(merged.responsavel || '').trim();
+  merged.observacoes = String(merged.observacoes || '');
+  merged.statusGeral = String(merged.statusGeral || 'Em conferência').trim() || 'Em conferência';
   merged.groups = merged.groups.map((group) => ({
     ...group,
     label: String(group.label || '').trim(),

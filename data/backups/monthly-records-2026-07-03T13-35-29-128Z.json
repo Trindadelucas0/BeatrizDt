@@ -1482,10 +1482,6 @@
     },
     {
       "competencia": "04/2026",
-      "dataPreenchimento": "",
-      "responsavel": "",
-      "observacoes": "",
-      "statusGeral": "Em conferência",
       "metadata": {
         "titleLeft": "RESUMO IMPOSTOS DARF INSS/IRRF",
         "titleRight": "RESUMO IMPOSTOS - FGTS MENSAL E DECIMO TERCEIRO",
@@ -1496,8 +1492,6 @@
         {
           "id": "etica",
           "label": "ETICA",
-          "statusLeft": "em_processo",
-          "statusRight": "em_processo",
           "companies": [
             {
               "id": "etica-56",
@@ -1510,9 +1504,7 @@
               "fgtsMensal": 0,
               "fgtsDecimoTerceiro": 0,
               "totalLeft": 0,
-              "totalRight": 0,
-              "inssDecimoTerceiro": 0,
-              "irrfDecimoTerceiro": 0
+              "totalRight": 0
             },
             {
               "id": "etica-92",
@@ -1525,28 +1517,24 @@
               "fgtsMensal": 0,
               "fgtsDecimoTerceiro": 0,
               "totalLeft": 0,
-              "totalRight": 0,
-              "inssDecimoTerceiro": 0,
-              "irrfDecimoTerceiro": 0
+              "totalRight": 0
             }
           ],
           "summary": {
             "inss": 0,
             "irrf": 0,
-            "inssDecimoTerceiro": 0,
-            "irrfDecimoTerceiro": 0,
             "totalLeft": 0,
             "emprestimoConsignado": 0,
             "fgtsMensal": 0,
             "fgtsDecimoTerceiro": 0,
             "totalRight": 0
-          }
+          },
+          "statusLeft": "OK",
+          "statusRight": "OK"
         },
         {
           "id": "mercado",
           "label": "MERCADO",
-          "statusLeft": "em_processo",
-          "statusRight": "em_processo",
           "companies": [
             {
               "id": "mercado-67",
@@ -1559,9 +1547,7 @@
               "fgtsMensal": 0,
               "fgtsDecimoTerceiro": 0,
               "totalLeft": 0,
-              "totalRight": 0,
-              "inssDecimoTerceiro": 0,
-              "irrfDecimoTerceiro": 0
+              "totalRight": 0
             },
             {
               "id": "mercado-69",
@@ -1574,28 +1560,24 @@
               "fgtsMensal": 0,
               "fgtsDecimoTerceiro": 0,
               "totalLeft": 0,
-              "totalRight": 0,
-              "inssDecimoTerceiro": 0,
-              "irrfDecimoTerceiro": 0
+              "totalRight": 0
             }
           ],
           "summary": {
             "inss": 0,
             "irrf": 0,
-            "inssDecimoTerceiro": 0,
-            "irrfDecimoTerceiro": 0,
             "totalLeft": 0,
             "emprestimoConsignado": 0,
             "fgtsMensal": 0,
             "fgtsDecimoTerceiro": 0,
             "totalRight": 0
-          }
+          },
+          "statusLeft": "OK",
+          "statusRight": "OK"
         },
         {
           "id": "vt",
           "label": "V&T",
-          "statusLeft": "em_processo",
-          "statusRight": "em_processo",
           "companies": [
             {
               "id": "vt-45",
@@ -1608,9 +1590,7 @@
               "fgtsMensal": 0,
               "fgtsDecimoTerceiro": 0,
               "totalLeft": 0,
-              "totalRight": 0,
-              "inssDecimoTerceiro": 0,
-              "irrfDecimoTerceiro": 0
+              "totalRight": 0
             },
             {
               "id": "vt-150",
@@ -1623,28 +1603,24 @@
               "fgtsMensal": 0,
               "fgtsDecimoTerceiro": 0,
               "totalLeft": 0,
-              "totalRight": 0,
-              "inssDecimoTerceiro": 0,
-              "irrfDecimoTerceiro": 0
+              "totalRight": 0
             }
           ],
           "summary": {
             "inss": 0,
             "irrf": 0,
-            "inssDecimoTerceiro": 0,
-            "irrfDecimoTerceiro": 0,
             "totalLeft": 0,
             "emprestimoConsignado": 0,
             "fgtsMensal": 0,
             "fgtsDecimoTerceiro": 0,
             "totalRight": 0
-          }
+          },
+          "statusLeft": "OK",
+          "statusRight": "OK"
         },
         {
           "id": "unica",
           "label": "UNICA",
-          "statusLeft": "em_processo",
-          "statusRight": "em_processo",
           "companies": [
             {
               "id": "unica-46",
@@ -1657,29 +1633,25 @@
               "fgtsMensal": 0,
               "fgtsDecimoTerceiro": 0,
               "totalLeft": 0,
-              "totalRight": 0,
-              "inssDecimoTerceiro": 0,
-              "irrfDecimoTerceiro": 0
+              "totalRight": 0
             }
           ],
           "summary": {
             "inss": 0,
             "irrf": 0,
-            "inssDecimoTerceiro": 0,
-            "irrfDecimoTerceiro": 0,
             "totalLeft": 0,
             "emprestimoConsignado": 0,
             "fgtsMensal": 0,
             "fgtsDecimoTerceiro": 0,
             "totalRight": 0
-          }
+          },
+          "statusLeft": "OK",
+          "statusRight": "OK"
         }
       ],
       "grandTotals": {
         "inss": 0,
         "irrf": 0,
-        "inssDecimoTerceiro": 0,
-        "irrfDecimoTerceiro": 0,
         "totalLeft": 0,
         "emprestimoConsignado": 0,
         "fgtsMensal": 0,
@@ -1687,8 +1659,8 @@
         "totalRight": 0,
         "fgts": 0
       },
-      "updatedAt": "2026-07-03T13:35:29.129Z",
-      "updatedBy": "admin"
+      "updatedAt": "2026-06-26T18:11:43.491Z",
+      "updatedBy": "sistema"
     },
     {
       "competencia": "03/2026",

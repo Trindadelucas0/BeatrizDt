@@ -2,28 +2,48 @@ const fs = require('node:fs');
 const path = require('node:path');
 
 const LOGO_RELATIVE_PATH = path.join('images', 'grupo-dauto-logo.png');
+const EXITO_LOGO_RELATIVE_PATH = path.join('images', 'exito-logo.png');
+
+function getAssetDataUri(relativePath) {
+  const assetPath = path.join(process.cwd(), 'public', relativePath);
+
+  if (!fs.existsSync(assetPath)) {
+    return '';
+  }
+
+  const buffer = fs.readFileSync(assetPath);
+  return `data:image/png;base64,${buffer.toString('base64')}`;
+}
 
 function getLogoAbsolutePath() {
   return path.join(process.cwd(), 'public', LOGO_RELATIVE_PATH);
+}
+
+function getExitoLogoAbsolutePath() {
+  return path.join(process.cwd(), 'public', EXITO_LOGO_RELATIVE_PATH);
 }
 
 function getLogoPublicPath() {
   return `/${LOGO_RELATIVE_PATH.replace(/\\/g, '/')}`;
 }
 
+function getExitoLogoPublicPath() {
+  return `/${EXITO_LOGO_RELATIVE_PATH.replace(/\\/g, '/')}`;
+}
+
 function getLogoDataUri() {
-  const logoPath = getLogoAbsolutePath();
+  return getAssetDataUri(LOGO_RELATIVE_PATH);
+}
 
-  if (!fs.existsSync(logoPath)) {
-    return '';
-  }
-
-  const buffer = fs.readFileSync(logoPath);
-  return `data:image/png;base64,${buffer.toString('base64')}`;
+function getExitoLogoDataUri() {
+  return getAssetDataUri(EXITO_LOGO_RELATIVE_PATH);
 }
 
 module.exports = {
   getLogoAbsolutePath,
+  getExitoLogoAbsolutePath,
   getLogoPublicPath,
+  getExitoLogoPublicPath,
   getLogoDataUri,
+  getExitoLogoDataUri,
 };

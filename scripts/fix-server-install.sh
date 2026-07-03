@@ -13,6 +13,9 @@ rm -rf "${HOME}/.cache/puppeteer"
 echo "==> Removendo node_modules incompleto"
 rm -rf node_modules
 
+echo "==> Instalando bibliotecas do Chrome (Puppeteer/PDF)"
+bash "$(dirname "${BASH_SOURCE[0]}")/install-chrome-deps.sh"
+
 echo "==> Instalando dependencias npm (inclui download do Chrome)"
 npm install
 
@@ -20,7 +23,6 @@ echo "==> Verificando express"
 test -d node_modules/express
 
 echo "==> Instalacao concluida."
-echo "    Suba o app com: node server.js"
-echo "    Ou em background: nohup node server.js > app.log 2>&1 &"
+echo "    PM2: pm2 start ecosystem.config.cjs  (ou pm2 restart beatriz-dt)"
 echo ""
 echo "IMPORTANTE: troque a senha do usuario se ela foi exposta: passwd"

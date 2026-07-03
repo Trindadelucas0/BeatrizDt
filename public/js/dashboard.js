@@ -69,6 +69,42 @@
     return competencia.replace('/', '-');
   }
 
+  function isMobileLayout() {
+    const mobile = document.querySelector('.sheet-table-mobile');
+    if (!mobile) {
+      return false;
+    }
+
+    return window.getComputedStyle(mobile).display !== 'none';
+  }
+
+  function isInActiveLayout(element) {
+    const inDesktop = element.closest('.sheet-table-desktop');
+    const inMobile = element.closest('.sheet-table-mobile');
+
+    if (!inDesktop && !inMobile) {
+      return true;
+    }
+
+    return isMobileLayout() ? Boolean(inMobile) : Boolean(inDesktop);
+  }
+
+  function syncMirroredField(source) {
+    const groupIndex = source.dataset.groupIndex;
+    const companyIndex = source.dataset.companyIndex;
+    const field = source.dataset.field;
+
+    if (!field || groupIndex === undefined || companyIndex === undefined) {
+      return;
+    }
+
+    document.querySelectorAll(`[data-group-index="${groupIndex}"][data-company-index="${companyIndex}"][data-field="${field}"]`).forEach((element) => {
+      if (element !== source) {
+        element.value = source.value;
+      }
+    });
+  }
+
   function setSaveStatus(message, type = 'info') {
     if (!saveStatus) {
       return;
@@ -78,40 +114,14 @@
     saveStatus.dataset.status = type;
   }
 
-  function normalizeGroupStatus(value) {
-    const normalized = String(value || '').trim().toLowerCase();
-    if (normalized === 'concluido' || normalized === 'concluído') {
-      return 'concluido';
-    }
-    return 'em_processo';
-  }
-
-  function syncStatusChecksUI(container, value) {
-    const normalized = normalizeGroupStatus(value);
-    container.dataset.currentValue = normalized;
-
-    container.querySelectorAll('.status-check').forEach((label) => {
-      const input = label.querySelector('input[type="radio"]');
-      const isActive = input && input.value === normalized;
-      label.classList.toggle('status-check--checked', isActive);
-      if (input) {
-        input.checked = isActive;
-      }
-    });
-  }
-
-  function readGroupStatusFromForm(record) {
-    document.querySelectorAll('.js-status-checks').forEach((container) => {
-      const groupIndex = Number(container.dataset.groupIndex);
-      const field = container.dataset.field;
-      const group = record.groups[groupIndex];
-      const checked = container.querySelector('input[type="radio"]:checked');
-
-      if (!group || !field) {
+  function readMetadataFromForm(record) {
+    document.querySelectorAll('.js-metadata-source').forEach((element) => {
+      const field = element.dataset.field;
+      if (!field) {
         return;
       }
 
-      group[field] = normalizeGroupStatus(checked?.value || container.dataset.currentValue);
+      record[field] = element.value;
     });
   }
 
@@ -120,6 +130,10 @@
     nextRecord.competencia = competenciaInput ? competenciaInput.value.trim() : state.record.competencia;
 
     document.querySelectorAll('[data-group-index][data-company-index][data-field]').forEach((element) => {
+      if (!isInActiveLayout(element)) {
+        return;
+      }
+
       const group = nextRecord.groups[Number(element.dataset.groupIndex)];
       const company = group?.companies?.[Number(element.dataset.companyIndex)];
       const field = element.dataset.field;
@@ -136,32 +150,26 @@
       company[field] = numberFields.has(field) ? parseCurrency(element.value) : element.value.trim();
     });
 
-    readGroupStatusFromForm(nextRecord);
+    readMetadataFromForm(nextRecord);
 
     return nextRecord;
   }
 
-  function updateGroupSummaryField(groupIndex, field, value) {
-    document.querySelectorAll(`[data-group-index="${groupIndex}"][data-summary-field="${field}"]`).forEach((element) => {
+  function setTextContent(id, value) {
+    const element = document.getElementById(id);
+    if (element) {
       element.textContent = formatCurrency(value);
-    });
+    }
   }
 
   function updateTotals(record) {
     const includeDecimoLeft = isDecemberCompetencia(record.competencia);
+    let grandDarf = 0;
+    let grandFgts = 0;
 
     record.groups.forEach((group, groupIndex) => {
-      let groupLeft = 0;
-      let groupRight = 0;
-      let groupInss = 0;
-      let groupIrrf = 0;
-      let groupInssDecimo = 0;
-      let groupIrrfDecimo = 0;
-      let groupFgtsMensal = 0;
-      let groupFgtsDecimo = 0;
-
-      group.statusLeft = normalizeGroupStatus(group.statusLeft);
-      group.statusRight = normalizeGroupStatus(group.statusRight);
+      let groupDarf = 0;
+      let groupFgts = 0;
 
       group.companies.forEach((company, companyIndex) => {
         company.inss = parseCurrency(company.inss);
@@ -176,41 +184,48 @@
           ? Number((company.inss + company.irrf + company.inssDecimoTerceiro + company.irrfDecimoTerceiro).toFixed(2))
           : Number((company.inss + company.irrf).toFixed(2));
         const totalRight = Number((company.emprestimoConsignado + company.fgtsMensal + company.fgtsDecimoTerceiro).toFixed(2));
+        const totalGeral = Number((totalLeft + totalRight).toFixed(2));
 
-        groupLeft = Number((groupLeft + totalLeft).toFixed(2));
-        groupRight = Number((groupRight + totalRight).toFixed(2));
-        groupInss = Number((groupInss + company.inss).toFixed(2));
-        groupIrrf = Number((groupIrrf + company.irrf).toFixed(2));
-        groupInssDecimo = Number((groupInssDecimo + company.inssDecimoTerceiro).toFixed(2));
-        groupIrrfDecimo = Number((groupIrrfDecimo + company.irrfDecimoTerceiro).toFixed(2));
-        groupFgtsMensal = Number((groupFgtsMensal + company.fgtsMensal).toFixed(2));
-        groupFgtsDecimo = Number((groupFgtsDecimo + company.fgtsDecimoTerceiro).toFixed(2));
+        company.totalLeft = totalLeft;
+        company.totalRight = totalRight;
 
-        const leftCell = document.querySelector(`.js-left-line-total[data-group-index="${groupIndex}"][data-company-index="${companyIndex}"]`);
-        const rightCell = document.querySelector(`.js-right-line-total[data-group-index="${groupIndex}"][data-company-index="${companyIndex}"]`);
+        groupDarf = Number((groupDarf + totalLeft).toFixed(2));
+        groupFgts = Number((groupFgts + totalRight).toFixed(2));
 
-        if (leftCell) leftCell.textContent = formatCurrency(totalLeft);
-        if (rightCell) rightCell.textContent = formatCurrency(totalRight);
+        const darfCell = document.querySelector(`.js-line-darf[data-group-index="${groupIndex}"][data-company-index="${companyIndex}"]`);
+        const fgtsCell = document.querySelector(`.js-line-fgts[data-group-index="${groupIndex}"][data-company-index="${companyIndex}"]`);
+        const geralCell = document.querySelector(`.js-line-geral[data-group-index="${groupIndex}"][data-company-index="${companyIndex}"]`);
+
+        if (darfCell) darfCell.textContent = formatCurrency(totalLeft);
+        if (fgtsCell) fgtsCell.textContent = formatCurrency(totalRight);
+        if (geralCell) geralCell.textContent = formatCurrency(totalGeral);
       });
 
-      const leftGroupCell = document.querySelector(`.js-left-group-total[data-group-index="${groupIndex}"]`);
-      const rightGroupCell = document.querySelector(`.js-right-group-total[data-group-index="${groupIndex}"]`);
+      grandDarf = Number((grandDarf + groupDarf).toFixed(2));
+      grandFgts = Number((grandFgts + groupFgts).toFixed(2));
 
-      if (leftGroupCell) leftGroupCell.textContent = formatCurrency(groupLeft);
-      if (rightGroupCell) rightGroupCell.textContent = formatCurrency(groupRight);
+      const guiaDarf = document.querySelector(`.js-guia-darf[data-group-index="${groupIndex}"]`);
+      const guiaFgts = document.querySelector(`.js-guia-fgts[data-group-index="${groupIndex}"]`);
+      if (guiaDarf) guiaDarf.textContent = formatCurrency(groupDarf);
+      if (guiaFgts) guiaFgts.textContent = formatCurrency(groupFgts);
 
-      updateGroupSummaryField(groupIndex, 'totalLeft', groupLeft);
-      updateGroupSummaryField(groupIndex, 'totalRight', groupRight);
-      updateGroupSummaryField(groupIndex, 'inss', groupInss);
-      updateGroupSummaryField(groupIndex, 'fgtsDecimoTerceiro', groupFgtsDecimo);
-      updateGroupSummaryField(groupIndex, 'fgtsMensal', groupFgtsMensal);
-      updateGroupSummaryField(groupIndex, 'fgtsGeral', Number((groupFgtsMensal + groupFgtsDecimo).toFixed(2)));
-
-      if (includeDecimoLeft) {
-        updateGroupSummaryField(groupIndex, 'inssDecimoTerceiro', groupInssDecimo);
-        updateGroupSummaryField(groupIndex, 'irrfDecimoTerceiro', groupIrrfDecimo);
+      if (!group.summary) {
+        group.summary = {};
       }
+      group.summary.totalLeft = groupDarf;
+      group.summary.totalRight = groupFgts;
     });
+
+    setTextContent('sumDarf', grandDarf);
+    setTextContent('sumFgts', grandFgts);
+    setTextContent('sumGeral', Number((grandDarf + grandFgts).toFixed(2)));
+    setTextContent('total-guia-darf', grandDarf);
+    setTextContent('total-guia-fgts', grandFgts);
+
+    record.grandTotals = {
+      totalLeft: grandDarf,
+      totalRight: grandFgts,
+    };
 
     return record;
   }
@@ -222,15 +237,6 @@
       payloadInput.value = JSON.stringify(calculatedRecord);
     }
     return calculatedRecord;
-  }
-
-  function syncMirroredField(sourceInput) {
-    const selector = `[data-group-index="${sourceInput.dataset.groupIndex}"][data-company-index="${sourceInput.dataset.companyIndex}"][data-field="${sourceInput.dataset.field}"]`;
-    document.querySelectorAll(selector).forEach((input) => {
-      if (input !== sourceInput) {
-        input.value = sourceInput.value;
-      }
-    });
   }
 
   function markDirty() {
@@ -311,11 +317,13 @@
 
   document.querySelectorAll('.js-currency-source').forEach((input) => {
     input.addEventListener('input', () => {
+      syncMirroredField(input);
       refresh();
       markDirty();
     });
     input.addEventListener('blur', () => {
       input.value = formatCurrency(input.value);
+      syncMirroredField(input);
       refresh();
       markDirty();
     });
@@ -341,28 +349,23 @@
     });
   });
 
+  document.querySelectorAll('.js-metadata-source').forEach((input) => {
+    input.addEventListener('input', () => {
+      refresh();
+      markDirty();
+    });
+    input.addEventListener('change', () => {
+      refresh();
+      markDirty();
+    });
+  });
+
   if (competenciaInput) {
     competenciaInput.addEventListener('input', () => {
       refresh();
       markDirty();
     });
   }
-
-  document.querySelectorAll('.js-status-checks').forEach((container) => {
-    syncStatusChecksUI(container, container.dataset.currentValue);
-
-    container.querySelectorAll('input[type="radio"]').forEach((input) => {
-      input.addEventListener('change', () => {
-        if (state.isReadOnly) {
-          return;
-        }
-
-        syncStatusChecksUI(container, input.value);
-        refresh();
-        markDirty();
-      });
-    });
-  });
 
   if (form) {
     form.addEventListener('submit', (event) => {

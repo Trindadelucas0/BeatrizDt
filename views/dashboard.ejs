@@ -5,12 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title><%= title %></title>
   <%- include('partials/theme-head') %>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="/css/app.css" />
+  <link rel="stylesheet" href="/css/dauto-layout.css" />
 </head>
-<body class="dashboard-page">
+<body class="dashboard-shell">
   <%
     const layoutView = (typeof layout !== 'undefined' && layout)
       ? layout
@@ -18,7 +15,6 @@
     const statusMap = (typeof competenciaStatusMap !== 'undefined' && competenciaStatusMap)
       ? competenciaStatusMap
       : buildCompetenciaStatusMap([record]);
-    const showDecimoLeft = /^12\/\d{4}$/.test(record.competencia);
   %>
   <a href="#dashboard-content" class="skip-link">Ir para o conteúdo principal</a>
   <div id="app-toast" class="app-toast" role="status" aria-live="polite" hidden></div>
@@ -54,30 +50,40 @@
     </nav>
   </aside>
 
-  <main class="dashboard-wrap">
-    <%- include('partials/header', { record, user, isReadOnly, helpers, layout: layoutView }) %>
+  <div class="dashboard-shell__main">
+    <div class="app">
+      <%- include('partials/header') %>
+      <%- include('partials/dashboard-toolbar', { record, user, isReadOnly, helpers }) %>
 
-    <% if (flash) { %>
-      <div class="alert-success" role="status" aria-live="polite"><%= flash %></div>
-    <% } %>
+      <% if (flash) { %>
+        <div class="alert-success" role="status" aria-live="polite"><%= flash %></div>
+      <% } %>
 
-    <% if (error) { %>
-      <div class="alert-error" role="alert"><%= error %></div>
-    <% } %>
+      <% if (error) { %>
+        <div class="alert-error" role="alert"><%= error %></div>
+      <% } %>
 
-    <section id="dashboard-content" style="margin-top: 14px;">
-      <form id="sheet-form" action="/dashboard/save" method="post">
-        <input type="hidden" id="payload-input" name="payload" />
+      <section id="dashboard-content">
+        <form id="sheet-form" action="/dashboard/save" method="post">
+          <input type="hidden" id="payload-input" name="payload" />
 
-        <div class="sheet-grid">
-          <%- include('partials/tax-table-left', { record, isReadOnly, helpers, printMode: false }) %>
-          <%- include('partials/tax-table-right', { record, isReadOnly, helpers, printMode: false }) %>
-        </div>
-      </form>
+          <%- include('partials/record-metadata-card', { record, isReadOnly }) %>
 
-      <%- include('partials/group-summary-cards', { record, helpers, showDecimoLeft }) %>
-    </section>
-  </main>
+          <div class="card">
+            <div class="section-title">
+              <h2>Lançamento mensal</h2>
+            </div>
+            <div class="sheet-table-desktop">
+              <%- include('partials/tax-table-unified', { record, isReadOnly, helpers, printMode: false, embeddedInCard: true }) %>
+            </div>
+            <%- include('partials/tax-table-mobile-cards', { record, isReadOnly, helpers }) %>
+            <%- include('partials/guias-panel', { record, helpers, printMode: false }) %>
+            <%- include('partials/competency-summary', { record, helpers, printMode: false }) %>
+          </div>
+        </form>
+      </section>
+    </div>
+  </div>
 
   <script>
     window.__DASHBOARD_STATE__ = <%- JSON.stringify({ record, isReadOnly }) %>;

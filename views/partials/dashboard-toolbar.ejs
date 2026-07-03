@@ -1,0 +1,23 @@
+<div class="dashboard-toolbar">
+  <button id="hamburger-btn" class="hamburger-btn" aria-label="Abrir menu de navegação" aria-expanded="false" aria-controls="sidebar-drawer">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+
+  <% if (!isReadOnly) { %>
+    <p id="save-status" class="save-status" data-status="info" aria-live="polite"></p>
+  <% } %>
+
+  <div class="dashboard-toolbar__spacer"></div>
+
+  <%- include('theme-switcher') %>
+
+  <% if (!isReadOnly) { %>
+    <button type="submit" form="sheet-form" class="btn-green">Salvar dados</button>
+  <% } %>
+
+  <a href="/dashboard/pdf/<%= helpers.toCompetenciaSlug(record.competencia) %>" class="btn-black">Baixar PDF</a>
+
+  <a href="/logout" class="btn-gray">Sair</a>
+</div>

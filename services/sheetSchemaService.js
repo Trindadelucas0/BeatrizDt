@@ -2,6 +2,10 @@ const { normalizeGroupStatus } = require('./calculationService');
 
 const BASE_RECORD = {
   competencia: '03/2026',
+  dataPreenchimento: '',
+  responsavel: '',
+  observacoes: '',
+  statusGeral: 'Em conferência',
   metadata: {
     titleLeft: 'RESUMO IMPOSTOS DARF INSS/IRRF',
     titleRight: 'RESUMO IMPOSTOS - FGTS MENSAL E DECIMO TERCEIRO',
@@ -71,6 +75,22 @@ function mergePayloadIntoSchema(payload = {}) {
     ? payload.competencia.trim()
     : base.competencia;
 
+  base.dataPreenchimento = typeof payload.dataPreenchimento === 'string'
+    ? payload.dataPreenchimento.trim()
+    : base.dataPreenchimento;
+
+  base.responsavel = typeof payload.responsavel === 'string'
+    ? payload.responsavel.trim()
+    : base.responsavel;
+
+  base.observacoes = typeof payload.observacoes === 'string'
+    ? payload.observacoes
+    : base.observacoes;
+
+  base.statusGeral = typeof payload.statusGeral === 'string' && payload.statusGeral.trim()
+    ? payload.statusGeral.trim()
+    : base.statusGeral;
+
   base.metadata = {
     ...base.metadata,
     ...(payload.metadata || {}),
@@ -129,6 +149,22 @@ function migrateRecord(record = {}) {
     sourceFile: 'RESUMO IMPOSTOS FOLHA.xlsx',
     ...(migrated.metadata || {}),
   };
+
+  migrated.dataPreenchimento = typeof migrated.dataPreenchimento === 'string'
+    ? migrated.dataPreenchimento
+    : '';
+
+  migrated.responsavel = typeof migrated.responsavel === 'string'
+    ? migrated.responsavel
+    : '';
+
+  migrated.observacoes = typeof migrated.observacoes === 'string'
+    ? migrated.observacoes
+    : '';
+
+  migrated.statusGeral = typeof migrated.statusGeral === 'string' && migrated.statusGeral.trim()
+    ? migrated.statusGeral.trim()
+    : 'Em conferência';
 
   if (!migrated.metadata.titleThird) {
     migrated.metadata.titleThird = 'RESUMO IMPOSTOS - FGTS DECIMO TERCEIRO';

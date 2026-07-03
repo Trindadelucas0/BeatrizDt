@@ -7,7 +7,7 @@ const { formatCnpj, formatCurrency, formatGroupStatus, fromCompetenciaSlug, norm
 const { buildCompetenciaStatusMap, buildLayoutViewModel, computeFillMetrics } = require('./services/layoutViewModelService');
 const { buildCompetenciaList, DEFAULT_SEED_YEAR } = require('./services/competenciaSeedService');
 const { generateRecordPdf } = require('./services/pdfService');
-const { getLogoPublicPath } = require('./services/brandAssetService');
+const { getLogoPublicPath, getExitoLogoPublicPath } = require('./services/brandAssetService');
 const { getThemeFromRequest } = require('./services/themeService');
 const { getLatestRecord, getRecordByCompetencia, listCompetencias, listRecords, saveRecord } = require('./services/recordService');
 const { createInitialRecord } = require('./services/sheetSchemaService');
@@ -54,6 +54,7 @@ app.use(session({
 
 app.locals.helpers = helpers;
 app.locals.logoPath = getLogoPublicPath();
+app.locals.exitoLogoPath = getExitoLogoPublicPath();
 app.locals.buildLayoutViewModel = buildLayoutViewModel;
 app.locals.buildCompetenciaStatusMap = buildCompetenciaStatusMap;
 app.locals.buildCompetenciaList = buildCompetenciaList;
@@ -87,7 +88,7 @@ async function renderDashboard(req, res, options = {}) {
   res.locals.user = req.session.user;
 
   return res.render('dashboard', {
-    title: 'DEMONSTRATIVO IMPOSTOS FOLHA MENSAL - GRUPO DAUTO',
+    title: 'Resumo de Impostos | Dauto Tintas',
     user: req.session.user,
     record,
     competencias,
@@ -261,11 +262,10 @@ app.get('/api/competencias/:slug/history', ensureAuthenticated, async (req, res)
 app.get('/dashboard/pdf/:competencia', ensureAuthenticated, async (req, res) => {
   const competencia = fromCompetenciaSlug(req.params.competencia);
   const record = await resolveRecord(competencia);
-  const theme = getThemeFromRequest(req);
-  const pdfBuffer = await generateRecordPdf(record, helpers, { theme });
+  const pdfBuffer = await generateRecordPdf(record, helpers);
 
   res.setHeader('Content-Type', 'application/pdf');
-  res.setHeader('Content-Disposition', `attachment; filename="demonstrativo-${toCompetenciaSlug(record.competencia)}.pdf"`);
+  res.setHeader('Content-Disposition', `attachment; filename="Demonstrativo_Impostos_${toCompetenciaSlug(record.competencia)}.pdf"`);
   return res.send(pdfBuffer);
 });
 

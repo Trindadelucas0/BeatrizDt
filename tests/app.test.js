@@ -95,29 +95,33 @@ describe('aplicacao web', () => {
 
     const dashboard = await agent.get('/dashboard');
     expect(dashboard.statusCode).toBe(200);
-    expect(dashboard.text).toContain('DEMONSTRATIVO IMPOSTOS FOLHA MENSAL - GRUPO DAUTO');
+    expect(dashboard.text).toContain('Resumo de Impostos – Folha de Pagamento');
     expect(dashboard.text).toContain('sidebar-nav');
     expect(dashboard.text).toContain('01/2026');
     expect(dashboard.text).toContain('12/2026');
     expect(dashboard.text).toContain('03/2026');
     expect(dashboard.text).not.toMatch(/<aside[^>]*class="[^"]*sidebar-panel/);
-    expect(dashboard.text).toContain('FGTS DECIMO TERCEIRO');
+    expect(dashboard.text).toContain('13º FGTS');
     expect(dashboard.text).toContain('ETICA');
-    expect(dashboard.text).toContain('group-summary');
-    expect(dashboard.text).toContain('status-checks');
+    expect(dashboard.text).toContain('guias-panel');
+    expect(dashboard.text).toContain('Lançamento mensal');
     expect(dashboard.text).toContain('theme-switcher');
-    expect(dashboard.text).toContain('brand-logo');
-    expect(dashboard.text).not.toContain('Resumo de Impostos da Folha');
+    expect(dashboard.text).toContain('logo-card dauto');
+    expect(dashboard.text).toContain('exito-logo.png');
+    expect(dashboard.text).toContain('sheet-table-desktop');
+    expect(dashboard.text).toContain('sheet-table-mobile');
+    expect(dashboard.text).toContain('mobile-company-card');
   });
 
   it('exibe login simplificado com logo', async () => {
     const response = await request(app).get('/login');
     expect(response.statusCode).toBe(200);
-    expect(response.text).toContain('login-card__logo');
+    expect(response.text).toContain('logo-card dauto');
     expect(response.text).toContain('theme-switcher');
     expect(response.text).toContain('/images/grupo-dauto-logo.png');
-    expect(response.text).not.toContain('Recalculo automatico de INSS e IRRF');
-    expect(response.text).not.toContain('Resumo de Impostos da Folha');
+    expect(response.text).toContain('btn-green');
+    expect(response.text).toContain('viewport');
+    expect(response.text).toContain('width=device-width');
   });
 
   it('impede usuario comum de salvar alteracoes', async () => {
@@ -204,16 +208,13 @@ describe('aplicacao web', () => {
 
     const decemberDashboard = await agent.get('/dashboard/12-2026');
     expect(decemberDashboard.statusCode).toBe(200);
-    expect(decemberDashboard.text).toContain('INSS DECIMO TERCEIRO');
-    expect(decemberDashboard.text).toContain('IRRF DECIMO TERCEIRO');
-    expect(decemberDashboard.text).toContain('Total INSS Décimo Terceiro');
-    expect(decemberDashboard.text).toContain('Total IRRF Décimo Terceiro');
+    expect(decemberDashboard.text).toContain('INSS Décimo');
+    expect(decemberDashboard.text).toContain('IRRF Décimo');
 
     const marchDashboard = await agent.get('/dashboard/03-2026');
     expect(marchDashboard.statusCode).toBe(200);
-    expect(marchDashboard.text).not.toContain('INSS DECIMO TERCEIRO');
-    expect(marchDashboard.text).not.toContain('IRRF DECIMO TERCEIRO');
-    expect(marchDashboard.text).not.toContain('Total INSS Décimo Terceiro');
+    expect(marchDashboard.text).not.toContain('INSS Décimo');
+    expect(marchDashboard.text).not.toContain('IRRF Décimo');
   });
 
   it('exibe status somente leitura para usuario comum', async () => {
@@ -227,8 +228,9 @@ describe('aplicacao web', () => {
 
     const dashboard = await agent.get('/dashboard');
     expect(dashboard.statusCode).toBe(200);
-    expect(dashboard.text).toContain('status-badge--em_processo');
-    expect(dashboard.text).not.toContain('js-status-checks');
+    expect(dashboard.text).toContain('status-badge');
+    expect(dashboard.text).toContain('readonly');
+    expect(dashboard.text).not.toContain('Salvar dados');
   });
 
   it('gera pdf respeitando cookie de tema', async () => {
@@ -259,30 +261,32 @@ describe('layout e pdf', () => {
     expect(layout.fillPercent).toBeGreaterThan(0);
   });
 
-  it('gera html do pdf com quadro FGTS unificado', async () => {
+  it('gera html do pdf com layout do demonstrativo unificado', async () => {
     const record = {
       ...createInitialRecord(),
+      dataPreenchimento: '2026-03-15',
+      responsavel: 'Beatriz',
+      observacoes: 'Conferir valores.',
+      statusGeral: 'Em conferência',
       updatedAt: new Date().toISOString(),
       updatedBy: 'teste',
     };
 
     const html = await renderPdfHtml(record, helpers);
 
-    expect(html).toContain('data-theme="dauto"');
-    expect(html).toContain('DEMONSTRATIVO IMPOSTOS FOLHA MENSAL - GRUPO DAUTO');
-    expect(html).toContain('RESUMO IMPOSTOS - FGTS');
-    expect(html).toContain('FGTS MENSAL');
-    expect(html).toContain('FGTS DECIMO TERCEIRO');
+    expect(html).toContain('Demonstrativo de Impostos – Folha de Pagamento');
+    expect(html).toContain('pdf-head');
+    expect(html).toContain('pdf-box-guias');
+    expect(html).toContain('Demonstrativo por empresa');
     expect(html).toContain('ETICA MATRIZ');
-    expect(html).toContain('pdf-group-totals__card');
-    expect(html).toContain('Total INSS + IRRF');
-    expect(html).toContain('INSS/IRRF:');
+    expect(html).toContain('Total DARF INSS/IRRF');
+    expect(html).toContain('Conferir valores.');
     expect(html).toContain('data:image/png;base64,');
-    expect(html).toContain('GRUPO DAUTO');
-    expect(html).not.toContain('tax-table-thirteenth');
-    expect(html).toContain('sheet-grid--pdf');
-    expect(html).not.toContain('INSS DECIMO TERCEIRO');
-    expect(html).not.toContain('Resumo de Impostos da Folha');
+    expect(html).not.toContain('DEMONSTRATIVO IMPOSTOS FOLHA MENSAL');
+    expect(html).not.toContain('excel-table');
+    expect(html).not.toContain('pdf-header--dauto');
+    expect(html).not.toMatch(/<div class="sheet-table-mobile"/);
+    expect(html).not.toMatch(/class="mobile-company-card/);
   });
 
   it('gera html do pdf de dezembro com colunas de INSS e IRRF decimo terceiro', async () => {
@@ -295,21 +299,23 @@ describe('layout e pdf', () => {
 
     const html = await renderPdfHtml(record, helpers);
 
-    expect(html).toContain('INSS DECIMO TERCEIRO');
-    expect(html).toContain('IRRF DECIMO TERCEIRO');
-    expect(html).toContain('pdf-group-totals__label');
-    expect(html).toContain('status-badge--em_processo');
+    expect(html).toContain('INSS Décimo');
+    expect(html).toContain('IRRF Décimo');
+    expect(html).toContain('pdf-table--full');
   });
 
-  it('gera html do pdf com tema escuro quando solicitado', async () => {
+  it('gera html do pdf com metadados do record', async () => {
     const record = {
       ...createInitialRecord(),
+      responsavel: 'Maria',
+      statusGeral: 'Conferido',
       updatedAt: new Date().toISOString(),
       updatedBy: 'teste',
     };
 
-    const html = await renderPdfHtml(record, helpers, { theme: 'escuro' });
+    const html = await renderPdfHtml(record, helpers);
 
-    expect(html).toContain('data-theme="escuro"');
+    expect(html).toContain('Maria');
+    expect(html).toContain('Conferido');
   });
 });

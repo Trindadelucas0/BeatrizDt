@@ -1,0 +1,135 @@
+<%
+  const showDecimoLeft = /^12\/\d{4}$/.test(record.competencia);
+  const isPrint = typeof printMode !== 'undefined' && printMode;
+  const embedded = typeof embeddedInCard !== 'undefined' && embeddedInCard;
+  const tableClass = isPrint ? 'pdf-table pdf-table--full' : '';
+%>
+<% if (!isPrint && !embedded) { %>
+<div class="card">
+  <div class="section-title">
+    <h2>Lançamento mensal</h2>
+  </div>
+  <div class="table-wrap">
+<% } else if (!isPrint && embedded) { %>
+  <div class="table-wrap">
+<% } %>
+    <table class="<%= tableClass %>">
+      <thead>
+        <tr>
+          <th>Cód.</th>
+          <th>Empresa</th>
+          <th>CNPJ</th>
+          <% if (showDecimoLeft) { %>
+            <th class="red">INSS</th>
+            <th class="red">IRRF</th>
+            <th class="red">INSS Décimo</th>
+            <th class="red">IRRF Décimo</th>
+          <% } else { %>
+            <th class="red">INSS</th>
+            <th class="red">IRRF</th>
+          <% } %>
+          <th class="red">Total DARF</th>
+          <th>Empréstimo Consignado</th>
+          <th>FGTS</th>
+          <th>13º FGTS</th>
+          <th>Total FGTS</th>
+          <th>Total Geral</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% record.groups.forEach((group, groupIndex) => { %>
+          <% group.companies.forEach((company, companyIndex) => { %>
+            <% const totalGeral = (company.totalLeft || 0) + (company.totalRight || 0); %>
+            <tr>
+              <td>
+                <% if (isPrint) { %>
+                  <span class="print-value print-value--left"><%= company.code %></span>
+                <% } else { %>
+                  <input type="text" class="text js-text-source" data-group-index="<%= groupIndex %>" data-company-index="<%= companyIndex %>" data-field="code" value="<%= company.code %>" aria-label="Código da empresa" <%= isReadOnly ? 'readonly' : '' %> />
+                <% } %>
+              </td>
+              <td>
+                <% if (isPrint) { %>
+                  <span class="print-value print-value--left"><%= company.name %></span>
+                <% } else { %>
+                  <input type="text" class="text js-text-source" data-group-index="<%= groupIndex %>" data-company-index="<%= companyIndex %>" data-field="name" value="<%= company.name %>" aria-label="Nome da empresa" <%= isReadOnly ? 'readonly' : '' %> />
+                <% } %>
+              </td>
+              <td>
+                <% if (isPrint) { %>
+                  <span class="print-value"><%= helpers.formatCnpj(company.cnpj) %></span>
+                <% } else { %>
+                  <input type="text" class="text js-text-source js-cnpj-source" data-group-index="<%= groupIndex %>" data-company-index="<%= companyIndex %>" data-field="cnpj" value="<%= helpers.formatCnpj(company.cnpj) %>" aria-label="CNPJ" <%= isReadOnly ? 'readonly' : '' %> />
+                <% } %>
+              </td>
+              <td>
+                <% if (isPrint) { %>
+                  <span class="print-value money"><%= helpers.formatCurrency(company.inss) %></span>
+                <% } else { %>
+                  <input type="text" class="js-currency-source" data-group-index="<%= groupIndex %>" data-company-index="<%= companyIndex %>" data-field="inss" value="<%= helpers.formatCurrency(company.inss) %>" aria-label="INSS" <%= isReadOnly ? 'readonly' : '' %> />
+                <% } %>
+              </td>
+              <td>
+                <% if (isPrint) { %>
+                  <span class="print-value money"><%= helpers.formatCurrency(company.irrf) %></span>
+                <% } else { %>
+                  <input type="text" class="js-currency-source" data-group-index="<%= groupIndex %>" data-company-index="<%= companyIndex %>" data-field="irrf" value="<%= helpers.formatCurrency(company.irrf) %>" aria-label="IRRF" <%= isReadOnly ? 'readonly' : '' %> />
+                <% } %>
+              </td>
+              <% if (showDecimoLeft) { %>
+                <td>
+                  <% if (isPrint) { %>
+                    <span class="print-value money"><%= helpers.formatCurrency(company.inssDecimoTerceiro) %></span>
+                  <% } else { %>
+                    <input type="text" class="js-currency-source" data-group-index="<%= groupIndex %>" data-company-index="<%= companyIndex %>" data-field="inssDecimoTerceiro" value="<%= helpers.formatCurrency(company.inssDecimoTerceiro) %>" aria-label="INSS décimo terceiro" <%= isReadOnly ? 'readonly' : '' %> />
+                  <% } %>
+                </td>
+                <td>
+                  <% if (isPrint) { %>
+                    <span class="print-value money"><%= helpers.formatCurrency(company.irrfDecimoTerceiro) %></span>
+                  <% } else { %>
+                    <input type="text" class="js-currency-source" data-group-index="<%= groupIndex %>" data-company-index="<%= companyIndex %>" data-field="irrfDecimoTerceiro" value="<%= helpers.formatCurrency(company.irrfDecimoTerceiro) %>" aria-label="IRRF décimo terceiro" <%= isReadOnly ? 'readonly' : '' %> />
+                  <% } %>
+                </td>
+              <% } %>
+              <td class="total-cell js-line-darf" data-group-index="<%= groupIndex %>" data-company-index="<%= companyIndex %>">
+                <%= helpers.formatCurrency(company.totalLeft) %>
+              </td>
+              <td>
+                <% if (isPrint) { %>
+                  <span class="print-value money"><%= helpers.formatCurrency(company.emprestimoConsignado) %></span>
+                <% } else { %>
+                  <input type="text" class="js-currency-source" data-group-index="<%= groupIndex %>" data-company-index="<%= companyIndex %>" data-field="emprestimoConsignado" value="<%= helpers.formatCurrency(company.emprestimoConsignado) %>" aria-label="Empréstimo consignado" <%= isReadOnly ? 'readonly' : '' %> />
+                <% } %>
+              </td>
+              <td>
+                <% if (isPrint) { %>
+                  <span class="print-value money"><%= helpers.formatCurrency(company.fgtsMensal) %></span>
+                <% } else { %>
+                  <input type="text" class="js-currency-source" data-group-index="<%= groupIndex %>" data-company-index="<%= companyIndex %>" data-field="fgtsMensal" value="<%= helpers.formatCurrency(company.fgtsMensal) %>" aria-label="FGTS mensal" <%= isReadOnly ? 'readonly' : '' %> />
+                <% } %>
+              </td>
+              <td>
+                <% if (isPrint) { %>
+                  <span class="print-value money"><%= helpers.formatCurrency(company.fgtsDecimoTerceiro) %></span>
+                <% } else { %>
+                  <input type="text" class="js-currency-source" data-group-index="<%= groupIndex %>" data-company-index="<%= companyIndex %>" data-field="fgtsDecimoTerceiro" value="<%= helpers.formatCurrency(company.fgtsDecimoTerceiro) %>" aria-label="FGTS décimo terceiro" <%= isReadOnly ? 'readonly' : '' %> />
+                <% } %>
+              </td>
+              <td class="total-cell js-line-fgts" data-group-index="<%= groupIndex %>" data-company-index="<%= companyIndex %>">
+                <%= helpers.formatCurrency(company.totalRight) %>
+              </td>
+              <td class="total-cell js-line-geral" data-group-index="<%= groupIndex %>" data-company-index="<%= companyIndex %>">
+                <%= helpers.formatCurrency(totalGeral) %>
+              </td>
+            </tr>
+          <% }) %>
+        <% }) %>
+      </tbody>
+    </table>
+<% if (!isPrint && !embedded) { %>
+  </div>
+</div>
+<% } else if (!isPrint && embedded) { %>
+  </div>
+<% } %>

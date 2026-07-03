@@ -1,0 +1,45 @@
+<%
+  const isPrint = typeof printMode !== 'undefined' && printMode;
+  const showDecimoLeft = /^12\/\d{4}$/.test(record.competencia);
+  let totalDarfGuias = 0;
+  let totalFgtsGuias = 0;
+%>
+<% if (!isPrint) { %>
+<div class="guias-panel">
+  <h3>Guias — soma Matriz + Filial</h3>
+  <p class="hint">Valores consolidados por grupo para emissão das guias DARF e FGTS (56+92, 67+69, 45+150, 46).</p>
+  <div class="table-wrap">
+<% } %>
+    <table class="<%= isPrint ? 'pdf-table pdf-table--full pdf-table--guias' : '' %>">
+      <thead>
+        <tr>
+          <th>Grupo</th>
+          <th class="red guia-darf">Guia DARF</th>
+          <th class="guia-fgts">Guia FGTS</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% record.groups.forEach((group, groupIndex) => { %>
+          <% const guiaDarf = group.summary.totalLeft; %>
+          <% const guiaFgts = group.summary.totalRight; %>
+          <% totalDarfGuias += guiaDarf; %>
+          <% totalFgtsGuias += guiaFgts; %>
+          <tr>
+            <td><b><%= group.label %></b></td>
+            <td class="total js-guia-darf" data-group-index="<%= groupIndex %>"><%= helpers.formatCurrency(guiaDarf) %></td>
+            <td class="total js-guia-fgts" data-group-index="<%= groupIndex %>"><%= helpers.formatCurrency(guiaFgts) %></td>
+          </tr>
+        <% }) %>
+      </tbody>
+      <tfoot>
+        <tr class="grupo-total">
+          <td><b>Total guias</b></td>
+          <td class="total" id="total-guia-darf"><b><%= helpers.formatCurrency(totalDarfGuias) %></b></td>
+          <td class="total" id="total-guia-fgts"><b><%= helpers.formatCurrency(totalFgtsGuias) %></b></td>
+        </tr>
+      </tfoot>
+    </table>
+<% if (!isPrint) { %>
+  </div>
+</div>
+<% } %>

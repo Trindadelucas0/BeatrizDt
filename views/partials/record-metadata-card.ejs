@@ -1,0 +1,54 @@
+<div class="card">
+  <div class="grid">
+    <div>
+      <label for="competencia-input">Competência</label>
+      <% if (isReadOnly) { %>
+        <input id="competencia-input" type="text" value="<%= record.competencia %>" readonly aria-label="Competência" />
+      <% } else { %>
+        <input id="competencia-input" name="competencia-display" type="text" value="<%= record.competencia %>" placeholder="03/2026" maxlength="7" aria-label="Competência" />
+      <% } %>
+    </div>
+    <div>
+      <label for="data-preenchimento-input">Data de preenchimento</label>
+      <input
+        id="data-preenchimento-input"
+        class="js-metadata-source"
+        data-field="dataPreenchimento"
+        type="date"
+        value="<%= record.dataPreenchimento || '' %>"
+        <%= isReadOnly ? 'readonly' : '' %>
+      />
+    </div>
+    <div>
+      <label for="responsavel-input">Responsável</label>
+      <input
+        id="responsavel-input"
+        class="js-metadata-source"
+        data-field="responsavel"
+        type="text"
+        value="<%= record.responsavel || '' %>"
+        placeholder="Nome"
+        <%= isReadOnly ? 'readonly' : '' %>
+      />
+    </div>
+    <div>
+      <label for="status-geral-input">Status</label>
+      <select id="status-geral-input" class="js-metadata-source" data-field="statusGeral" <%= isReadOnly ? 'disabled' : '' %>>
+        <% const statusOptions = ['Em conferência', 'Conferido', 'Enviado ao cliente']; %>
+        <% statusOptions.forEach((option) => { %>
+          <option value="<%= option %>" <%= (record.statusGeral || 'Em conferência') === option ? 'selected' : '' %>><%= option %></option>
+        <% }) %>
+      </select>
+    </div>
+  </div>
+  <div style="margin-top:14px">
+    <label for="observacoes-input">Observações gerais</label>
+    <textarea
+      id="observacoes-input"
+      class="js-metadata-source"
+      data-field="observacoes"
+      placeholder="Observações para conferência do cliente..."
+      <%= isReadOnly ? 'readonly' : '' %>
+    ><%= record.observacoes || '' %></textarea>
+  </div>
+</div>
