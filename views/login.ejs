@@ -12,8 +12,13 @@
 
   <main class="login-page__main">
     <div class="login-card">
-      <div class="logo-card dauto login-logo-card">
-        <img src="<%= logoPath %>" alt="Dauto Tintas" />
+      <div class="login-logos">
+        <div class="logo-card exito login-logo-card">
+          <img src="<%= exitoLogoPath %>" alt="Êxito Contabilidade" />
+        </div>
+        <div class="logo-card dauto login-logo-card">
+          <img src="<%= logoPath %>" alt="Dauto Tintas" />
+        </div>
       </div>
 
       <% if (error) { %>

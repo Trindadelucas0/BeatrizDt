@@ -117,8 +117,10 @@ describe('aplicacao web', () => {
     const response = await request(app).get('/login');
     expect(response.statusCode).toBe(200);
     expect(response.text).toContain('logo-card dauto');
+    expect(response.text).toContain('logo-card exito');
     expect(response.text).toContain('theme-switcher');
     expect(response.text).toContain('/images/grupo-dauto-logo.png');
+    expect(response.text).toContain('exito-logo.png');
     expect(response.text).toContain('btn-green');
     expect(response.text).toContain('viewport');
     expect(response.text).toContain('width=device-width');

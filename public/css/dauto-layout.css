@@ -987,8 +987,15 @@
   gap: 22px;
 }
 
-.login-card .logo-card.dauto {
-  width: min(100%, 360px);
+.login-logos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  width: 100%;
+}
+
+.login-logos .logo-card {
+  width: 100%;
   height: 96px;
 }
 
@@ -1350,8 +1357,7 @@ body.pdf-render-body #pdfArea {
     padding: clamp(16px, 4vw, 28px) clamp(14px, 4vw, 24px);
   }
 
-  .login-card .logo-card.dauto {
-    width: 100%;
+  .login-logos .logo-card {
     height: 88px;
   }
 
