@@ -749,11 +749,15 @@
 .dashboard-shell__main {
   flex: 1;
   min-width: 0;
+  width: 100%;
 }
 
 .dashboard-shell .app {
-  max-width: none;
-  margin: 0;
+  max-width: min(1400px, calc(100% - 10rem));
+  width: 100%;
+  margin: 0 auto;
+  padding: 32px clamp(48px, 8vw, 120px);
+  box-sizing: border-box;
 }
 
 .dashboard-toolbar {
@@ -966,25 +970,36 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 24px 16px;
+  padding: 32px 24px;
   font-family: Arial, Helvetica, sans-serif;
 }
 
 .login-card {
-  width: min(100%, 420px);
+  width: min(100%, 520px);
   background: #fff;
   border-radius: 18px;
-  padding: 28px 24px;
+  padding: 36px 32px;
   box-shadow: 0 10px 26px rgba(15, 23, 42, .07);
   border: 1px solid var(--line);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 18px;
+  gap: 22px;
 }
 
 .login-card .logo-card.dauto {
-  width: min(100%, 280px);
+  width: min(100%, 360px);
+  height: 96px;
+}
+
+.login-card input {
+  padding: 12px 14px;
+  font-size: 15px;
+}
+
+.login-card .btn-green {
+  min-height: 48px;
+  font-size: 15px;
 }
 
 .login-card__form {
@@ -1208,8 +1223,9 @@ body.pdf-render-body #pdfArea {
    RESPONSIVE
    ============================================================ */
 @media (max-width: 900px) {
-  .app {
-    padding: 16px;
+  .dashboard-shell .app {
+    max-width: none;
+    padding: 32px;
   }
 
   .header {
@@ -1240,8 +1256,8 @@ body.pdf-render-body #pdfArea {
 }
 
 @media (max-width: 640px) {
-  .app {
-    padding: 12px;
+  .dashboard-shell .app {
+    padding: 24px;
   }
 
   .grid {
@@ -1317,8 +1333,8 @@ body.pdf-render-body #pdfArea {
 }
 
 @media (max-width: 480px) {
-  .app {
-    padding: 10px;
+  .dashboard-shell .app {
+    padding: 16px;
   }
 
   .card {
@@ -1336,7 +1352,7 @@ body.pdf-render-body #pdfArea {
 
   .login-card .logo-card.dauto {
     width: 100%;
-    height: 72px;
+    height: 88px;
   }
 
   input,
