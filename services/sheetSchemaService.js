@@ -98,6 +98,21 @@ function mergePayloadIntoSchema(payload = {}) {
 
   base.groups = base.groups.map((group) => {
     const incomingGroup = incomingGroups.get(group.id) || {};
+
+    if (Array.isArray(incomingGroup.companies)) {
+      return {
+        ...group,
+        label: incomingGroup.label || group.label,
+        statusLeft: incomingGroup.statusLeft !== undefined ? incomingGroup.statusLeft : group.statusLeft,
+        statusRight: incomingGroup.statusRight !== undefined ? incomingGroup.statusRight : group.statusRight,
+        companies: incomingGroup.companies.map((company, index) => migrateCompany({
+          ...createEmptyCompany(group.id, `${Date.now()}-${index}`),
+          ...company,
+          id: company.id || `${group.id}-custom-${Date.now()}-${index}`,
+        })),
+      };
+    }
+
     const companiesMap = new Map((incomingGroup.companies || []).map((company) => [company.id, company]));
 
     return {
@@ -137,6 +152,22 @@ function migrateCompany(company = {}) {
   delete migrated.fgts;
 
   return migrated;
+}
+
+function createEmptyCompany(groupId, suffix = Date.now()) {
+  return migrateCompany({
+    id: `${groupId}-custom-${suffix}`,
+    code: '',
+    name: 'Nova empresa',
+    cnpj: '',
+    inss: 0,
+    irrf: 0,
+    emprestimoConsignado: 0,
+    fgtsMensal: 0,
+    fgtsDecimoTerceiro: 0,
+    inssDecimoTerceiro: 0,
+    irrfDecimoTerceiro: 0,
+  });
 }
 
 function migrateRecord(record = {}) {
@@ -186,6 +217,7 @@ function migrateRecord(record = {}) {
 
 module.exports = {
   createInitialRecord,
+  createEmptyCompany,
   getBaseRecord,
   mergePayloadIntoSchema,
   migrateCompany,

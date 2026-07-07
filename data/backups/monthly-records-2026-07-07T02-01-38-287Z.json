@@ -2072,10 +2072,6 @@
     },
     {
       "competencia": "01/2026",
-      "dataPreenchimento": "",
-      "responsavel": "",
-      "observacoes": "",
-      "statusGeral": "Em conferência",
       "metadata": {
         "titleLeft": "RESUMO IMPOSTOS DARF INSS/IRRF",
         "titleRight": "RESUMO IMPOSTOS - FGTS MENSAL E DECIMO TERCEIRO",
@@ -2277,7 +2273,7 @@
         "totalRight": 0,
         "fgts": 0
       },
-      "updatedAt": "2026-07-07T02:02:35.949Z",
+      "updatedAt": "2026-06-29T13:41:47.950Z",
       "updatedBy": "admin"
     }
   ]

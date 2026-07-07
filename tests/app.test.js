@@ -104,8 +104,9 @@ describe('aplicacao web', () => {
     expect(dashboard.text).toContain('13º FGTS');
     expect(dashboard.text).toContain('ETICA');
     expect(dashboard.text).toContain('guias-panel');
-    expect(dashboard.text).toContain('Lançamento mensal');
-    expect(dashboard.text).toContain('theme-switcher');
+    expect(dashboard.text).toContain('js-sheet-add-row');
+    expect(dashboard.text).toContain('js-sheet-remove-row');
+    expect(dashboard.text).not.toContain('theme-switcher');
     expect(dashboard.text).toContain('logo-card dauto');
     expect(dashboard.text).toContain('/images/logo.png');
     expect(dashboard.text).toContain('/images/dauto-login-logo.png');
@@ -124,7 +125,7 @@ describe('aplicacao web', () => {
     expect(response.text).toContain('/images/dauto-login-page-logo.png');
     expect(response.text).not.toContain('/images/dauto-login-logo.png');
     expect(response.text).not.toContain('/images/logo.png');
-    expect(response.text).not.toContain('login-card__title">Login');
+    expect(response.text).toContain('Folha de Pagamento');
     expect(response.text).not.toContain('Resumo de Impostos – Folha de Pagamento');
     expect(response.text).not.toContain('Controle mensal por empresa · Dauto Tintas');
     expect(response.text).toContain('btn-dauto');

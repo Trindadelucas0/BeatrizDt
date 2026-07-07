@@ -315,6 +315,206 @@
     }, 4000);
   }
 
+  function countCompanies(record) {
+    return record.groups.reduce((total, group) => total + group.companies.length, 0);
+  }
+
+  function createEmptyCompany(groupId) {
+    const suffix = `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
+    return {
+      id: `${groupId}-custom-${suffix}`,
+      code: `N${String(Date.now()).slice(-4)}`,
+      name: 'Nova empresa',
+      cnpj: '',
+      inss: 0,
+      irrf: 0,
+      inssDecimoTerceiro: 0,
+      irrfDecimoTerceiro: 0,
+      emprestimoConsignado: 0,
+      fgtsMensal: 0,
+      fgtsDecimoTerceiro: 0,
+      totalLeft: 0,
+      totalRight: 0,
+    };
+  }
+
+  function setIndexedAttributes(element, groupIndex, companyIndex) {
+    element.dataset.groupIndex = String(groupIndex);
+    element.dataset.companyIndex = String(companyIndex);
+
+    element.querySelectorAll('[data-group-index][data-company-index]').forEach((child) => {
+      child.dataset.groupIndex = String(groupIndex);
+      child.dataset.companyIndex = String(companyIndex);
+    });
+  }
+
+  function clearRowValues(row) {
+    row.querySelectorAll('input').forEach((input) => {
+      if (input.classList.contains('js-currency-source')) {
+        input.value = formatCurrency(0);
+        return;
+      }
+
+      if (input.dataset.field === 'name') {
+        input.value = 'Nova empresa';
+        return;
+      }
+
+      input.value = '';
+    });
+
+    row.querySelectorAll('.js-line-darf, .js-line-fgts, .js-line-geral').forEach((cell) => {
+      cell.textContent = formatCurrency(0);
+    });
+  }
+
+  function bindCurrencyInput(input) {
+    input.addEventListener('input', () => {
+      syncMirroredField(input);
+      refresh();
+      markDirty();
+    });
+    input.addEventListener('blur', () => {
+      input.value = formatCurrency(input.value);
+      syncMirroredField(input);
+      refresh();
+      markDirty();
+    });
+    input.addEventListener('focus', () => {
+      input.value = input.value.replace(/[R$\s]/g, '');
+    });
+  }
+
+  function bindTextInput(input) {
+    input.addEventListener('input', () => {
+      syncMirroredField(input);
+      refresh();
+      markDirty();
+    });
+  }
+
+  function bindCnpjInput(input) {
+    input.addEventListener('blur', () => {
+      input.value = formatCnpj(input.value);
+      syncMirroredField(input);
+      refresh();
+      markDirty();
+    });
+  }
+
+  function bindSheetInput(input) {
+    if (input.dataset.sheetBound === 'true') {
+      return;
+    }
+
+    input.dataset.sheetBound = 'true';
+
+    if (input.classList.contains('js-currency-source')) {
+      bindCurrencyInput(input);
+      return;
+    }
+
+    if (input.classList.contains('js-cnpj-source')) {
+      bindCnpjInput(input);
+    }
+
+    if (input.classList.contains('js-text-source')) {
+      bindTextInput(input);
+    }
+  }
+
+  function bindSheetRow(row) {
+    row.querySelectorAll('input').forEach(bindSheetInput);
+  }
+
+  function syncStateRecord(record) {
+    state.record = clone(record);
+  }
+
+  function reindexAllSheetDom(record) {
+    const rows = [...document.querySelectorAll('.sheet-table-desktop .js-sheet-row')];
+    const cards = [...document.querySelectorAll('.mobile-company-card')];
+    let pointer = 0;
+
+    record.groups.forEach((group, groupIndex) => {
+      group.companies.forEach((company, companyIndex) => {
+        if (rows[pointer]) {
+          setIndexedAttributes(rows[pointer], groupIndex, companyIndex);
+        }
+        if (cards[pointer]) {
+          setIndexedAttributes(cards[pointer], groupIndex, companyIndex);
+        }
+        pointer += 1;
+      });
+    });
+  }
+
+  function addSheetRow() {
+    const record = updateTotals(readRecordFromForm());
+    const lastGroupIndex = record.groups.length - 1;
+    const lastGroup = record.groups[lastGroupIndex];
+    const companyIndex = lastGroup.companies.length;
+    lastGroup.companies.push(createEmptyCompany(lastGroup.id));
+
+    const desktopBody = document.querySelector('.sheet-table-desktop tbody');
+    const templateRow = desktopBody?.querySelector('.js-sheet-row');
+    const mobileList = document.querySelector('.mobile-company-list');
+    const templateCard = mobileList?.querySelector('.mobile-company-card');
+
+    if (templateRow) {
+      const newRow = templateRow.cloneNode(true);
+      clearRowValues(newRow);
+      setIndexedAttributes(newRow, lastGroupIndex, companyIndex);
+      desktopBody.appendChild(newRow);
+      bindSheetRow(newRow);
+    }
+
+    if (templateCard) {
+      const newCard = templateCard.cloneNode(true);
+      clearRowValues(newCard);
+      setIndexedAttributes(newCard, lastGroupIndex, companyIndex);
+      const headerStrong = newCard.querySelector('.mobile-company-card__header strong');
+      const headerSpan = newCard.querySelector('.mobile-company-card__header span');
+      if (headerStrong) headerStrong.textContent = 'Nova empresa';
+      if (headerSpan) headerSpan.textContent = `${lastGroup.label} ·`;
+      mobileList.appendChild(newCard);
+      bindSheetRow(newCard);
+    }
+
+    syncStateRecord(record);
+    refresh();
+    markDirty();
+  }
+
+  function removeSheetRow(groupIndex, companyIndex) {
+    const record = updateTotals(readRecordFromForm());
+
+    if (countCompanies(record) <= 1) {
+      showToast('É necessário manter pelo menos uma linha no lançamento.');
+      return;
+    }
+
+    const group = record.groups[groupIndex];
+    if (!group || !group.companies[companyIndex]) {
+      return;
+    }
+
+    group.companies.splice(companyIndex, 1);
+
+    document.querySelectorAll(`.js-sheet-row[data-group-index="${groupIndex}"][data-company-index="${companyIndex}"]`).forEach((row) => {
+      row.remove();
+    });
+
+    document.querySelectorAll(`.mobile-company-card[data-group-index="${groupIndex}"][data-company-index="${companyIndex}"]`).forEach((card) => {
+      card.remove();
+    });
+
+    reindexAllSheetDom(record);
+    syncStateRecord(record);
+    refresh();
+    markDirty();
+  }
+
   document.querySelectorAll('.js-currency-source').forEach((input) => {
     input.addEventListener('input', () => {
       syncMirroredField(input);
@@ -386,6 +586,22 @@
       event.preventDefault();
       event.returnValue = '';
     }
+  });
+
+  const addRowButton = document.querySelector('.js-sheet-add-row');
+  if (addRowButton && !state.isReadOnly) {
+    addRowButton.addEventListener('click', addSheetRow);
+  }
+
+  document.addEventListener('click', (event) => {
+    const removeButton = event.target.closest('.js-sheet-remove-row');
+    if (!removeButton || state.isReadOnly) {
+      return;
+    }
+
+    const groupIndex = Number(removeButton.dataset.groupIndex);
+    const companyIndex = Number(removeButton.dataset.companyIndex);
+    removeSheetRow(groupIndex, companyIndex);
   });
 
   document.querySelectorAll('.js-currency-source').forEach((input) => {

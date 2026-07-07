@@ -11,13 +11,13 @@
 
   <div class="dashboard-toolbar__spacer"></div>
 
-  <%- include('theme-switcher') %>
+  <div class="dashboard-toolbar__actions">
+    <% if (!isReadOnly) { %>
+      <button type="submit" form="sheet-form" class="dashboard-toolbar__btn">Salvar dados</button>
+    <% } %>
 
-  <% if (!isReadOnly) { %>
-    <button type="submit" form="sheet-form" class="btn-green">Salvar dados</button>
-  <% } %>
+    <a href="/dashboard/pdf/<%= helpers.toCompetenciaSlug(record.competencia) %>" class="dashboard-toolbar__btn">Baixar PDF</a>
 
-  <a href="/dashboard/pdf/<%= helpers.toCompetenciaSlug(record.competencia) %>" class="btn-black">Baixar PDF</a>
-
-  <a href="/logout" class="btn-gray">Sair</a>
+    <a href="/logout" class="dashboard-toolbar__btn">Sair</a>
+  </div>
 </div>

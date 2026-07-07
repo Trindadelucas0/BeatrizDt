@@ -34,13 +34,16 @@
           <th>13º FGTS</th>
           <th>Total FGTS</th>
           <th>Total Geral</th>
+          <% if (!isPrint && !isReadOnly) { %>
+            <th class="sheet-actions-col">Ações</th>
+          <% } %>
         </tr>
       </thead>
       <tbody>
         <% record.groups.forEach((group, groupIndex) => { %>
           <% group.companies.forEach((company, companyIndex) => { %>
             <% const totalGeral = (company.totalLeft || 0) + (company.totalRight || 0); %>
-            <tr>
+            <tr class="js-sheet-row" data-group-index="<%= groupIndex %>" data-company-index="<%= companyIndex %>">
               <td>
                 <% if (isPrint) { %>
                   <span class="print-value print-value--left"><%= company.code %></span>
@@ -122,6 +125,19 @@
               <td class="total-cell js-line-geral" data-group-index="<%= groupIndex %>" data-company-index="<%= companyIndex %>">
                 <%= helpers.formatCurrency(totalGeral) %>
               </td>
+              <% if (!isPrint && !isReadOnly) { %>
+                <td class="sheet-actions-col">
+                  <button
+                    type="button"
+                    class="sheet-row-btn sheet-row-btn--remove js-sheet-remove-row"
+                    data-group-index="<%= groupIndex %>"
+                    data-company-index="<%= companyIndex %>"
+                    aria-label="Remover linha de <%= company.name %>"
+                  >
+                    Remover
+                  </button>
+                </td>
+              <% } %>
             </tr>
           <% }) %>
         <% }) %>

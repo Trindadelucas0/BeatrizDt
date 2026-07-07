@@ -72,6 +72,11 @@
           <div class="card">
             <div class="section-title">
               <h2>Lançamento mensal</h2>
+              <% if (!isReadOnly) { %>
+                <button type="button" class="sheet-row-btn sheet-row-btn--add js-sheet-add-row">
+                  Adicionar linha
+                </button>
+              <% } %>
             </div>
             <div class="sheet-table-desktop">
               <%- include('partials/tax-table-unified', { record, isReadOnly, helpers, printMode: false, embeddedInCard: true }) %>
@@ -88,7 +93,6 @@
   <script>
     window.__DASHBOARD_STATE__ = <%- JSON.stringify({ record, isReadOnly }) %>;
   </script>
-  <script src="/js/theme.js"></script>
   <script src="/js/sidebar.js"></script>
   <script src="/js/dashboard.js"></script>
 </body>

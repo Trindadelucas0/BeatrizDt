@@ -8,8 +8,21 @@
         <% const totalGeral = (company.totalLeft || 0) + (company.totalRight || 0); %>
         <article class="mobile-company-card" data-group-index="<%= groupIndex %>" data-company-index="<%= companyIndex %>">
           <div class="mobile-company-card__header">
-            <strong><%= company.name %></strong>
-            <span><%= group.label %> · <%= company.code %></span>
+            <div>
+              <strong><%= company.name %></strong>
+              <span><%= group.label %> · <%= company.code %></span>
+            </div>
+            <% if (!isReadOnly) { %>
+              <button
+                type="button"
+                class="sheet-row-btn sheet-row-btn--remove js-sheet-remove-row"
+                data-group-index="<%= groupIndex %>"
+                data-company-index="<%= companyIndex %>"
+                aria-label="Remover linha de <%= company.name %>"
+              >
+                Remover
+              </button>
+            <% } %>
           </div>
           <div class="mobile-company-card__body">
             <div class="mobile-company-card__row mobile-company-card__row--full">
