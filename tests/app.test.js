@@ -117,7 +117,8 @@ describe('aplicacao web', () => {
   it('exibe login simplificado com logo', async () => {
     const response = await request(app).get('/login');
     expect(response.statusCode).toBe(200);
-    expect(response.text).toContain('logo-card dauto');
+    expect(response.text).toContain('login-brand__logo');
+    expect(response.text).not.toContain('logo-card dauto');
     expect(response.text).not.toContain('logo-card exito');
     expect(response.text).not.toContain('theme-switcher');
     expect(response.text).toContain('/images/dauto-login-page-logo.png');

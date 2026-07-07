@@ -55,14 +55,31 @@
         }
 
         .logo-card.exito {
-            background: #fff;
-            border-color: #e6e9ef;
+            background: transparent;
+            border: none;
+            padding: 0;
+            box-shadow: none;
+            border-radius: 0;
+            overflow: visible;
+        }
+
+        .logo-card.exito img {
+            transform: scale(1.2);
+            transform-origin: center center;
         }
 
         .logo-card.dauto {
-            background: #fff;
-            border-color: #e6e9ef;
-            padding: 12px 16px
+            background: transparent;
+            border: none;
+            padding: 0;
+            box-shadow: none;
+            border-radius: 0;
+            overflow: visible;
+        }
+
+        .logo-card.dauto img {
+            transform: scale(1.2);
+            transform-origin: center center;
         }
 
         .logo-card img {
@@ -372,14 +389,31 @@
         }
 
         .pdf-logo:not(.dauto) {
-            background: #fff;
-            border-color: #e6e9ef;
+            background: transparent;
+            border: none;
+            padding: 0;
+            box-shadow: none;
+            border-radius: 0;
+            overflow: visible;
+        }
+
+        .pdf-logo:not(.dauto) img {
+            transform: scale(1.15);
+            transform-origin: center center;
         }
 
         .pdf-logo.dauto {
-            background: #fff;
-            border-color: #e6e9ef;
-            padding: 10px 12px;
+            background: transparent;
+            border: none;
+            padding: 0;
+            box-shadow: none;
+            border-radius: 0;
+            overflow: visible;
+        }
+
+        .pdf-logo.dauto img {
+            transform: scale(1.15);
+            transform-origin: center center;
         }
 
         .pdf-logo img {
@@ -1022,40 +1056,28 @@
 }
 
 .login-card__header {
-  padding: 28px 28px 22px;
+  padding: 22px 28px 20px;
   border-bottom: 1px solid var(--line);
-  background: linear-gradient(180deg, #fff 0%, #f7f7f7 100%);
+  background: #fff;
   border-top: 6px solid var(--login-blood);
 }
 
-.login-logos {
+.login-brand {
   display: flex;
   justify-content: center;
+  align-items: center;
   width: 100%;
-  margin-bottom: 8px;
-}
-
-.login-logos .logo-card {
-  width: min(100%, 380px);
-  height: 132px;
   margin: 0;
-  padding: 10px 14px;
+  padding: 0;
 }
 
-.login-logos .logo-card img {
-  width: 100%;
-  height: 100%;
-  max-width: none;
-  max-height: none;
+.login-brand__logo {
+  display: block;
+  width: min(100%, 340px);
+  height: auto;
+  max-height: 104px;
   object-fit: contain;
-  transform: scale(1.12);
-  transform-origin: center center;
-}
-
-.login-logos .logo-card.dauto {
-  background: #fff;
-  border-color: #e6e9ef;
-  padding: 12px 16px;
+  margin: 0;
 }
 
 .login-card__intro {
@@ -1536,14 +1558,9 @@ body.pdf-render-body #pdfArea {
     padding-right: 18px;
   }
 
-  .login-logos .logo-card {
-    height: 112px;
-    width: min(100%, 320px);
-    padding: 8px 12px;
-  }
-
-  .login-logos .logo-card img {
-    transform: scale(1.08);
+  .login-brand__logo {
+    width: min(100%, 300px);
+    max-height: 92px;
   }
 
   input,
