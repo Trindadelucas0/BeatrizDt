@@ -7,7 +7,7 @@ const { formatCnpj, formatCurrency, formatGroupStatus, fromCompetenciaSlug, norm
 const { buildCompetenciaStatusMap, buildLayoutViewModel, computeFillMetrics } = require('./services/layoutViewModelService');
 const { buildCompetenciaList, DEFAULT_SEED_YEAR } = require('./services/competenciaSeedService');
 const { generateRecordPdf } = require('./services/pdfService');
-const { getLogoPublicPath, getExitoLogoPublicPath } = require('./services/brandAssetService');
+const { getLogoPublicPath, getLoginPageLogoPublicPath, getExitoLogoPublicPath } = require('./services/brandAssetService');
 const { getThemeFromRequest } = require('./services/themeService');
 const { getLatestRecord, getRecordByCompetencia, listCompetencias, listRecords, saveRecord } = require('./services/recordService');
 const { createInitialRecord } = require('./services/sheetSchemaService');
@@ -54,6 +54,7 @@ app.use(session({
 
 app.locals.helpers = helpers;
 app.locals.logoPath = getLogoPublicPath();
+app.locals.loginLogoPath = getLoginPageLogoPublicPath();
 app.locals.exitoLogoPath = getExitoLogoPublicPath();
 app.locals.buildLayoutViewModel = buildLayoutViewModel;
 app.locals.buildCompetenciaStatusMap = buildCompetenciaStatusMap;

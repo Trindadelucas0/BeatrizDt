@@ -1,8 +1,9 @@
 const fs = require('node:fs');
 const path = require('node:path');
 
-const LOGO_RELATIVE_PATH = path.join('images', 'grupo-dauto-logo.png');
-const EXITO_LOGO_RELATIVE_PATH = path.join('images', 'exito-logo.png');
+const LOGO_RELATIVE_PATH = path.join('images', 'dauto-login-logo.png');
+const LOGIN_PAGE_LOGO_RELATIVE_PATH = path.join('images', 'dauto-login-page-logo.png');
+const EXITO_LOGO_RELATIVE_PATH = path.join('images', 'logo.png');
 
 function getAssetDataUri(relativePath) {
   const assetPath = path.join(process.cwd(), 'public', relativePath);
@@ -27,6 +28,10 @@ function getLogoPublicPath() {
   return `/${LOGO_RELATIVE_PATH.replace(/\\/g, '/')}`;
 }
 
+function getLoginPageLogoPublicPath() {
+  return `/${LOGIN_PAGE_LOGO_RELATIVE_PATH.replace(/\\/g, '/')}`;
+}
+
 function getExitoLogoPublicPath() {
   return `/${EXITO_LOGO_RELATIVE_PATH.replace(/\\/g, '/')}`;
 }
@@ -43,6 +48,7 @@ module.exports = {
   getLogoAbsolutePath,
   getExitoLogoAbsolutePath,
   getLogoPublicPath,
+  getLoginPageLogoPublicPath,
   getExitoLogoPublicPath,
   getLogoDataUri,
   getExitoLogoDataUri,

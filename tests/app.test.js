@@ -95,7 +95,7 @@ describe('aplicacao web', () => {
 
     const dashboard = await agent.get('/dashboard');
     expect(dashboard.statusCode).toBe(200);
-    expect(dashboard.text).toContain('Resumo de Impostos – Folha de Pagamento');
+    expect(dashboard.text).toContain('Controle folha de pagamento');
     expect(dashboard.text).toContain('sidebar-nav');
     expect(dashboard.text).toContain('01/2026');
     expect(dashboard.text).toContain('12/2026');
@@ -107,7 +107,8 @@ describe('aplicacao web', () => {
     expect(dashboard.text).toContain('Lançamento mensal');
     expect(dashboard.text).toContain('theme-switcher');
     expect(dashboard.text).toContain('logo-card dauto');
-    expect(dashboard.text).toContain('exito-logo.png');
+    expect(dashboard.text).toContain('/images/logo.png');
+    expect(dashboard.text).toContain('/images/dauto-login-logo.png');
     expect(dashboard.text).toContain('sheet-table-desktop');
     expect(dashboard.text).toContain('sheet-table-mobile');
     expect(dashboard.text).toContain('mobile-company-card');
@@ -117,11 +118,15 @@ describe('aplicacao web', () => {
     const response = await request(app).get('/login');
     expect(response.statusCode).toBe(200);
     expect(response.text).toContain('logo-card dauto');
-    expect(response.text).toContain('logo-card exito');
-    expect(response.text).toContain('theme-switcher');
-    expect(response.text).toContain('/images/grupo-dauto-logo.png');
-    expect(response.text).toContain('exito-logo.png');
-    expect(response.text).toContain('btn-green');
+    expect(response.text).not.toContain('logo-card exito');
+    expect(response.text).not.toContain('theme-switcher');
+    expect(response.text).toContain('/images/dauto-login-page-logo.png');
+    expect(response.text).not.toContain('/images/dauto-login-logo.png');
+    expect(response.text).not.toContain('/images/logo.png');
+    expect(response.text).not.toContain('login-card__title">Login');
+    expect(response.text).not.toContain('Resumo de Impostos – Folha de Pagamento');
+    expect(response.text).not.toContain('Controle mensal por empresa · Dauto Tintas');
+    expect(response.text).toContain('btn-dauto');
     expect(response.text).toContain('viewport');
     expect(response.text).toContain('width=device-width');
   });
