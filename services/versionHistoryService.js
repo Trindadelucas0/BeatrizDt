@@ -1,10 +1,4 @@
-const fs = require('node:fs/promises');
-const path = require('node:path');
-const { toCompetenciaSlug } = require('./calculationService');
-
-function getHistoryDir() {
-  return process.env.HISTORY_DIR || path.join(process.cwd(), 'data', 'history');
-}
+const { getStorage } = require('./storage');
 
 function buildDiffSummary(previousRecord, nextRecord) {
   if (!previousRecord) {
@@ -48,36 +42,7 @@ function buildDiffSummary(previousRecord, nextRecord) {
 }
 
 async function readHistory(competencia) {
-  const historyPath = path.join(getHistoryDir(), `${toCompetenciaSlug(competencia)}.json`);
-
-  try {
-    const raw = await fs.readFile(historyPath, 'utf-8');
-    return JSON.parse(raw);
-  } catch (error) {
-    return { competencia, revisions: [] };
-  }
-}
-
-async function appendRevision(nextRecord, previousRecord, updatedBy) {
-  const historyDir = getHistoryDir();
-  await fs.mkdir(historyDir, { recursive: true });
-
-  const history = await readHistory(nextRecord.competencia);
-  const revision = {
-    revision: history.revisions.length + 1,
-    updatedAt: new Date().toISOString(),
-    updatedBy,
-    competencia: nextRecord.competencia,
-    summary: buildDiffSummary(previousRecord, nextRecord),
-  };
-
-  history.competencia = nextRecord.competencia;
-  history.revisions.push(revision);
-
-  const historyPath = path.join(historyDir, `${toCompetenciaSlug(nextRecord.competencia)}.json`);
-  await fs.writeFile(historyPath, JSON.stringify(history, null, 2), 'utf-8');
-
-  return revision;
+  return getStorage().readHistory(competencia);
 }
 
 async function listRevisions(competencia) {
@@ -86,7 +51,6 @@ async function listRevisions(competencia) {
 }
 
 module.exports = {
-  appendRevision,
   buildDiffSummary,
   listRevisions,
   readHistory,

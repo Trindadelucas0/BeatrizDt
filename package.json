@@ -7,16 +7,20 @@
     "dev": "node server.js",
     "start": "node server.js",
     "test": "vitest run --globals",
-    "check": "vitest run --globals"
+    "check": "vitest run --globals",
+    "import:db": "node scripts/import-json-to-postgres.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
+    "connect-pg-simple": "^10.0.0",
+    "dotenv": "^16.4.7",
     "ejs": "^6.0.1",
     "express": "^5.2.1",
     "express-session": "^1.19.0",
+    "pg": "^8.13.3",
     "puppeteer": "^25.2.1"
   },
   "devDependencies": {

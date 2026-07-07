@@ -4,6 +4,7 @@ const ejs = require('ejs');
 const puppeteer = require('puppeteer');
 const { toCompetenciaSlug, calculateRecord } = require('./calculationService');
 const { getLogoDataUri, getExitoLogoDataUri } = require('./brandAssetService');
+const { normalizeTheme } = require('./themeService');
 
 function formatPdfDate(value) {
   if (!value) {
@@ -26,6 +27,7 @@ function formatEmitidoEm(date = new Date()) {
 }
 
 async function renderPdfHtml(record, helpers, options = {}) {
+  const theme = normalizeTheme(options.theme);
   const templatePath = path.join(process.cwd(), 'views', 'pdf-template.ejs');
   const cssPath = path.join(process.cwd(), 'public', 'css', 'dauto-layout.css');
   const css = await fs.readFile(cssPath, 'utf-8');
@@ -44,6 +46,7 @@ async function renderPdfHtml(record, helpers, options = {}) {
     exitoLogoPath: exitoLogoDataUri,
     emitidoEm: formatEmitidoEm(now),
     dataPreenchimentoLabel: formatPdfDate(calculatedRecord.dataPreenchimento),
+    theme,
   });
 }
 
@@ -51,12 +54,12 @@ function createMockPdfBuffer() {
   return Buffer.from('%PDF-1.4\n1 0 obj\n<<>>\nendobj\ntrailer\n<<>>\n%%EOF', 'utf-8');
 }
 
-async function generateRecordPdf(record, helpers) {
+async function generateRecordPdf(record, helpers, options = {}) {
   if (process.env.DISABLE_PDF_BROWSER === '1') {
     return createMockPdfBuffer();
   }
 
-  const html = await renderPdfHtml(record, helpers);
+  const html = await renderPdfHtml(record, helpers, options);
   const browser = await puppeteer.launch({
     headless: true,
     args: ['--no-sandbox', '--disable-setuid-sandbox'],

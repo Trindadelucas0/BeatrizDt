@@ -1,47 +1,8 @@
-const fs = require('node:fs/promises');
-const path = require('node:path');
 const { calculateRecord } = require('./calculationService');
 const { createInitialRecord, migrateRecord } = require('./sheetSchemaService');
 const { ensureYearCompetenciasInData, DEFAULT_SEED_YEAR } = require('./competenciaSeedService');
-const { createBackup } = require('./backupService');
-const { appendRevision } = require('./versionHistoryService');
-
-function getRecordsFilePath() {
-  return process.env.RECORDS_FILE || path.join(process.cwd(), 'data', 'monthly-records.json');
-}
-
-async function ensureRecordsFile() {
-  const filePath = getRecordsFilePath();
-
-  try {
-    await fs.access(filePath);
-  } catch (error) {
-    await fs.mkdir(path.dirname(filePath), { recursive: true });
-    const initialData = {
-      records: [
-        {
-          ...createInitialRecord(),
-          updatedAt: new Date().toISOString(),
-          updatedBy: 'sistema',
-        },
-      ],
-    };
-    await fs.writeFile(filePath, JSON.stringify(initialData, null, 2), 'utf-8');
-  }
-
-  return filePath;
-}
-
-async function readRecordsData() {
-  const filePath = await ensureRecordsFile();
-  const raw = await fs.readFile(filePath, 'utf-8');
-  return JSON.parse(raw);
-}
-
-async function writeRecordsData(data) {
-  const filePath = await ensureRecordsFile();
-  await fs.writeFile(filePath, JSON.stringify(data, null, 2), 'utf-8');
-}
+const { buildDiffSummary } = require('./versionHistoryService');
+const { getStorage } = require('./storage');
 
 function sortCompetencias(records) {
   return [...records].sort((a, b) => {
@@ -53,6 +14,14 @@ function sortCompetencias(records) {
 
 function prepareRecord(record) {
   return calculateRecord(migrateRecord(record));
+}
+
+async function readRecordsData() {
+  return getStorage().readRecordsData();
+}
+
+async function writeRecordsData(data) {
+  return getStorage().writeRecordsData(data);
 }
 
 async function ensureYearCompetencias(year = DEFAULT_SEED_YEAR) {
@@ -91,12 +60,35 @@ async function getLatestRecord() {
   return prepareRecord(latest);
 }
 
+async function appendRevision(nextRecord, previousRecord, updatedBy) {
+  const storage = getStorage();
+  const history = await storage.readHistory(nextRecord.competencia);
+  const revision = {
+    revision: (history.revisions?.length || 0) + 1,
+    updatedAt: new Date().toISOString(),
+    updatedBy,
+    competencia: nextRecord.competencia,
+    summary: buildDiffSummary(previousRecord, nextRecord),
+  };
+
+  if (typeof storage.appendRevision === 'function') {
+    await storage.appendRevision(nextRecord.competencia, revision);
+    return revision;
+  }
+
+  history.competencia = nextRecord.competencia;
+  history.revisions = [...(history.revisions || []), revision];
+  await storage.writeHistory(nextRecord.competencia, history);
+  return revision;
+}
+
 async function saveRecord(record, updatedBy, options = {}) {
   const data = await readRecordsData();
   const existingIndex = (data.records || []).findIndex((entry) => entry.competencia === record.competencia);
   const previousRecord = existingIndex >= 0 ? data.records[existingIndex] : null;
 
   if (!options.skipBackup) {
+    const { createBackup } = require('./backupService');
     await createBackup();
   }
 
@@ -126,7 +118,6 @@ module.exports = {
   ensureYearCompetencias,
   getLatestRecord,
   getRecordByCompetencia,
-  getRecordsFilePath,
   listCompetencias,
   listRecords,
   prepareRecord,

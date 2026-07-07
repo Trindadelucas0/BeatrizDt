@@ -32,6 +32,13 @@ const helpers = {
 beforeAll(async () => {
   tempDir = await fs.mkdtemp(path.join(os.tmpdir(), 'impostos-folha-'));
 
+  process.env.STORAGE_BACKEND = 'json';
+  process.env.USERS_FILE = path.join(tempDir, 'users.json');
+  process.env.RECORDS_FILE = path.join(tempDir, 'records.json');
+  process.env.BACKUP_DIR = path.join(tempDir, 'backups');
+  process.env.HISTORY_DIR = path.join(tempDir, 'history');
+  process.env.DISABLE_PDF_BROWSER = '1';
+
   const users = {
     users: [
       { username: 'admin', password: 'admin123', role: 'admin', displayName: 'Administrador', active: true },
@@ -49,19 +56,15 @@ beforeAll(async () => {
     ],
   };
 
-  process.env.USERS_FILE = path.join(tempDir, 'users.json');
-  process.env.RECORDS_FILE = path.join(tempDir, 'records.json');
-  process.env.BACKUP_DIR = path.join(tempDir, 'backups');
-  process.env.HISTORY_DIR = path.join(tempDir, 'history');
-  process.env.DISABLE_PDF_BROWSER = '1';
-
   await fs.writeFile(process.env.USERS_FILE, JSON.stringify(users, null, 2), 'utf-8');
   await fs.writeFile(process.env.RECORDS_FILE, JSON.stringify(records, null, 2), 'utf-8');
 
-  app = require('../server');
+  const { getApp } = require('../server');
+  app = getApp();
 });
 
 afterAll(async () => {
+  delete process.env.STORAGE_BACKEND;
   delete process.env.USERS_FILE;
   delete process.env.RECORDS_FILE;
   delete process.env.BACKUP_DIR;

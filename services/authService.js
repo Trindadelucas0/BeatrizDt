@@ -1,14 +1,7 @@
-const fs = require('node:fs/promises');
-const path = require('node:path');
-
-function getUsersFilePath() {
-  return process.env.USERS_FILE || path.join(process.cwd(), 'data', 'users.json');
-}
+const { getStorage } = require('./storage');
 
 async function readUsersData() {
-  const filePath = getUsersFilePath();
-  const raw = await fs.readFile(filePath, 'utf-8');
-  return JSON.parse(raw);
+  return getStorage().readUsersData();
 }
 
 async function authenticate(username, password) {
@@ -35,6 +28,5 @@ async function authenticate(username, password) {
 
 module.exports = {
   authenticate,
-  getUsersFilePath,
   readUsersData,
 };

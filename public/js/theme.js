@@ -43,6 +43,14 @@
         select.value = theme;
       }
     });
+
+    fetch('/api/user/preferences/theme', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ theme }),
+    }).catch(() => {
+      // usuario nao logado ou offline
+    });
   }
 
   function bindThemeSwitcher() {

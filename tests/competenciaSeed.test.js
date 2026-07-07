@@ -53,6 +53,7 @@ describe('recordService seed integration', () => {
 
   beforeEach(async () => {
     tempDir = await fs.mkdtemp(path.join(os.tmpdir(), 'impostos-seed-'));
+    process.env.STORAGE_BACKEND = 'json';
     process.env.RECORDS_FILE = path.join(tempDir, 'records.json');
     await fs.writeFile(process.env.RECORDS_FILE, JSON.stringify({
       records: [{
@@ -65,6 +66,7 @@ describe('recordService seed integration', () => {
   });
 
   afterEach(async () => {
+    delete process.env.STORAGE_BACKEND;
     delete process.env.RECORDS_FILE;
     if (tempDir) {
       await fs.rm(tempDir, { recursive: true, force: true });

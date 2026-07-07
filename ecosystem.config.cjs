@@ -9,6 +9,7 @@ module.exports = {
       env: {
         NODE_ENV: 'production',
         PORT: 3454,
+        STORAGE_BACKEND: 'postgres',
       },
       max_restarts: 10,
       restart_delay: 3000,
