@@ -61,11 +61,15 @@
             box-shadow: none;
             border-radius: 0;
             overflow: visible;
+            height: 64px;
         }
 
         .logo-card.exito img {
-            transform: scale(1.2);
-            transform-origin: center center;
+            max-height: 58px;
+            max-width: 200px;
+            width: auto;
+            height: auto;
+            transform: none;
         }
 
         .logo-card.dauto {
@@ -395,11 +399,15 @@
             box-shadow: none;
             border-radius: 0;
             overflow: visible;
+            height: 48px;
         }
 
         .pdf-logo:not(.dauto) img {
-            transform: scale(1.15);
-            transform-origin: center center;
+            max-height: 44px;
+            max-width: 160px;
+            width: auto;
+            height: auto;
+            transform: none;
         }
 
         .pdf-logo.dauto {
