@@ -2,10 +2,10 @@ const fs = require('node:fs/promises');
 const os = require('node:os');
 const path = require('node:path');
 const request = require('supertest');
-const { createInitialRecord } = require('../services/sheetSchemaService');
+const { createInitialRecord, migrateRecord } = require('../services/sheetSchemaService');
 const { buildLayoutViewModel } = require('../services/layoutViewModelService');
 const { renderPdfHtml } = require('../services/pdfService');
-const { formatCnpj, formatCurrency, formatGroupStatus, normalizeGroupStatus, spacedLabel } = require('../services/calculationService');
+const { calculateRecord, formatCnpj, formatCurrency, formatGroupStatus, normalizeGroupStatus, spacedLabel } = require('../services/calculationService');
 
 let tempDir;
 let app;
@@ -299,6 +299,39 @@ describe('layout e pdf', () => {
     expect(html).not.toContain('pdf-header--dauto');
     expect(html).not.toMatch(/<div class="sheet-table-mobile"/);
     expect(html).not.toMatch(/class="mobile-company-card/);
+  });
+
+  it('gera html do pdf com linha custom nas guias', async () => {
+    const base = createInitialRecord();
+    const record = calculateRecord(migrateRecord({
+      ...base,
+      groups: [
+        ...base.groups,
+        {
+          id: 'custom-pdf-1',
+          label: 'DAUTO PARAC',
+          statusLeft: 'em_processo',
+          statusRight: 'em_processo',
+          companies: [{
+            id: 'custom-pdf-1-company',
+            code: '44',
+            name: 'DAUTO PARAC',
+            cnpj: '36517206000130',
+            inss: 100,
+            irrf: 0,
+            emprestimoConsignado: 0,
+            fgtsMensal: 50,
+            fgtsDecimoTerceiro: 0,
+          }],
+        },
+      ],
+    }));
+
+    const html = await renderPdfHtml(record, helpers);
+
+    expect(html).toContain('DAUTO PARAC');
+    expect(html).toContain('js-guia-row');
+    expect(html).toContain('Total Geral da Competência');
   });
 
   it('gera html do pdf de dezembro com colunas de INSS e IRRF decimo terceiro', async () => {

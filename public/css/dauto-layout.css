@@ -785,6 +785,29 @@
             font-weight: 800;
         }
 
+        .cnpj-field-wrap {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .establishment-badge {
+            display: inline-block;
+            width: fit-content;
+            padding: 2px 8px;
+            border-radius: 999px;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            background: #eef2f7;
+            color: #46505d;
+        }
+
+        .establishment-badge[hidden] {
+            display: none !important;
+        }
+
         /* Indicador de auto-save */
         .save-indicator {
             display: inline-flex;

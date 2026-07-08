@@ -1,4 +1,4 @@
-const { calculateRecord, formatCnpj, formatCurrency, sanitizeNumber } = require('../services/calculationService');
+const { calculateRecord, formatCnpj, formatCurrency, parseCnpj, sanitizeNumber } = require('../services/calculationService');
 const { createInitialRecord } = require('../services/sheetSchemaService');
 
 describe('calculationService', () => {
@@ -56,5 +56,24 @@ describe('calculationService', () => {
   it('formata CNPJ com mascara brasileira', () => {
     expect(formatCnpj('72628407000179')).toBe('72.628.407/0001-79');
     expect(formatCnpj('')).toBe('-');
+  });
+
+  it('identifica matriz e filial pelo CNPJ', () => {
+    expect(parseCnpj('72628407000179')).toMatchObject({
+      isMatriz: true,
+      isFilial: false,
+      establishmentType: 'matriz',
+    });
+
+    expect(parseCnpj('72628407000259')).toMatchObject({
+      isMatriz: false,
+      isFilial: true,
+      establishmentType: 'filial',
+    });
+
+    expect(parseCnpj('123')).toMatchObject({
+      isValid: false,
+      establishmentType: '',
+    });
   });
 });

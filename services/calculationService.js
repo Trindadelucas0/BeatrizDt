@@ -34,14 +34,55 @@ function formatCurrency(value) {
   return currencyFormatter.format(roundCurrency(value));
 }
 
+function sanitizeCnpjDigits(value) {
+  return String(value || '').replace(/\D/g, '');
+}
+
 function formatCnpj(value) {
-  const digits = String(value || '').replace(/\D/g, '');
+  const digits = sanitizeCnpjDigits(value);
 
   if (digits.length === 14) {
     return `${digits.slice(0, 2)}.${digits.slice(2, 5)}.${digits.slice(5, 8)}/${digits.slice(8, 12)}-${digits.slice(12)}`;
   }
 
   return digits || '-';
+}
+
+function parseCnpj(value) {
+  const digits = sanitizeCnpjDigits(value);
+
+  if (digits.length !== 14) {
+    return {
+      root: digits.slice(0, 8),
+      branch: '',
+      isMatriz: false,
+      isFilial: false,
+      isValid: false,
+      establishmentType: '',
+    };
+  }
+
+  const root = digits.slice(0, 8);
+  const branch = digits.slice(8, 12);
+  const isMatriz = branch === '0001';
+
+  return {
+    root,
+    branch,
+    isMatriz,
+    isFilial: !isMatriz,
+    isValid: true,
+    establishmentType: isMatriz ? 'matriz' : 'filial',
+  };
+}
+
+function resolveEstablishmentType(company = {}) {
+  if (company.establishmentType === 'matriz' || company.establishmentType === 'filial') {
+    return company.establishmentType;
+  }
+
+  const parsed = parseCnpj(company.cnpj);
+  return parsed.establishmentType || '';
 }
 
 function isDecemberCompetencia(competencia) {
@@ -205,9 +246,12 @@ module.exports = {
   fromCompetenciaSlug,
   isDecemberCompetencia,
   normalizeGroupStatus,
+  parseCnpj,
+  resolveEstablishmentType,
   resolveFgtsMensal,
   roundCurrency,
   sanitizeNumber,
+  sanitizeCnpjDigits,
   spacedLabel,
   toCompetenciaSlug,
 };

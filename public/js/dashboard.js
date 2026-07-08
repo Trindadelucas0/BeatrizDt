@@ -60,6 +60,50 @@
     return digits;
   }
 
+  function parseCnpj(value) {
+    const digits = sanitizeCnpj(value);
+
+    if (digits.length !== 14) {
+      return {
+        isMatriz: false,
+        isFilial: false,
+        establishmentType: '',
+      };
+    }
+
+    const branch = digits.slice(8, 12);
+    const isMatriz = branch === '0001';
+
+    return {
+      isMatriz,
+      isFilial: !isMatriz,
+      establishmentType: isMatriz ? 'matriz' : 'filial',
+    };
+  }
+
+  function isCustomGroup(group) {
+    return String(group?.id || '').startsWith('custom-');
+  }
+
+  function getGroupGuiaLabel(group) {
+    if (isCustomGroup(group)) {
+      return group.companies?.[0]?.name?.trim() || group.label || 'Nova empresa';
+    }
+
+    return group.label || 'Grupo';
+  }
+
+  function syncCustomGroupLabels(record) {
+    record.groups.forEach((group) => {
+      if (!isCustomGroup(group) || !group.companies?.[0]) {
+        return;
+      }
+
+      const companyName = String(group.companies[0].name || '').trim();
+      group.label = companyName || group.label || 'Nova empresa';
+    });
+  }
+
   function isDecemberCompetencia(competencia) {
     return /^12\/\d{4}$/.test(String(competencia || '').trim());
   }
@@ -167,6 +211,8 @@
     let grandDarf = 0;
     let grandFgts = 0;
 
+    syncCustomGroupLabels(record);
+
     record.groups.forEach((group, groupIndex) => {
       let groupDarf = 0;
       let groupFgts = 0;
@@ -227,7 +273,84 @@
       totalRight: grandFgts,
     };
 
+    syncGuiaPanel(record);
+
     return record;
+  }
+
+  function getGuiaTbody() {
+    return document.querySelector('.guias-panel tbody');
+  }
+
+  function buildGuiaRow(groupIndex, label) {
+    const row = document.createElement('tr');
+    row.className = 'js-guia-row';
+    row.dataset.groupIndex = String(groupIndex);
+
+    const groupCell = document.createElement('td');
+    const groupLabel = document.createElement('b');
+    groupLabel.className = 'js-guia-label';
+    groupLabel.textContent = label;
+    groupCell.appendChild(groupLabel);
+
+    const darfCell = document.createElement('td');
+    darfCell.className = 'total js-guia-darf';
+    darfCell.dataset.groupIndex = String(groupIndex);
+    darfCell.textContent = formatCurrency(0);
+
+    const fgtsCell = document.createElement('td');
+    fgtsCell.className = 'total js-guia-fgts';
+    fgtsCell.dataset.groupIndex = String(groupIndex);
+    fgtsCell.textContent = formatCurrency(0);
+
+    row.append(groupCell, darfCell, fgtsCell);
+    return row;
+  }
+
+  function syncGuiaPanel(record) {
+    const tbody = getGuiaTbody();
+    if (!tbody) {
+      return;
+    }
+
+    let rows = [...tbody.querySelectorAll('.js-guia-row')];
+
+    while (rows.length > record.groups.length) {
+      rows[rows.length - 1].remove();
+      rows = [...tbody.querySelectorAll('.js-guia-row')];
+    }
+
+    while (rows.length < record.groups.length) {
+      const groupIndex = rows.length;
+      const group = record.groups[groupIndex];
+      tbody.appendChild(buildGuiaRow(groupIndex, getGroupGuiaLabel(group)));
+      rows = [...tbody.querySelectorAll('.js-guia-row')];
+    }
+
+    record.groups.forEach((group, groupIndex) => {
+      const row = tbody.querySelectorAll('.js-guia-row')[groupIndex];
+      if (!row) {
+        return;
+      }
+
+      row.dataset.groupIndex = String(groupIndex);
+
+      const labelElement = row.querySelector('.js-guia-label');
+      if (labelElement) {
+        labelElement.textContent = getGroupGuiaLabel(group);
+      }
+
+      const darfElement = row.querySelector('.js-guia-darf');
+      const fgtsElement = row.querySelector('.js-guia-fgts');
+
+      if (darfElement) {
+        darfElement.dataset.groupIndex = String(groupIndex);
+      }
+
+      if (fgtsElement) {
+        fgtsElement.dataset.groupIndex = String(groupIndex);
+      }
+    });
   }
 
   function refresh() {
@@ -323,9 +446,10 @@
     const suffix = `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
     return {
       id: `${groupId}-custom-${suffix}`,
-      code: `N${String(Date.now()).slice(-4)}`,
+      code: '',
       name: 'Nova empresa',
       cnpj: '',
+      establishmentType: '',
       inss: 0,
       irrf: 0,
       inssDecimoTerceiro: 0,
@@ -336,6 +460,48 @@
       totalLeft: 0,
       totalRight: 0,
     };
+  }
+
+  function createEmptyGroup() {
+    const suffix = `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
+    const groupId = `custom-${suffix}`;
+    const company = createEmptyCompany(groupId);
+
+    return {
+      id: groupId,
+      label: company.name,
+      statusLeft: 'em_processo',
+      statusRight: 'em_processo',
+      companies: [company],
+    };
+  }
+
+  function applyEstablishmentBadge(groupIndex, companyIndex, cnpjValue) {
+    const parsed = parseCnpj(cnpjValue);
+    const label = parsed.establishmentType === 'matriz'
+      ? 'Matriz'
+      : parsed.establishmentType === 'filial'
+        ? 'Filial'
+        : '';
+
+    document
+      .querySelectorAll(`.js-establishment-badge[data-group-index="${groupIndex}"][data-company-index="${companyIndex}"]`)
+      .forEach((badge) => {
+        if (!label) {
+          badge.hidden = true;
+          badge.textContent = '';
+          return;
+        }
+
+        badge.hidden = false;
+        badge.textContent = label;
+      });
+
+    const group = state.record.groups?.[groupIndex];
+    const company = group?.companies?.[companyIndex];
+    if (company) {
+      company.establishmentType = parsed.establishmentType || '';
+    }
   }
 
   function setIndexedAttributes(element, groupIndex, companyIndex) {
@@ -365,6 +531,11 @@
 
     row.querySelectorAll('.js-line-darf, .js-line-fgts, .js-line-geral').forEach((cell) => {
       cell.textContent = formatCurrency(0);
+    });
+
+    row.querySelectorAll('.js-establishment-badge').forEach((badge) => {
+      badge.hidden = true;
+      badge.textContent = '';
     });
   }
 
@@ -397,6 +568,11 @@
     input.addEventListener('blur', () => {
       input.value = formatCnpj(input.value);
       syncMirroredField(input);
+      applyEstablishmentBadge(
+        Number(input.dataset.groupIndex),
+        Number(input.dataset.companyIndex),
+        input.value,
+      );
       refresh();
       markDirty();
     });
@@ -449,12 +625,27 @@
     });
   }
 
+  function removeGroupDom(groupIndex) {
+    document.querySelectorAll(`.js-sheet-row[data-group-index="${groupIndex}"]`).forEach((row) => {
+      row.remove();
+    });
+
+    document.querySelectorAll(`.mobile-company-card[data-group-index="${groupIndex}"]`).forEach((card) => {
+      card.remove();
+    });
+
+    const guiaRow = getGuiaTbody()?.querySelector(`.js-guia-row[data-group-index="${groupIndex}"]`);
+    if (guiaRow) {
+      guiaRow.remove();
+    }
+  }
+
   function addSheetRow() {
     const record = updateTotals(readRecordFromForm());
-    const lastGroupIndex = record.groups.length - 1;
-    const lastGroup = record.groups[lastGroupIndex];
-    const companyIndex = lastGroup.companies.length;
-    lastGroup.companies.push(createEmptyCompany(lastGroup.id));
+    const newGroup = createEmptyGroup();
+    record.groups.push(newGroup);
+    const groupIndex = record.groups.length - 1;
+    const companyIndex = 0;
 
     const desktopBody = document.querySelector('.sheet-table-desktop tbody');
     const templateRow = desktopBody?.querySelector('.js-sheet-row');
@@ -464,7 +655,28 @@
     if (templateRow) {
       const newRow = templateRow.cloneNode(true);
       clearRowValues(newRow);
-      setIndexedAttributes(newRow, lastGroupIndex, companyIndex);
+
+      if (!newRow.querySelector('.js-establishment-badge')) {
+        const cnpjCell = newRow.querySelector('.js-cnpj-source')?.closest('td');
+        if (cnpjCell && !cnpjCell.querySelector('.cnpj-field-wrap')) {
+          const wrap = document.createElement('div');
+          wrap.className = 'cnpj-field-wrap';
+          const input = cnpjCell.querySelector('.js-cnpj-source');
+          if (input) {
+            cnpjCell.textContent = '';
+            wrap.appendChild(input);
+            const badge = document.createElement('span');
+            badge.className = 'establishment-badge js-establishment-badge';
+            badge.dataset.groupIndex = String(groupIndex);
+            badge.dataset.companyIndex = String(companyIndex);
+            badge.hidden = true;
+            wrap.appendChild(badge);
+            cnpjCell.appendChild(wrap);
+          }
+        }
+      }
+
+      setIndexedAttributes(newRow, groupIndex, companyIndex);
       desktopBody.appendChild(newRow);
       bindSheetRow(newRow);
     }
@@ -472,16 +684,17 @@
     if (templateCard) {
       const newCard = templateCard.cloneNode(true);
       clearRowValues(newCard);
-      setIndexedAttributes(newCard, lastGroupIndex, companyIndex);
+      setIndexedAttributes(newCard, groupIndex, companyIndex);
       const headerStrong = newCard.querySelector('.mobile-company-card__header strong');
       const headerSpan = newCard.querySelector('.mobile-company-card__header span');
       if (headerStrong) headerStrong.textContent = 'Nova empresa';
-      if (headerSpan) headerSpan.textContent = `${lastGroup.label} ·`;
+      if (headerSpan) headerSpan.textContent = `${newGroup.label} ·`;
       mobileList.appendChild(newCard);
       bindSheetRow(newCard);
     }
 
     syncStateRecord(record);
+    syncGuiaPanel(record);
     refresh();
     markDirty();
   }
@@ -499,6 +712,17 @@
       return;
     }
 
+    if (isCustomGroup(group)) {
+      record.groups.splice(groupIndex, 1);
+      removeGroupDom(groupIndex);
+      reindexAllSheetDom(record);
+      syncStateRecord(record);
+      syncGuiaPanel(record);
+      refresh();
+      markDirty();
+      return;
+    }
+
     group.companies.splice(companyIndex, 1);
 
     document.querySelectorAll(`.js-sheet-row[data-group-index="${groupIndex}"][data-company-index="${companyIndex}"]`).forEach((row) => {
@@ -511,6 +735,7 @@
 
     reindexAllSheetDom(record);
     syncStateRecord(record);
+    syncGuiaPanel(record);
     refresh();
     markDirty();
   }
@@ -544,6 +769,11 @@
     input.addEventListener('blur', () => {
       input.value = formatCnpj(input.value);
       syncMirroredField(input);
+      applyEstablishmentBadge(
+        Number(input.dataset.groupIndex),
+        Number(input.dataset.companyIndex),
+        input.value,
+      );
       refresh();
       markDirty();
     });
@@ -610,7 +840,13 @@
 
   document.querySelectorAll('.js-cnpj-source').forEach((input) => {
     input.value = formatCnpj(input.value);
+    applyEstablishmentBadge(
+      Number(input.dataset.groupIndex),
+      Number(input.dataset.companyIndex),
+      input.value,
+    );
   });
 
+  syncGuiaPanel(state.record);
   refresh();
 }());

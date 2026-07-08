@@ -1,4 +1,4 @@
-const { normalizeGroupStatus } = require('./calculationService');
+const { normalizeGroupStatus, resolveEstablishmentType } = require('./calculationService');
 
 const BASE_RECORD = {
   competencia: '03/2026',
@@ -55,8 +55,19 @@ const BASE_RECORD = {
   ],
 };
 
+const BASE_GROUP_IDS = new Set(BASE_RECORD.groups.map((group) => group.id));
+
 function clone(value) {
   return JSON.parse(JSON.stringify(value));
+}
+
+function isCustomGroupId(groupId) {
+  return !BASE_GROUP_IDS.has(groupId);
+}
+
+function getBaseGroupCompanyCount(groupId) {
+  const baseGroup = BASE_RECORD.groups.find((group) => group.id === groupId);
+  return baseGroup ? baseGroup.companies.length : 0;
 }
 
 function createInitialRecord() {
@@ -65,6 +76,154 @@ function createInitialRecord() {
 
 function getBaseRecord() {
   return clone(BASE_RECORD);
+}
+
+function migrateCompany(company = {}) {
+  const migrated = { ...company };
+
+  if (migrated.fgtsMensal === undefined && migrated.fgts !== undefined) {
+    migrated.fgtsMensal = migrated.fgts;
+  }
+
+  if (migrated.fgtsDecimoTerceiro === undefined) {
+    migrated.fgtsDecimoTerceiro = 0;
+  }
+
+  if (migrated.inssDecimoTerceiro === undefined) {
+    migrated.inssDecimoTerceiro = 0;
+  }
+
+  if (migrated.irrfDecimoTerceiro === undefined) {
+    migrated.irrfDecimoTerceiro = 0;
+  }
+
+  migrated.establishmentType = resolveEstablishmentType(migrated);
+
+  delete migrated.fgts;
+
+  return migrated;
+}
+
+function createEmptyCompany(groupId, suffix = Date.now()) {
+  return migrateCompany({
+    id: `${groupId}-custom-${suffix}`,
+    code: '',
+    name: 'Nova empresa',
+    cnpj: '',
+    inss: 0,
+    irrf: 0,
+    emprestimoConsignado: 0,
+    fgtsMensal: 0,
+    fgtsDecimoTerceiro: 0,
+    inssDecimoTerceiro: 0,
+    irrfDecimoTerceiro: 0,
+    establishmentType: '',
+  });
+}
+
+function createEmptyGroup(suffix = Date.now()) {
+  const groupId = `custom-${suffix}`;
+  const company = createEmptyCompany(groupId, suffix);
+
+  return {
+    id: groupId,
+    label: company.name,
+    statusLeft: 'em_processo',
+    statusRight: 'em_processo',
+    companies: [company],
+  };
+}
+
+function normalizeCustomGroup(group = {}) {
+  const groupId = group.id || `custom-${Date.now()}`;
+  const companies = (group.companies || []).slice(0, 1).map((company, index) => migrateCompany({
+    ...createEmptyCompany(groupId, `${Date.now()}-${index}`),
+    ...company,
+    id: company.id || `${groupId}-company-${index}`,
+  }));
+
+  if (companies.length === 0) {
+    companies.push(createEmptyCompany(groupId));
+  }
+
+  const label = String(group.label || companies[0].name || 'Nova empresa').trim() || 'Nova empresa';
+
+  return {
+    id: groupId,
+    label,
+    statusLeft: normalizeGroupStatus(group.statusLeft),
+    statusRight: normalizeGroupStatus(group.statusRight),
+    companies,
+  };
+}
+
+function companyToCustomGroup(company, sourceGroup = {}) {
+  const suffix = `${company.id || Date.now()}-${Math.random().toString(36).slice(2, 5)}`;
+
+  return normalizeCustomGroup({
+    id: `custom-${suffix}`,
+    label: company.name || 'Nova empresa',
+    statusLeft: sourceGroup.statusLeft,
+    statusRight: sourceGroup.statusRight,
+    companies: [company],
+  });
+}
+
+function normalizeGroupsStructure(groups = []) {
+  const incomingById = new Map(groups.map((group) => [group.id, group]));
+  const normalizedBaseGroups = BASE_RECORD.groups.map((baseGroup) => {
+    const incomingGroup = incomingById.get(baseGroup.id) || {};
+    const expectedCount = baseGroup.companies.length;
+    const incomingCompanies = Array.isArray(incomingGroup.companies) ? incomingGroup.companies : [];
+    const keptCompanies = incomingCompanies.slice(0, expectedCount);
+
+    while (keptCompanies.length < expectedCount) {
+      keptCompanies.push(clone(baseGroup.companies[keptCompanies.length]));
+    }
+
+    return {
+      ...baseGroup,
+      label: incomingGroup.label || baseGroup.label,
+      statusLeft: incomingGroup.statusLeft !== undefined ? incomingGroup.statusLeft : baseGroup.statusLeft,
+      statusRight: incomingGroup.statusRight !== undefined ? incomingGroup.statusRight : baseGroup.statusRight,
+      companies: keptCompanies.map((company, index) => migrateCompany({
+        ...clone(baseGroup.companies[index]),
+        ...company,
+        id: company.id || baseGroup.companies[index].id,
+      })),
+    };
+  });
+
+  const extractedCustomGroups = [];
+
+  BASE_RECORD.groups.forEach((baseGroup) => {
+    const incomingGroup = incomingById.get(baseGroup.id) || {};
+    const incomingCompanies = Array.isArray(incomingGroup.companies) ? incomingGroup.companies : [];
+    const extras = incomingCompanies.slice(baseGroup.companies.length);
+
+    extras.forEach((company) => {
+      extractedCustomGroups.push(companyToCustomGroup(company, incomingGroup));
+    });
+  });
+
+  const payloadCustomGroups = groups
+    .filter((group) => isCustomGroupId(group.id))
+    .map(normalizeCustomGroup);
+
+  const mergedCustomGroups = [...extractedCustomGroups, ...payloadCustomGroups];
+  const uniqueCustomGroups = [];
+  const seenCustomIds = new Set();
+
+  mergedCustomGroups.forEach((group) => {
+    if (seenCustomIds.has(group.id)) {
+      return;
+    }
+
+    seenCustomIds.add(group.id);
+    uniqueCustomGroups.push(group);
+  });
+
+  return [...normalizedBaseGroups, ...uniqueCustomGroups];
 }
 
 function mergePayloadIntoSchema(payload = {}) {
@@ -120,54 +279,21 @@ function mergePayloadIntoSchema(payload = {}) {
       label: incomingGroup.label || group.label,
       statusLeft: incomingGroup.statusLeft !== undefined ? incomingGroup.statusLeft : group.statusLeft,
       statusRight: incomingGroup.statusRight !== undefined ? incomingGroup.statusRight : group.statusRight,
-      companies: group.companies.map((company) => ({
+      companies: group.companies.map((company) => migrateCompany({
         ...company,
         ...(companiesMap.get(company.id) || {}),
       })),
     };
   });
 
+  const baseGroupIds = new Set(base.groups.map((group) => group.id));
+  const extraGroups = (payload.groups || [])
+    .filter((group) => group.id && !baseGroupIds.has(group.id))
+    .map(normalizeCustomGroup);
+
+  base.groups = normalizeGroupsStructure([...base.groups, ...extraGroups]);
+
   return base;
-}
-
-function migrateCompany(company = {}) {
-  const migrated = { ...company };
-
-  if (migrated.fgtsMensal === undefined && migrated.fgts !== undefined) {
-    migrated.fgtsMensal = migrated.fgts;
-  }
-
-  if (migrated.fgtsDecimoTerceiro === undefined) {
-    migrated.fgtsDecimoTerceiro = 0;
-  }
-
-  if (migrated.inssDecimoTerceiro === undefined) {
-    migrated.inssDecimoTerceiro = 0;
-  }
-
-  if (migrated.irrfDecimoTerceiro === undefined) {
-    migrated.irrfDecimoTerceiro = 0;
-  }
-
-  delete migrated.fgts;
-
-  return migrated;
-}
-
-function createEmptyCompany(groupId, suffix = Date.now()) {
-  return migrateCompany({
-    id: `${groupId}-custom-${suffix}`,
-    code: '',
-    name: 'Nova empresa',
-    cnpj: '',
-    inss: 0,
-    irrf: 0,
-    emprestimoConsignado: 0,
-    fgtsMensal: 0,
-    fgtsDecimoTerceiro: 0,
-    inssDecimoTerceiro: 0,
-    irrfDecimoTerceiro: 0,
-  });
 }
 
 function migrateRecord(record = {}) {
@@ -205,7 +331,7 @@ function migrateRecord(record = {}) {
     migrated.metadata.titleRight = 'RESUMO IMPOSTOS - FGTS MENSAL E DECIMO TERCEIRO';
   }
 
-  migrated.groups = (migrated.groups || []).map((group) => ({
+  migrated.groups = normalizeGroupsStructure(migrated.groups || []).map((group) => ({
     ...group,
     statusLeft: normalizeGroupStatus(group.statusLeft),
     statusRight: normalizeGroupStatus(group.statusRight),
@@ -216,10 +342,15 @@ function migrateRecord(record = {}) {
 }
 
 module.exports = {
+  BASE_GROUP_IDS,
+  createEmptyGroup,
   createInitialRecord,
   createEmptyCompany,
   getBaseRecord,
+  isCustomGroupId,
   mergePayloadIntoSchema,
   migrateCompany,
   migrateRecord,
+  normalizeCustomGroup,
+  normalizeGroupsStructure,
 };

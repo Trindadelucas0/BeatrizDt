@@ -61,8 +61,14 @@
               <td>
                 <% if (isPrint) { %>
                   <span class="print-value"><%= helpers.formatCnpj(company.cnpj) %></span>
+                  <% if (company.establishmentType) { %>
+                    <span class="establishment-badge establishment-badge--<%= company.establishmentType %>"><%= company.establishmentType === 'matriz' ? 'Matriz' : 'Filial' %></span>
+                  <% } %>
                 <% } else { %>
-                  <input type="text" class="text js-text-source js-cnpj-source" data-group-index="<%= groupIndex %>" data-company-index="<%= companyIndex %>" data-field="cnpj" value="<%= helpers.formatCnpj(company.cnpj) %>" aria-label="CNPJ" <%= isReadOnly ? 'readonly' : '' %> />
+                  <div class="cnpj-field-wrap">
+                    <input type="text" class="text js-text-source js-cnpj-source" data-group-index="<%= groupIndex %>" data-company-index="<%= companyIndex %>" data-field="cnpj" value="<%= helpers.formatCnpj(company.cnpj) %>" aria-label="CNPJ" <%= isReadOnly ? 'readonly' : '' %> />
+                    <span class="establishment-badge js-establishment-badge" data-group-index="<%= groupIndex %>" data-company-index="<%= companyIndex %>" <%= company.establishmentType ? '' : 'hidden' %>><%= company.establishmentType === 'matriz' ? 'Matriz' : (company.establishmentType === 'filial' ? 'Filial' : '') %></span>
+                  </div>
                 <% } %>
               </td>
               <td>

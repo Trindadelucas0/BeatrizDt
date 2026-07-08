@@ -7,7 +7,7 @@
 <% if (!isPrint) { %>
 <div class="guias-panel">
   <h3>Guias — soma Matriz + Filial</h3>
-  <p class="hint">Valores consolidados por grupo para emissão das guias DARF e FGTS (56+92, 67+69, 45+150, 46).</p>
+  <p class="hint">Valores consolidados por grupo para emissão das guias DARF e FGTS.</p>
   <div class="table-wrap">
 <% } %>
     <table class="<%= isPrint ? 'pdf-table pdf-table--full pdf-table--guias' : '' %>">
@@ -24,8 +24,8 @@
           <% const guiaFgts = group.summary.totalRight; %>
           <% totalDarfGuias += guiaDarf; %>
           <% totalFgtsGuias += guiaFgts; %>
-          <tr>
-            <td><b><%= group.label %></b></td>
+          <tr class="js-guia-row" data-group-index="<%= groupIndex %>">
+            <td><b class="js-guia-label"><%= group.label %></b></td>
             <td class="total js-guia-darf" data-group-index="<%= groupIndex %>"><%= helpers.formatCurrency(guiaDarf) %></td>
             <td class="total js-guia-fgts" data-group-index="<%= groupIndex %>"><%= helpers.formatCurrency(guiaFgts) %></td>
           </tr>
