@@ -31,9 +31,11 @@ with zipfile.ZipFile(zip_path) as archive:
 print("extraido", dest)
 PY
 
-CHROME_BIN="${CACHE_DIR}/chrome-linux64/chrome"
-chmod +x "${CHROME_BIN}"
-ls -lh "${CHROME_BIN}"
+CHROME_DIR="${CACHE_DIR}/chrome-linux64"
+CHROME_BIN="${CHROME_DIR}/chrome"
+find "${CHROME_DIR}" -maxdepth 1 -type f -exec chmod u+rwx,go+rx {} +
+chmod +x "${CHROME_BIN}" "${CHROME_DIR}/chrome_crashpad_handler"
+ls -lh "${CHROME_BIN}" "${CHROME_DIR}/chrome_crashpad_handler"
 
 echo "==> Testando Puppeteer"
 node <<'NODE'
