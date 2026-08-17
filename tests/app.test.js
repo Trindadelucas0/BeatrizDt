@@ -4,7 +4,7 @@ const path = require('node:path');
 const request = require('supertest');
 const { createInitialRecord, migrateRecord } = require('../services/sheetSchemaService');
 const { buildLayoutViewModel } = require('../services/layoutViewModelService');
-const { renderPdfHtml } = require('../services/pdfService');
+const { generateRecordPdf, renderPdfHtml } = require('../services/pdfService');
 const { calculateRecord, formatCnpj, formatCurrency, formatGroupStatus, normalizeGroupStatus, spacedLabel } = require('../services/calculationService');
 
 let tempDir;
@@ -260,6 +260,19 @@ describe('aplicacao web', () => {
 
     expect(pdfResponse.statusCode).toBe(200);
     expect(pdfResponse.headers['content-type']).toContain('application/pdf');
+  });
+
+  it('recusa PDF falso quando NODE_ENV e production', async () => {
+    const previousNodeEnv = process.env.NODE_ENV;
+    process.env.NODE_ENV = 'production';
+
+    try {
+      await expect(generateRecordPdf(createInitialRecord(), helpers)).rejects.toThrow(
+        'DISABLE_PDF_BROWSER=1',
+      );
+    } finally {
+      process.env.NODE_ENV = previousNodeEnv;
+    }
   });
 });
 

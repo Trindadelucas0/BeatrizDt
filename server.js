@@ -311,14 +311,22 @@ function createApp() {
   });
 
   app.get('/dashboard/pdf/:competencia', ensureAuthenticated, async (req, res) => {
-    const competencia = fromCompetenciaSlug(req.params.competencia);
-    const record = await resolveRecord(competencia);
-    const theme = getThemeFromRequest(req);
-    const pdfBuffer = await generateRecordPdf(record, helpers, { theme });
+    try {
+      const competencia = fromCompetenciaSlug(req.params.competencia);
+      const record = await resolveRecord(competencia);
+      const theme = getThemeFromRequest(req);
+      const pdfBuffer = await generateRecordPdf(record, helpers, { theme });
 
-    res.setHeader('Content-Type', 'application/pdf');
-    res.setHeader('Content-Disposition', `attachment; filename="Demonstrativo_Impostos_${toCompetenciaSlug(record.competencia)}.pdf"`);
-    return res.send(pdfBuffer);
+      res.setHeader('Content-Type', 'application/pdf');
+      res.setHeader(
+        'Content-Disposition',
+        `attachment; filename="Demonstrativo_Impostos_${toCompetenciaSlug(record.competencia)}.pdf"`,
+      );
+      return res.send(pdfBuffer);
+    } catch (error) {
+      console.error('Falha ao gerar PDF:', error.message);
+      return res.status(500).send('Nao foi possivel gerar o PDF. Tente novamente.');
+    }
   });
 
   app.get('/logout', ensureAuthenticated, (req, res) => {

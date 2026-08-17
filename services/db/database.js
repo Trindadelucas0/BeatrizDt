@@ -4,14 +4,34 @@ const { Client, Pool } = require('pg');
 
 let pool = null;
 
+const STARTUP_RETRY_ATTEMPTS = 8;
+const STARTUP_RETRY_DELAY_MS = 2000;
+
+function resolveDbHost(host) {
+  const value = String(host || '127.0.0.1').trim() || '127.0.0.1';
+
+  if (value === 'localhost' || value === '::1') {
+    return '127.0.0.1';
+  }
+
+  return value;
+}
+
 function getConfig() {
-  return {
-    host: process.env.DB_HOST || 'localhost',
+  const host = resolveDbHost(process.env.DB_HOST);
+  const config = {
+    host,
     port: Number(process.env.DB_PORT || 5432),
     user: process.env.DB_USER || 'lucas',
     password: process.env.DB_PASSWORD || '',
     database: process.env.DB_NAME || 'beatriz_impostos',
   };
+
+  if (host === '127.0.0.1') {
+    config.family = 4;
+  }
+
+  return config;
 }
 
 function getAdminConfig() {
@@ -89,7 +109,18 @@ function getPool() {
   return pool;
 }
 
-async function initDatabase() {
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+function isRetryableDbError(error) {
+  return error?.code === 'ECONNREFUSED'
+    || error?.code === 'ETIMEDOUT'
+    || error?.code === 'ECONNRESET'
+    || error?.code === 'ENOTFOUND';
+}
+
+async function connectAndMigrate() {
   await ensureDatabaseExists();
   const client = await getPool().connect();
 
@@ -100,6 +131,31 @@ async function initDatabase() {
   } finally {
     client.release();
   }
+}
+
+async function initDatabase() {
+  let lastError;
+
+  for (let attempt = 1; attempt <= STARTUP_RETRY_ATTEMPTS; attempt += 1) {
+    try {
+      await connectAndMigrate();
+      return;
+    } catch (error) {
+      lastError = error;
+
+      if (!isRetryableDbError(error) || attempt === STARTUP_RETRY_ATTEMPTS) {
+        throw error;
+      }
+
+      console.error(
+        `Postgres indisponivel (${error.message}). Tentativa ${attempt}/${STARTUP_RETRY_ATTEMPTS}...`,
+      );
+      await closePool();
+      await sleep(STARTUP_RETRY_DELAY_MS);
+    }
+  }
+
+  throw lastError;
 }
 
 async function closePool() {
@@ -120,4 +176,5 @@ module.exports = {
   getPool,
   healthCheck,
   initDatabase,
+  resolveDbHost,
 };

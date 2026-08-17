@@ -54,8 +54,20 @@ function createMockPdfBuffer() {
   return Buffer.from('%PDF-1.4\n1 0 obj\n<<>>\nendobj\ntrailer\n<<>>\n%%EOF', 'utf-8');
 }
 
+function isProductionRuntime() {
+  return process.env.NODE_ENV === 'production';
+}
+
 async function generateRecordPdf(record, helpers, options = {}) {
-  if (process.env.DISABLE_PDF_BROWSER === '1') {
+  const disableBrowser = process.env.DISABLE_PDF_BROWSER === '1';
+
+  if (disableBrowser && isProductionRuntime()) {
+    throw new Error(
+      'DISABLE_PDF_BROWSER=1 so e permitido em teste. Remova a flag para gerar PDF real com o Chrome.',
+    );
+  }
+
+  if (disableBrowser) {
     return createMockPdfBuffer();
   }
 
@@ -67,7 +79,7 @@ async function generateRecordPdf(record, helpers, options = {}) {
 
   try {
     const page = await browser.newPage();
-    await page.setContent(html, { waitUntil: 'networkidle0' });
+    await page.setContent(html, { waitUntil: 'load' });
     return await page.pdf({
       format: 'A4',
       landscape: true,
