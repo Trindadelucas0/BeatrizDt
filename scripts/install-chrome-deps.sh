@@ -6,9 +6,11 @@ sudo apt update
 sudo apt install -y \
   ca-certificates \
   fonts-liberation \
+  unzip \
   libasound2t64 \
   libatk-bridge2.0-0t64 \
   libatk1.0-0t64 \
+  libatspi2.0-0t64 \
   libcairo2 \
   libcups2t64 \
   libdbus-1-3 \
