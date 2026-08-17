@@ -86,3 +86,31 @@ npm test
 ```
 
 No Linux/macOS: `STORAGE_BACKEND=json npm test`
+
+## Atualizar codigo no servidor
+
+A pasta no `lucas` deve ser um clone do GitHub. O `.env` e o PostgreSQL **nao entram** no git.
+
+No PC (depois de commit):
+
+```bash
+git push origin main
+```
+
+No servidor:
+
+```bash
+cd ~/projetos/BeatrizDt
+bash scripts/git-update.sh
+```
+
+Ou, na mao:
+
+```bash
+cd ~/projetos/BeatrizDt
+git pull
+pm2 restart beatriz-dt
+```
+
+Se `package.json` mudar, rode tambem `npm install` no servidor **antes** do restart. Nao rode `npm run import:db` em atualizacao — isso nao e necessario e o banco de producao permanece intacto.
+
