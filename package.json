@@ -8,7 +8,8 @@
     "start": "node server.js",
     "test": "vitest run --globals",
     "check": "vitest run --globals",
-    "import:db": "node scripts/import-json-to-postgres.js"
+    "import:db": "node scripts/import-json-to-postgres.js",
+    "restore:empty-months": "node scripts/restore-empty-months-from-json.js"
   },
   "keywords": [],
   "author": "",
