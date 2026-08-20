@@ -10,8 +10,16 @@ function getRecordsFilePath() {
   return process.env.RECORDS_FILE || path.join(process.cwd(), 'data', 'monthly-records.json');
 }
 
+function getFiscalRecordsFilePath() {
+  return process.env.FISCAL_RECORDS_FILE || path.join(process.cwd(), 'data', 'fiscal-records.json');
+}
+
 function getHistoryDir() {
   return process.env.HISTORY_DIR || path.join(process.cwd(), 'data', 'history');
+}
+
+function getFiscalHistoryDir() {
+  return process.env.FISCAL_HISTORY_DIR || path.join(process.cwd(), 'data', 'fiscal-history');
 }
 
 async function ensureRecordsFile() {
@@ -44,11 +52,44 @@ async function writeRecordsData(data) {
   await fs.writeFile(filePath, JSON.stringify(data, null, 2), 'utf-8');
 }
 
+async function ensureFiscalRecordsFile() {
+  const filePath = getFiscalRecordsFilePath();
+
+  try {
+    await fs.access(filePath);
+  } catch {
+    await fs.mkdir(path.dirname(filePath), { recursive: true });
+    await fs.writeFile(filePath, JSON.stringify({ records: [] }, null, 2), 'utf-8');
+  }
+
+  return filePath;
+}
+
+async function readFiscalRecordsData() {
+  const filePath = await ensureFiscalRecordsFile();
+  const raw = await fs.readFile(filePath, 'utf-8');
+  return JSON.parse(raw);
+}
+
+async function writeFiscalRecordsData(data) {
+  const filePath = await ensureFiscalRecordsFile();
+  await fs.writeFile(filePath, JSON.stringify(data, null, 2), 'utf-8');
+}
+
 async function createBackupSnapshot(snapshot) {
   const backupDir = process.env.BACKUP_DIR || path.join(process.cwd(), 'data', 'backups');
   await fs.mkdir(backupDir, { recursive: true });
   const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
   const backupPath = path.join(backupDir, `monthly-records-${timestamp}.json`);
+  await fs.writeFile(backupPath, JSON.stringify(snapshot, null, 2), 'utf-8');
+  return backupPath;
+}
+
+async function createFiscalBackupSnapshot(snapshot) {
+  const backupDir = process.env.FISCAL_BACKUP_DIR || path.join(process.cwd(), 'data', 'fiscal-backups');
+  await fs.mkdir(backupDir, { recursive: true });
+  const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+  const backupPath = path.join(backupDir, `fiscal-records-${timestamp}.json`);
   await fs.writeFile(backupPath, JSON.stringify(snapshot, null, 2), 'utf-8');
   return backupPath;
 }
@@ -71,6 +112,24 @@ async function writeHistory(competencia, history) {
   await fs.writeFile(historyPath, JSON.stringify(history, null, 2), 'utf-8');
 }
 
+async function readFiscalHistory(competencia) {
+  const historyPath = path.join(getFiscalHistoryDir(), `${toCompetenciaSlug(competencia)}.json`);
+
+  try {
+    const raw = await fs.readFile(historyPath, 'utf-8');
+    return JSON.parse(raw);
+  } catch {
+    return { competencia, revisions: [] };
+  }
+}
+
+async function writeFiscalHistory(competencia, history) {
+  const historyDir = getFiscalHistoryDir();
+  await fs.mkdir(historyDir, { recursive: true });
+  const historyPath = path.join(historyDir, `${toCompetenciaSlug(competencia)}.json`);
+  await fs.writeFile(historyPath, JSON.stringify(history, null, 2), 'utf-8');
+}
+
 async function getAssetBuffer() {
   return null;
 }
@@ -85,12 +144,17 @@ async function setUserPreference() {
 
 module.exports = {
   createBackupSnapshot,
+  createFiscalBackupSnapshot,
   getAssetBuffer,
   getUserPreference,
+  readFiscalHistory,
+  readFiscalRecordsData,
   readHistory,
   readRecordsData,
   readUsersData,
   setUserPreference,
+  writeFiscalHistory,
+  writeFiscalRecordsData,
   writeHistory,
   writeRecordsData,
 };

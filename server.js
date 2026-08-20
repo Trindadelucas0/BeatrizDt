@@ -10,13 +10,24 @@ const { formatCnpj, formatCurrency, formatGroupStatus, fromCompetenciaSlug, norm
 const { buildCompetenciaStatusMap, buildLayoutViewModel, computeFillMetrics } = require('./services/layoutViewModelService');
 const { buildCompetenciaList, DEFAULT_SEED_YEAR } = require('./services/competenciaSeedService');
 const { generateRecordPdf } = require('./services/pdfService');
+const { generateFiscalRecordPdf } = require('./services/fiscalPdfService');
 const { getLogoPublicPath, getLoginPageLogoPublicPath, getExitoLogoPublicPath } = require('./services/brandAssetService');
 const { getThemeFromRequest, normalizeTheme } = require('./services/themeService');
 const { getUserTheme, setUserTheme } = require('./services/preferenceService');
 const { getLatestRecord, getRecordByCompetencia, listRecords, saveRecord } = require('./services/recordService');
+const {
+  getLatestFiscalRecord,
+  getFiscalRecordByCompetencia,
+  listFiscalRecords,
+  saveFiscalRecord,
+} = require('./services/fiscalRecordService');
 const { createInitialRecord } = require('./services/sheetSchemaService');
+const { createInitialFiscalRecord, TAX_FIELDS, TAX_FIELD_LABELS } = require('./services/fiscalSheetSchemaService');
 const { normalizeRecordInput, validateRecord } = require('./services/validationService');
+const { normalizeFiscalRecordInput, validateFiscalRecord } = require('./services/fiscalValidationService');
+const { buildFiscalCompetenciaStatusMap, computeFiscalFillMetrics, formatFiscalCell } = require('./services/fiscalCalculationService');
 const { listRevisions } = require('./services/versionHistoryService');
+const { listFiscalRevisions } = require('./services/fiscalVersionHistoryService');
 const { useJsonStorage } = require('./services/storage');
 const { getPool, healthCheck, initDatabase } = require('./services/db/database');
 
@@ -25,6 +36,7 @@ const port = process.env.PORT || 3454;
 const helpers = {
   formatCnpj,
   formatCurrency,
+  formatFiscalCell,
   formatGroupStatus,
   normalizeGroupStatus,
   spacedLabel,
@@ -95,6 +107,14 @@ function createApp() {
     return (await getRecordByCompetencia(competencia)) || getLatestRecord();
   }
 
+  async function resolveFiscalRecord(competencia) {
+    if (!competencia) {
+      return getLatestFiscalRecord();
+    }
+
+    return (await getFiscalRecordByCompetencia(competencia)) || getLatestFiscalRecord();
+  }
+
   async function renderDashboard(req, res, options = {}) {
     const record = options.record || await resolveRecord(options.competencia);
     const records = await listRecords();
@@ -125,6 +145,29 @@ function createApp() {
     });
   }
 
+  async function renderFiscalDashboard(req, res, options = {}) {
+    const record = options.record || await resolveFiscalRecord(options.competencia);
+    const records = await listFiscalRecords();
+    const competencias = buildCompetenciaList(DEFAULT_SEED_YEAR);
+    const competenciaStatusMap = buildFiscalCompetenciaStatusMap(records);
+
+    return res.render('fiscal-dashboard', {
+      title: 'Fiscal | Grupo Dauto',
+      user: req.session.user,
+      record,
+      competencias,
+      competenciaStatusMap,
+      flash: options.flash ?? consumeFlash(req),
+      error: options.error || null,
+      isReadOnly: req.session.user.role !== 'admin',
+      helpers,
+      taxFields: TAX_FIELDS,
+      taxFieldLabels: TAX_FIELD_LABELS,
+      sidebarYears: [DEFAULT_SEED_YEAR, DEFAULT_SEED_YEAR + 1, DEFAULT_SEED_YEAR + 2],
+      currentYear: parseInt(String(record.competencia || '01/2026').split('/')[1], 10),
+    });
+  }
+
   app.get('/health', async (req, res) => {
     if (useJsonStorage()) {
       return res.json({ ok: true, storage: 'json', db: 'skipped' });
@@ -149,7 +192,7 @@ function createApp() {
 
   app.get('/', (req, res) => {
     if (req.session.user) {
-      return res.redirect('/dashboard');
+      return res.redirect('/modulos');
     }
 
     return res.redirect('/login');
@@ -157,7 +200,7 @@ function createApp() {
 
   app.get('/login', (req, res) => {
     if (req.session.user) {
-      return res.redirect('/dashboard');
+      return res.redirect('/modulos');
     }
 
     return res.render('login', {
@@ -180,7 +223,14 @@ function createApp() {
     }
 
     req.session.user = user;
-    return res.redirect('/dashboard');
+    return res.redirect('/modulos');
+  });
+
+  app.get('/modulos', ensureAuthenticated, (req, res) => {
+    return res.render('modulos', {
+      title: 'Módulos | Grupo Dauto',
+      user: req.session.user,
+    });
   });
 
   app.get('/dashboard', ensureAuthenticated, async (req, res) => {
@@ -327,6 +377,141 @@ function createApp() {
       console.error('Falha ao gerar PDF:', error.message);
       return res.status(500).send('Nao foi possivel gerar o PDF. Tente novamente.');
     }
+  });
+
+  app.get('/fiscal', ensureAuthenticated, async (req, res) => {
+    return renderFiscalDashboard(req, res);
+  });
+
+  app.get('/fiscal/pdf/:competencia', ensureAuthenticated, async (req, res) => {
+    try {
+      const competencia = fromCompetenciaSlug(req.params.competencia);
+      const record = await resolveFiscalRecord(competencia);
+      const theme = getThemeFromRequest(req);
+      const pdfBuffer = await generateFiscalRecordPdf(record, helpers, { theme });
+
+      res.setHeader('Content-Type', 'application/pdf');
+      res.setHeader(
+        'Content-Disposition',
+        `attachment; filename="Resumo_Fiscal_${toCompetenciaSlug(record.competencia)}.pdf"`,
+      );
+      return res.send(pdfBuffer);
+    } catch (error) {
+      console.error('Falha ao gerar PDF fiscal:', error.message);
+      return res.status(500).send('Nao foi possivel gerar o PDF fiscal. Tente novamente.');
+    }
+  });
+
+  app.get('/fiscal/:competencia', ensureAuthenticated, async (req, res) => {
+    const competencia = fromCompetenciaSlug(req.params.competencia);
+    return renderFiscalDashboard(req, res, { competencia });
+  });
+
+  app.post('/fiscal/save', ensureAuthenticated, async (req, res) => {
+    if (req.session.user.role !== 'admin') {
+      const latest = await resolveFiscalRecord();
+      return renderFiscalDashboard(req, res.status(403), {
+        record: latest,
+        error: 'Somente administradores podem salvar alteracoes.',
+        flash: null,
+      });
+    }
+
+    let payload;
+    try {
+      payload = JSON.parse(req.body.payload || '{}');
+    } catch {
+      payload = createInitialFiscalRecord();
+    }
+
+    const normalizedRecord = normalizeFiscalRecordInput(payload);
+    const errors = validateFiscalRecord(normalizedRecord);
+
+    if (errors.length > 0) {
+      return renderFiscalDashboard(req, res.status(400), {
+        record: normalizedRecord,
+        error: errors.join(' '),
+        flash: null,
+      });
+    }
+
+    await saveFiscalRecord(normalizedRecord, req.session.user.username);
+    req.session.flash = 'Dados fiscais salvos com sucesso.';
+
+    return res.redirect(`/fiscal/${toCompetenciaSlug(normalizedRecord.competencia)}`);
+  });
+
+  app.post('/api/fiscal/competencias/:slug/autosave', ensureAuthenticated, async (req, res) => {
+    if (req.session.user.role !== 'admin') {
+      return res.status(403).json({ error: 'Somente administradores podem salvar alteracoes.' });
+    }
+
+    const competencia = fromCompetenciaSlug(req.params.slug);
+    const payload = {
+      ...req.body,
+      competencia: req.body.competencia || competencia,
+    };
+
+    const normalizedRecord = normalizeFiscalRecordInput(payload);
+    const errors = validateFiscalRecord(normalizedRecord);
+
+    if (errors.length > 0) {
+      return res.status(400).json({ error: errors.join(' ') });
+    }
+
+    const savedRecord = await saveFiscalRecord(normalizedRecord, req.session.user.username);
+    const fill = computeFiscalFillMetrics(savedRecord);
+    const revisions = await listFiscalRevisions(savedRecord.competencia);
+    const latestRevision = revisions[revisions.length - 1] || null;
+
+    return res.json({
+      ok: true,
+      competencia: savedRecord.competencia,
+      updatedAt: savedRecord.updatedAt,
+      updatedBy: savedRecord.updatedBy,
+      fillStatus: fill.status,
+      fillPercent: fill.percent,
+      revisionId: latestRevision?.revision || 1,
+    });
+  });
+
+  app.get('/api/fiscal/competencias/:slug/status', ensureAuthenticated, async (req, res) => {
+    const competencia = fromCompetenciaSlug(req.params.slug);
+    const record = await getFiscalRecordByCompetencia(competencia);
+
+    if (!record) {
+      return res.status(404).json({ error: 'Competencia fiscal nao encontrada.' });
+    }
+
+    const fill = computeFiscalFillMetrics(record);
+    const revisions = await listFiscalRevisions(competencia);
+    const latestRevision = revisions[revisions.length - 1] || null;
+
+    return res.json({
+      competencia: record.competencia,
+      fillStatus: fill.status,
+      fillStatusLabel: fill.statusLabel,
+      fillPercent: fill.percent,
+      filledFields: fill.filledFields,
+      totalFields: fill.totalFields,
+      updatedAt: record.updatedAt,
+      updatedBy: record.updatedBy,
+      revisionId: latestRevision?.revision || 0,
+    });
+  });
+
+  app.get('/api/fiscal/competencias/:slug/history', ensureAuthenticated, async (req, res) => {
+    if (req.session.user.role !== 'admin') {
+      return res.status(403).json({ error: 'Somente administradores podem consultar o historico.' });
+    }
+
+    const competencia = fromCompetenciaSlug(req.params.slug);
+    const revisions = await listFiscalRevisions(competencia);
+
+    return res.json({
+      competencia,
+      revisions,
+    });
   });
 
   app.get('/logout', ensureAuthenticated, (req, res) => {

@@ -56,9 +56,66 @@ async function writeRecordsData(data) {
   }
 }
 
+async function readFiscalRecordsData() {
+  const result = await getPool().query(
+    'SELECT competencia, payload, updated_at, updated_by FROM fiscal_monthly_records ORDER BY competencia',
+  );
+
+  const records = result.rows.map((row) => ({
+    ...row.payload,
+    competencia: row.competencia,
+    updatedAt: row.updated_at instanceof Date ? row.updated_at.toISOString() : row.updated_at,
+    updatedBy: row.updated_by,
+  }));
+
+  return { records };
+}
+
+async function writeFiscalRecordsData(data) {
+  const client = await getPool().connect();
+
+  try {
+    await client.query('BEGIN');
+
+    for (const record of data.records || []) {
+      const payload = { ...record };
+      const updatedAt = payload.updatedAt || new Date().toISOString();
+      const updatedBy = payload.updatedBy || 'sistema';
+      delete payload.updatedAt;
+      delete payload.updatedBy;
+
+      await client.query(
+        `INSERT INTO fiscal_monthly_records (competencia, payload, updated_at, updated_by)
+         VALUES ($1, $2::jsonb, $3, $4)
+         ON CONFLICT (competencia) DO UPDATE SET
+           payload = EXCLUDED.payload,
+           updated_at = EXCLUDED.updated_at,
+           updated_by = EXCLUDED.updated_by`,
+        [record.competencia, JSON.stringify(payload), updatedAt, updatedBy],
+      );
+    }
+
+    await client.query('COMMIT');
+  } catch (error) {
+    await client.query('ROLLBACK');
+    throw error;
+  } finally {
+    client.release();
+  }
+}
+
 async function createBackupSnapshot(snapshot) {
   const result = await getPool().query(
     'INSERT INTO record_backups (snapshot) VALUES ($1::jsonb) RETURNING id',
+    [JSON.stringify(snapshot)],
+  );
+
+  return result.rows[0].id;
+}
+
+async function createFiscalBackupSnapshot(snapshot) {
+  const result = await getPool().query(
+    'INSERT INTO fiscal_record_backups (snapshot) VALUES ($1::jsonb) RETURNING id',
     [JSON.stringify(snapshot)],
   );
 
@@ -129,6 +186,70 @@ async function appendRevision(competencia, revision) {
   );
 }
 
+async function readFiscalHistory(competencia) {
+  const revisions = await getPool().query(
+    `SELECT revision, updated_at AS "updatedAt", updated_by AS "updatedBy",
+            competencia, summary
+     FROM fiscal_record_revisions
+     WHERE competencia = $1
+     ORDER BY revision ASC`,
+    [competencia],
+  );
+
+  return {
+    competencia,
+    revisions: revisions.rows,
+  };
+}
+
+async function writeFiscalHistory(competencia, history) {
+  const client = await getPool().connect();
+
+  try {
+    await client.query('BEGIN');
+    await client.query('DELETE FROM fiscal_record_revisions WHERE competencia = $1', [competencia]);
+
+    for (const revision of history.revisions || []) {
+      await client.query(
+        `INSERT INTO fiscal_record_revisions (competencia, revision, updated_at, updated_by, summary)
+         VALUES ($1, $2, $3, $4, $5)`,
+        [
+          competencia,
+          revision.revision,
+          revision.updatedAt,
+          revision.updatedBy,
+          revision.summary,
+        ],
+      );
+    }
+
+    await client.query('COMMIT');
+  } catch (error) {
+    await client.query('ROLLBACK');
+    throw error;
+  } finally {
+    client.release();
+  }
+}
+
+async function appendFiscalRevision(competencia, revision) {
+  await getPool().query(
+    `INSERT INTO fiscal_record_revisions (competencia, revision, updated_at, updated_by, summary)
+     VALUES ($1, $2, $3, $4, $5)
+     ON CONFLICT (competencia, revision) DO UPDATE SET
+       updated_at = EXCLUDED.updated_at,
+       updated_by = EXCLUDED.updated_by,
+       summary = EXCLUDED.summary`,
+    [
+      competencia,
+      revision.revision,
+      revision.updatedAt,
+      revision.updatedBy,
+      revision.summary,
+    ],
+  );
+}
+
 async function getAssetBuffer(assetKey) {
   const result = await getPool().query(
     'SELECT mime_type, content FROM app_assets WHERE asset_key = $1',
@@ -171,14 +292,20 @@ async function setUserPreference(username, key, value) {
 }
 
 module.exports = {
+  appendFiscalRevision,
   appendRevision,
   createBackupSnapshot,
+  createFiscalBackupSnapshot,
   getAssetBuffer,
   getUserPreference,
+  readFiscalHistory,
+  readFiscalRecordsData,
   readHistory,
   readRecordsData,
   readUsersData,
   setUserPreference,
+  writeFiscalHistory,
+  writeFiscalRecordsData,
   writeHistory,
   writeRecordsData,
 };

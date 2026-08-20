@@ -35,8 +35,11 @@ beforeAll(async () => {
   process.env.STORAGE_BACKEND = 'json';
   process.env.USERS_FILE = path.join(tempDir, 'users.json');
   process.env.RECORDS_FILE = path.join(tempDir, 'records.json');
+  process.env.FISCAL_RECORDS_FILE = path.join(tempDir, 'fiscal-records.json');
   process.env.BACKUP_DIR = path.join(tempDir, 'backups');
+  process.env.FISCAL_BACKUP_DIR = path.join(tempDir, 'fiscal-backups');
   process.env.HISTORY_DIR = path.join(tempDir, 'history');
+  process.env.FISCAL_HISTORY_DIR = path.join(tempDir, 'fiscal-history');
   process.env.DISABLE_PDF_BROWSER = '1';
 
   const users = {
@@ -58,6 +61,7 @@ beforeAll(async () => {
 
   await fs.writeFile(process.env.USERS_FILE, JSON.stringify(users, null, 2), 'utf-8');
   await fs.writeFile(process.env.RECORDS_FILE, JSON.stringify(records, null, 2), 'utf-8');
+  await fs.writeFile(process.env.FISCAL_RECORDS_FILE, JSON.stringify({ records: [] }, null, 2), 'utf-8');
 
   const { getApp } = require('../server');
   app = getApp();
@@ -67,8 +71,11 @@ afterAll(async () => {
   delete process.env.STORAGE_BACKEND;
   delete process.env.USERS_FILE;
   delete process.env.RECORDS_FILE;
+  delete process.env.FISCAL_RECORDS_FILE;
   delete process.env.BACKUP_DIR;
+  delete process.env.FISCAL_BACKUP_DIR;
   delete process.env.HISTORY_DIR;
+  delete process.env.FISCAL_HISTORY_DIR;
   delete process.env.DISABLE_PDF_BROWSER;
 
   if (tempDir) {
@@ -90,15 +97,25 @@ describe('aplicacao web', () => {
   it('permite login e visualizacao do dashboard para administrador', async () => {
     const agent = request.agent(app);
 
-    await agent
+    const loginResponse = await agent
       .post('/login')
       .type('form')
       .send({ username: 'admin', password: 'admin123' })
       .expect(302);
 
+    expect(loginResponse.headers.location).toBe('/modulos');
+
+    const hub = await agent.get('/modulos');
+    expect(hub.statusCode).toBe(200);
+    expect(hub.text).toContain('Controle de Folha de Pagamento');
+    expect(hub.text).toContain('Fiscal');
+    expect(hub.text).toContain('href="/dashboard"');
+    expect(hub.text).toContain('href="/fiscal"');
+
     const dashboard = await agent.get('/dashboard');
     expect(dashboard.statusCode).toBe(200);
     expect(dashboard.text).toContain('Controle folha de pagamento');
+    expect(dashboard.text).toContain('Trocar módulo');
     expect(dashboard.text).toContain('sidebar-nav');
     expect(dashboard.text).toContain('01/2026');
     expect(dashboard.text).toContain('12/2026');
@@ -128,7 +145,7 @@ describe('aplicacao web', () => {
     expect(response.text).toContain('/images/dauto-login-page-logo.png');
     expect(response.text).not.toContain('/images/dauto-login-logo.png');
     expect(response.text).not.toContain('/images/logo.png');
-    expect(response.text).toContain('Folha de Pagamento');
+    expect(response.text).toContain('Grupo Dauto');
     expect(response.text).not.toContain('Resumo de Impostos – Folha de Pagamento');
     expect(response.text).not.toContain('Controle mensal por empresa · Dauto Tintas');
     expect(response.text).toContain('btn-dauto');
@@ -273,6 +290,71 @@ describe('aplicacao web', () => {
     } finally {
       process.env.NODE_ENV = previousNodeEnv;
     }
+  });
+
+  it('abre dashboard fiscal com colunas e seed de 07/2026', async () => {
+    const agent = request.agent(app);
+
+    await agent
+      .post('/login')
+      .type('form')
+      .send({ username: 'admin', password: 'admin123' })
+      .expect(302);
+
+    const fiscal = await agent.get('/fiscal');
+    expect(fiscal.statusCode).toBe(200);
+    expect(fiscal.text).toContain('Controle fiscal');
+    expect(fiscal.text).toContain('RESUMO DE IMPOSTOS GRUPO DAUTO');
+    expect(fiscal.text).toContain('ICMS PROTEGE');
+    expect(fiscal.text).toContain('GUARA II');
+    expect(fiscal.text).toContain('Trocar módulo');
+    expect(fiscal.text).toContain('07/2026');
+  });
+
+  it('impede usuario comum de salvar fiscal', async () => {
+    const agent = request.agent(app);
+    const { createInitialFiscalRecord } = require('../services/fiscalSheetSchemaService');
+    const payload = createInitialFiscalRecord();
+
+    await agent
+      .post('/login')
+      .type('form')
+      .send({ username: 'usuario', password: 'usuario123' })
+      .expect(302);
+
+    const response = await agent
+      .post('/fiscal/save')
+      .type('form')
+      .send({ payload: JSON.stringify(payload) });
+
+    expect(response.statusCode).toBe(403);
+    expect(response.text).toContain('Somente administradores podem salvar alteracoes');
+  });
+
+  it('salva dados fiscais e gera PDF para administrador', async () => {
+    const agent = request.agent(app);
+    const { createInitialFiscalRecord } = require('../services/fiscalSheetSchemaService');
+    const payload = createInitialFiscalRecord();
+    payload.competencia = '05/2026';
+    payload.rows[0].pis = 150.5;
+
+    await agent
+      .post('/login')
+      .type('form')
+      .send({ username: 'admin', password: 'admin123' })
+      .expect(302);
+
+    const saveResponse = await agent
+      .post('/fiscal/save')
+      .type('form')
+      .send({ payload: JSON.stringify(payload) });
+
+    expect(saveResponse.statusCode).toBe(302);
+    expect(saveResponse.headers.location).toContain('/fiscal/05-2026');
+
+    const pdfResponse = await agent.get('/fiscal/pdf/05-2026');
+    expect(pdfResponse.statusCode).toBe(200);
+    expect(pdfResponse.headers['content-type']).toContain('application/pdf');
   });
 });
 

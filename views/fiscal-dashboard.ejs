@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= title %></title>
+  <%- include('partials/theme-head') %>
+  <link rel="stylesheet" href="/css/dauto-layout.css" />
+</head>
+<body class="dashboard-shell dashboard-shell--fiscal">
+  <a href="#dashboard-content" class="skip-link">Ir para o conteúdo principal</a>
+  <div id="app-toast" class="app-toast" role="status" aria-live="polite" hidden></div>
+
+  <div id="sidebar-overlay" class="sidebar-overlay"></div>
+  <aside id="sidebar-drawer" class="sidebar-drawer" aria-hidden="true">
+    <div class="sidebar-header">
+      <div class="sidebar-header__title">
+        <span class="sidebar-header__eyebrow">GRUPO DAUTO</span>
+        <h2 class="sidebar-header__main">Impostos Fiscais</h2>
+      </div>
+      <button id="sidebar-close-btn" class="sidebar-close-btn" aria-label="Fechar menu">
+        ✕
+      </button>
+    </div>
+    <nav class="sidebar-nav" aria-label="Navegação por competências">
+      <% sidebarYears.forEach(year => { %>
+        <% const meses = buildCompetenciaList(year); %>
+        <details class="sidebar-nav-year" <%= year === currentYear ? 'open' : '' %>>
+          <summary><%= year %></summary>
+          <div class="sidebar-nav-months">
+            <% meses.forEach(mes => { %>
+              <% const st = competenciaStatusMap[mes] || { status: 'rascunho', statusLabel: 'Rascunho' }; %>
+              <a href="/fiscal/<%= helpers.toCompetenciaSlug(mes) %>"
+                 class="sidebar-nav-month <%= mes === record.competencia ? 'sidebar-nav-month--active' : '' %>">
+                <span><%= mes %></span>
+                <span class="status-badge status-badge--<%= st.status %>"><%= st.statusLabel %></span>
+              </a>
+            <% }) %>
+          </div>
+        </details>
+      <% }) %>
+    </nav>
+  </aside>
+
+  <div class="dashboard-shell__main">
+    <div class="app">
+      <div class="header">
+        <div class="logo-card exito">
+          <img src="<%= exitoLogoPath %>" alt="Êxito Contabilidade" />
+        </div>
+        <div class="header-title">
+          <h1 class="header-title__heading">
+            <span class="header-title__line" aria-hidden="true"></span>
+            <span class="header-title__text">Controle fiscal</span>
+            <span class="header-title__line" aria-hidden="true"></span>
+          </h1>
+        </div>
+        <div class="logo-card dauto">
+          <img src="<%= logoPath %>" alt="Dauto Tintas" />
+        </div>
+      </div>
+
+      <%- include('partials/fiscal-dashboard-toolbar', { record, user, isReadOnly, helpers }) %>
+
+      <% if (flash) { %>
+        <div class="alert-success" role="status" aria-live="polite"><%= flash %></div>
+      <% } %>
+
+      <% if (error) { %>
+        <div class="alert-error" role="alert"><%= error %></div>
+      <% } %>
+
+      <section id="dashboard-content">
+        <form id="fiscal-sheet-form" action="/fiscal/save" method="post">
+          <input type="hidden" id="payload-input" name="payload" />
+
+          <%- include('partials/fiscal-record-metadata', { record, isReadOnly }) %>
+
+          <div class="card">
+            <div class="section-title">
+              <h2>Lançamento fiscal mensal</h2>
+              <% if (!isReadOnly) { %>
+                <button type="button" class="sheet-row-btn sheet-row-btn--add js-fiscal-add-row">
+                  Adicionar linha
+                </button>
+              <% } %>
+            </div>
+            <div class="sheet-table-desktop fiscal-desktop">
+              <%- include('partials/fiscal-tax-table', {
+                record,
+                isReadOnly,
+                helpers,
+                taxFields,
+                taxFieldLabels,
+                printMode: false
+              }) %>
+            </div>
+            <div class="sheet-table-mobile">
+              <%- include('partials/fiscal-tax-mobile-cards', {
+                record,
+                isReadOnly,
+                helpers,
+                taxFields,
+                taxFieldLabels
+              }) %>
+            </div>
+          </div>
+        </form>
+      </section>
+    </div>
+  </div>
+
+  <script>
+    window.__FISCAL_DASHBOARD_STATE__ = <%- JSON.stringify({ record, isReadOnly, taxFields }) %>;
+  </script>
+  <script src="/js/sidebar.js"></script>
+  <script src="/js/fiscal-dashboard.js"></script>
+</body>
+</html>

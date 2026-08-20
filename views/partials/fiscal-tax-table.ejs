@@ -1,0 +1,103 @@
+<%
+  const fields = typeof taxFields !== 'undefined' && taxFields ? taxFields : [];
+  const labels = typeof taxFieldLabels !== 'undefined' && taxFieldLabels ? taxFieldLabels : {};
+  const readOnly = typeof isReadOnly !== 'undefined' ? isReadOnly : true;
+  const printing = typeof printMode !== 'undefined' ? printMode : false;
+%>
+<div class="fiscal-sheet<%= printing ? ' fiscal-sheet--pdf' : '' %>">
+  <div class="fiscal-sheet__banner">
+    RESUMO DE IMPOSTOS GRUPO DAUTO <%= record.competencia %>
+  </div>
+
+  <div class="fiscal-sheet__scroll<%= printing ? ' fiscal-sheet__scroll--pdf' : '' %>">
+    <table class="fiscal-table<%= printing ? ' fiscal-table--pdf' : '' %>" aria-label="Resumo de impostos fiscal">
+      <thead>
+        <tr>
+          <th scope="col">Nº DOMINIO</th>
+          <th scope="col">SISTEMA DAUTO</th>
+          <th scope="col">LOCAL</th>
+          <th scope="col">EMPRESA</th>
+          <% fields.forEach(field => { %>
+            <th scope="col"><%= labels[field] || field %></th>
+          <% }) %>
+          <% if (!readOnly && !printing) { %>
+            <th scope="col" class="fiscal-table__actions">Ações</th>
+          <% } %>
+        </tr>
+      </thead>
+      <tbody>
+        <% (record.rows || []).forEach((row, rowIndex) => { %>
+          <tr data-row-index="<%= rowIndex %>" data-row-id="<%= row.id %>">
+            <td>
+              <% if (readOnly || printing) { %>
+                <%= row.dominio || '—' %>
+              <% } else { %>
+                <input type="text" class="fiscal-input js-fiscal-field" data-field="dominio" value="<%= row.dominio || '' %>" />
+              <% } %>
+            </td>
+            <td>
+              <% if (readOnly || printing) { %>
+                <%= row.sistemaDauto || '—' %>
+              <% } else { %>
+                <input type="text" class="fiscal-input js-fiscal-field" data-field="sistemaDauto" value="<%= row.sistemaDauto || '' %>" />
+              <% } %>
+            </td>
+            <td>
+              <% if (readOnly || printing) { %>
+                <%= row.local || '—' %>
+              <% } else { %>
+                <input type="text" class="fiscal-input js-fiscal-field" data-field="local" value="<%= row.local || '' %>" />
+              <% } %>
+            </td>
+            <td>
+              <% if (readOnly || printing) { %>
+                <%= row.empresa || '—' %>
+              <% } else { %>
+                <input type="text" class="fiscal-input js-fiscal-field" data-field="empresa" value="<%= row.empresa || '' %>" required />
+              <% } %>
+            </td>
+            <% fields.forEach(field => { %>
+              <td class="fiscal-table__tax">
+                <% if (readOnly || printing) { %>
+                  <%= helpers.formatFiscalCell(row[field]) %>
+                <% } else { %>
+                  <div class="fiscal-tax-cell">
+                    <input
+                      type="text"
+                      class="fiscal-input fiscal-input--tax js-fiscal-field"
+                      data-field="<%= field %>"
+                      value="<%= row[field] === null || row[field] === undefined ? '' : row[field] %>"
+                      placeholder="R$ -"
+                    />
+                    <button
+                      type="button"
+                      class="fiscal-saldo-btn js-fiscal-saldo-credor"
+                      title="Alternar SALDO CREDOR"
+                      aria-label="Alternar SALDO CREDOR"
+                    >SC</button>
+                  </div>
+                <% } %>
+              </td>
+            <% }) %>
+            <% if (!readOnly && !printing) { %>
+              <td class="fiscal-table__actions">
+                <button type="button" class="sheet-row-btn sheet-row-btn--remove js-fiscal-remove-row" aria-label="Remover linha">Remover</button>
+              </td>
+            <% } %>
+          </tr>
+        <% }) %>
+      </tbody>
+      <tfoot>
+        <tr class="fiscal-table__total">
+          <th colspan="4" scope="row">TOTAL</th>
+          <% fields.forEach(field => { %>
+            <td class="js-fiscal-total" data-field="<%= field %>"><%= helpers.formatFiscalCell(record.totals?.[field] ?? 0) %></td>
+          <% }) %>
+          <% if (!readOnly && !printing) { %>
+            <td></td>
+          <% } %>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+</div>

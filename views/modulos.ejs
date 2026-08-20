@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= title %></title>
+  <%- include('partials/theme-head') %>
+  <link rel="stylesheet" href="/css/dauto-layout.css" />
+</head>
+<body class="login-page modules-page">
+  <a href="#modules-grid" class="skip-link">Ir para a escolha de módulo</a>
+
+  <main class="login-page__main modules-page__main">
+    <div class="modules-card">
+      <header class="modules-card__header">
+        <div class="login-brand">
+          <img
+            class="login-brand__logo"
+            src="<%= loginLogoPath %>"
+            alt="Dauto Tintas"
+            width="340"
+            height="96"
+          />
+          <h1 class="login-brand__title">
+            <span class="login-brand__title-line" aria-hidden="true"></span>
+            Escolha o módulo
+            <span class="login-brand__title-line" aria-hidden="true"></span>
+          </h1>
+        </div>
+        <p class="modules-card__welcome">
+          Olá, <strong><%= user.displayName || user.username %></strong>. Selecione onde deseja trabalhar.
+        </p>
+      </header>
+
+      <div id="modules-grid" class="modules-grid">
+        <a href="/dashboard" class="module-card module-card--folha">
+          <span class="module-card__eyebrow">Módulo</span>
+          <strong class="module-card__title">Controle de Folha de Pagamento</strong>
+          <span class="module-card__desc">INSS, IRRF, FGTS e lançamentos mensais por competência.</span>
+          <span class="module-card__cta">Acessar folha</span>
+        </a>
+
+        <a href="/fiscal" class="module-card module-card--fiscal">
+          <span class="module-card__eyebrow">Módulo</span>
+          <strong class="module-card__title">Fiscal</strong>
+          <span class="module-card__desc">Resumo de impostos do Grupo Dauto por competência (ICMS, PIS, COFINS e demais).</span>
+          <span class="module-card__cta">Acessar fiscal</span>
+        </a>
+      </div>
+
+      <footer class="modules-card__footer">
+        <a href="/logout" class="dashboard-toolbar__btn">Sair</a>
+      </footer>
+    </div>
+  </main>
+</body>
+</html>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fiscal <%= record.competencia %></title>
+  <style><%= embeddedStyles %></style>
+  <style>
+    @page {
+      size: A4 landscape;
+      margin: 6mm;
+    }
+
+    html, body.fiscal-pdf-body {
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      background: #fff;
+    }
+
+    body.fiscal-pdf-body .pdf-fit-outer,
+    body.fiscal-pdf-body .pdf-page {
+      width: 100% !important;
+      min-width: 0 !important;
+      max-width: none !important;
+      min-height: 0 !important;
+      padding: 8px 10px !important;
+      box-sizing: border-box;
+    }
+
+    body.fiscal-pdf-body .pdf-head {
+      grid-template-columns: 120px 1fr 100px;
+      gap: 8px;
+      margin-bottom: 8px;
+      padding-bottom: 6px;
+    }
+
+    body.fiscal-pdf-body .pdf-center h2 {
+      font-size: 16px;
+      margin: 0 0 2px;
+    }
+
+    body.fiscal-pdf-body .pdf-center p,
+    body.fiscal-pdf-body .pdf-doc-meta {
+      font-size: 11px;
+    }
+
+    body.fiscal-pdf-body .fiscal-sheet--pdf {
+      border: 1px solid #111;
+      overflow: visible;
+    }
+
+    body.fiscal-pdf-body .fiscal-sheet__scroll--pdf {
+      overflow: visible !important;
+    }
+
+    body.fiscal-pdf-body .fiscal-table--pdf {
+      width: 100% !important;
+      min-width: 0 !important;
+      table-layout: fixed;
+      font-size: 8.5px;
+    }
+
+    body.fiscal-pdf-body .fiscal-table--pdf th,
+    body.fiscal-pdf-body .fiscal-table--pdf td {
+      padding: 4px 3px !important;
+      word-break: break-word;
+      overflow-wrap: anywhere;
+      white-space: normal !important;
+      font-size: 8.5px;
+      line-height: 1.15;
+      color: #111 !important;
+      background: #fff;
+    }
+
+    body.fiscal-pdf-body .fiscal-table--pdf thead th {
+      background: #f3f3f3 !important;
+      color: #111 !important;
+      font-size: 7.5px !important;
+      white-space: normal !important;
+    }
+
+    body.fiscal-pdf-body .fiscal-table--pdf .fiscal-table__total th,
+    body.fiscal-pdf-body .fiscal-table--pdf .fiscal-table__total td {
+      background: #c00000 !important;
+      color: #fff !important;
+    }
+
+    body.fiscal-pdf-body .fiscal-sheet__banner {
+      font-size: 12px;
+      padding: 6px 8px;
+    }
+  </style>
+</head>
+<body class="pdf-render-body fiscal-pdf-body">
+  <div id="pdfArea">
+    <div class="pdf-fit-outer">
+      <div class="pdf-page">
+        <div class="pdf-head">
+          <div class="pdf-logo">
+            <img src="<%= exitoLogoPath %>" alt="Êxito Contabilidade" />
+          </div>
+          <div class="pdf-center">
+            <h2>Resumo de Impostos – Fiscal</h2>
+            <p>Grupo Dauto · Competência <%= record.competencia %> · Êxito Contabilidade</p>
+          </div>
+          <div class="pdf-logo dauto">
+            <img src="<%= logoPath %>" alt="Dauto Tintas" />
+          </div>
+        </div>
+
+        <div class="pdf-doc-meta">
+          <span>Emitido em <b><%= emitidoEm %></b></span>
+          <span>Status: <b><%= record.statusGeral || 'Em conferência' %></b></span>
+          <span>Responsável: <b><%= record.responsavel || '—' %></b></span>
+        </div>
+
+        <%- include('partials/fiscal-tax-table', {
+          record,
+          helpers,
+          taxFields,
+          taxFieldLabels,
+          isReadOnly: true,
+          printMode: true
+        }) %>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

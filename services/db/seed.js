@@ -1,7 +1,9 @@
 const fs = require('node:fs/promises');
 const path = require('node:path');
 const { createInitialRecord } = require('../sheetSchemaService');
+const { createInitialFiscalRecord } = require('../fiscalSheetSchemaService');
 const { ensureYearCompetenciasInData, DEFAULT_SEED_YEAR } = require('../competenciaSeedService');
+const { ensureFiscalYearCompetenciasInData } = require('../fiscalCompetenciaSeedService');
 
 const DEFAULT_USERS = [
   {
@@ -74,6 +76,37 @@ async function seedRecords(client) {
   console.log(`Seed: ${records.length} competencias iniciais criadas`);
 }
 
+async function seedFiscalRecords(client) {
+  const count = await client.query('SELECT COUNT(*)::int AS total FROM fiscal_monthly_records');
+  if (count.rows[0].total > 0) {
+    return;
+  }
+
+  const initial = {
+    ...createInitialFiscalRecord(),
+    updatedAt: new Date().toISOString(),
+    updatedBy: 'sistema',
+  };
+
+  const { records } = ensureFiscalYearCompetenciasInData({ records: [initial] }, DEFAULT_SEED_YEAR);
+
+  for (const record of records) {
+    const payload = { ...record };
+    const updatedAt = payload.updatedAt || new Date().toISOString();
+    const updatedBy = payload.updatedBy || 'sistema';
+    delete payload.updatedAt;
+    delete payload.updatedBy;
+
+    await client.query(
+      `INSERT INTO fiscal_monthly_records (competencia, payload, updated_at, updated_by)
+       VALUES ($1, $2::jsonb, $3, $4)`,
+      [record.competencia, JSON.stringify(payload), updatedAt, updatedBy],
+    );
+  }
+
+  console.log(`Seed: ${records.length} competencias fiscais iniciais criadas`);
+}
+
 async function seedAssets(client) {
   const count = await client.query('SELECT COUNT(*)::int AS total FROM app_assets');
   if (count.rows[0].total > 0) {
@@ -106,6 +139,7 @@ async function seedAssets(client) {
 async function runSeed(client) {
   await seedUsers(client);
   await seedRecords(client);
+  await seedFiscalRecords(client);
   await seedAssets(client);
 }
 

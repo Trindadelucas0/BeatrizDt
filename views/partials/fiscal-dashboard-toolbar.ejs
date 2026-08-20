@@ -13,10 +13,10 @@
 
   <div class="dashboard-toolbar__actions">
     <% if (!isReadOnly) { %>
-      <button type="submit" form="sheet-form" class="dashboard-toolbar__btn">Salvar dados</button>
+      <button type="submit" form="fiscal-sheet-form" class="dashboard-toolbar__btn">Salvar dados</button>
     <% } %>
 
-    <a href="/dashboard/pdf/<%= helpers.toCompetenciaSlug(record.competencia) %>" class="dashboard-toolbar__btn">Baixar PDF</a>
+    <a href="/fiscal/pdf/<%= helpers.toCompetenciaSlug(record.competencia) %>" class="dashboard-toolbar__btn">Baixar PDF</a>
     <a href="/modulos" class="dashboard-toolbar__btn">Trocar módulo</a>
     <a href="/logout" class="dashboard-toolbar__btn">Sair</a>
   </div>

@@ -1,0 +1,58 @@
+<div class="card">
+  <div class="grid">
+    <div>
+      <label for="competencia-input">Competência</label>
+      <input
+        id="competencia-input"
+        type="text"
+        value="<%= record.competencia %>"
+        placeholder="07/2026"
+        maxlength="7"
+        <%= isReadOnly ? 'readonly' : '' %>
+        aria-label="Competência"
+      />
+    </div>
+    <div>
+      <label for="fiscal-data-preenchimento">Data de preenchimento</label>
+      <input
+        id="fiscal-data-preenchimento"
+        class="js-fiscal-meta"
+        data-field="dataPreenchimento"
+        type="date"
+        value="<%= record.dataPreenchimento || '' %>"
+        <%= isReadOnly ? 'readonly' : '' %>
+      />
+    </div>
+    <div>
+      <label for="fiscal-responsavel">Responsável</label>
+      <input
+        id="fiscal-responsavel"
+        class="js-fiscal-meta"
+        data-field="responsavel"
+        type="text"
+        value="<%= record.responsavel || '' %>"
+        placeholder="Nome"
+        <%= isReadOnly ? 'readonly' : '' %>
+      />
+    </div>
+    <div>
+      <label for="fiscal-status-geral">Status</label>
+      <select id="fiscal-status-geral" class="js-fiscal-meta" data-field="statusGeral" <%= isReadOnly ? 'disabled' : '' %>>
+        <% const statusOptions = ['Em conferência', 'Conferido', 'Enviado ao cliente']; %>
+        <% statusOptions.forEach((option) => { %>
+          <option value="<%= option %>" <%= (record.statusGeral || 'Em conferência') === option ? 'selected' : '' %>><%= option %></option>
+        <% }) %>
+      </select>
+    </div>
+  </div>
+  <div style="margin-top:14px">
+    <label for="fiscal-observacoes">Observações gerais</label>
+    <textarea
+      id="fiscal-observacoes"
+      class="js-fiscal-meta"
+      data-field="observacoes"
+      placeholder="Observações para conferência..."
+      <%= isReadOnly ? 'readonly' : '' %>
+    ><%= record.observacoes || '' %></textarea>
+  </div>
+</div>

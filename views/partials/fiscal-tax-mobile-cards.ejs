@@ -1,0 +1,76 @@
+<%
+  const fields = typeof taxFields !== 'undefined' && taxFields ? taxFields : [];
+  const labels = typeof taxFieldLabels !== 'undefined' && taxFieldLabels ? taxFieldLabels : {};
+%>
+<div class="fiscal-mobile">
+  <% (record.rows || []).forEach((row, rowIndex) => { %>
+    <article class="fiscal-mobile-card" data-row-index="<%= rowIndex %>" data-row-id="<%= row.id %>">
+      <header class="fiscal-mobile-card__header">
+        <strong><%= row.empresa || 'Empresa' %></strong>
+        <% if (!isReadOnly) { %>
+          <button type="button" class="sheet-row-btn sheet-row-btn--remove js-fiscal-remove-row">Remover</button>
+        <% } %>
+      </header>
+
+      <div class="fiscal-mobile-card__grid">
+        <label>
+          <span>Nº Domínio</span>
+          <% if (isReadOnly) { %>
+            <strong><%= row.dominio || '—' %></strong>
+          <% } else { %>
+            <input type="text" class="fiscal-input js-fiscal-field" data-field="dominio" value="<%= row.dominio || '' %>" />
+          <% } %>
+        </label>
+        <label>
+          <span>Sistema Dauto</span>
+          <% if (isReadOnly) { %>
+            <strong><%= row.sistemaDauto || '—' %></strong>
+          <% } else { %>
+            <input type="text" class="fiscal-input js-fiscal-field" data-field="sistemaDauto" value="<%= row.sistemaDauto || '' %>" />
+          <% } %>
+        </label>
+        <label>
+          <span>Local</span>
+          <% if (isReadOnly) { %>
+            <strong><%= row.local || '—' %></strong>
+          <% } else { %>
+            <input type="text" class="fiscal-input js-fiscal-field" data-field="local" value="<%= row.local || '' %>" />
+          <% } %>
+        </label>
+        <label>
+          <span>Empresa</span>
+          <% if (isReadOnly) { %>
+            <strong><%= row.empresa || '—' %></strong>
+          <% } else { %>
+            <input type="text" class="fiscal-input js-fiscal-field" data-field="empresa" value="<%= row.empresa || '' %>" />
+          <% } %>
+        </label>
+
+        <% fields.forEach(field => { %>
+          <label>
+            <span><%= labels[field] || field %></span>
+            <% if (isReadOnly) { %>
+              <strong><%= helpers.formatFiscalCell(row[field]) %></strong>
+            <% } else { %>
+              <div class="fiscal-tax-cell">
+                <input
+                  type="text"
+                  class="fiscal-input fiscal-input--tax js-fiscal-field"
+                  data-field="<%= field %>"
+                  value="<%= row[field] === null || row[field] === undefined ? '' : row[field] %>"
+                  placeholder="R$ -"
+                />
+                <button
+                  type="button"
+                  class="fiscal-saldo-btn js-fiscal-saldo-credor"
+                  title="Alternar SALDO CREDOR"
+                  aria-label="Alternar SALDO CREDOR"
+                >SC</button>
+              </div>
+            <% } %>
+          </label>
+        <% }) %>
+      </div>
+    </article>
+  <% }) %>
+</div>
